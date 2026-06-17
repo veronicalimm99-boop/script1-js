@@ -195,7 +195,7 @@
         el.className = 'social-network-raintoto-';
         el.innerHTML = `
             <p style="margin-top:5px;text-align:center;margin-bottom:18px;">
-                <span style="font-weight:bolder;color:white;text-shadow:0px 0px 10px #000,0px 0px 20px #000;font-size:15px;font-family:verdana;">KLIK UNTUK MENGHUBUNGI CS RAINTOTO:</span>
+                <span style="font-weight:bolder;color:white;text-shadow:0px 0px 10px #000,0px 0px 20px #000;font-size:15px;font-family:verdana;">KLIK UNTUK MENGHUBUNGI CS DPTOTO:</span>
             </p>
             <div class="buttoncontact">
                 <div style="margin-bottom:5px;display:flex;">
