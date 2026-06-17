@@ -199,8 +199,8 @@
             </p>
             <div class="buttoncontact">
                 <div style="margin-bottom:5px;display:flex;">
-                    <a href="https://dub.link/waofficialrain" target="_blank"><img src="https://raintoto-hujan.b-cdn.net/Artboard%201-1.png" height="100%" width="100%" style="display:block;"></a>
-                    <a href="https://dub.link/waofficialrain" target="_blank"><img src="https://raintoto-hujan.b-cdn.net/Artboard%201-1.png" height="100%" width="100%" style="display:block;"></a>
+                    <a href="https://dub.link/waofficialrain" target="_blank"><img src="https://imgstorage.site/view/berlin/wa-dptoto.png" height="100%" width="100%" style="display:block;"></a>
+                    <a href="https://dub.link/waofficialrain" target="_blank"><img src="https://imgstorage.site/view/berlin/wa-dptoto.png" height="100%" width="100%" style="display:block;"></a>
                 </div>
                 <div style="margin-bottom:5px;display:flex;">
                     <a href="https://direct.lc.chat/19532541/" target="_blank"><img src="https://raintoto-hujan.b-cdn.net/Artboard%201-2.png" alt="LIVECHAT RAINTOTO" height="100%" width="100%" style="display:block;"></a>
