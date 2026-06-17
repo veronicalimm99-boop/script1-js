@@ -371,7 +371,7 @@
             <span class="banner-close" style="cursor:pointer;color:#fff;font-size:18px;margin-right:8px;line-height:1;">x</span>
             <img src="https://imgstorage.site/view/berlin/favicon-dptoto-hd.png" alt="App Icon" style="width:43px;height:43px;object-fit:contain;border-radius:8px;margin-right:10px;">
             <div style="flex:1;">
-                <div style="font-size:14px;font-weight:bold;color:#11B5DE;">APLIKASI RAINTOTO</div>
+                <div style="font-size:14px;font-weight:bold;color:#11B5DE;">APLIKASI DPTOTO</div>
                 <div style="font-size:11px;color:#FFF;">Kini telah tersedia Aplikasi Android</div>
             </div>
             <a href="https://dub.link/apk-raintoto" target="_blank" style="font-size:12px;padding:8px 12px;color:#fff;background:linear-gradient(135deg,#00d0ff 0%,#0072ff 100%);border-radius:8px;border:none;text-decoration:none;white-space:nowrap;font-weight:700;animation:pulse-blue-glow 1.5s infinite ease-in-out;"><strong>DOWNLOAD</strong></a>
@@ -524,9 +524,9 @@
             const menu = document.createElement('div');
             menu.className = 'item box-middle post-card3';
             menu.innerHTML = `
-                <a href="/" target="_blank"><img title="RAINTOTO" src="https://raintoto-hujan.b-cdn.net/togel.raintoto.webp" alt="RAINTOTO"></a>
-                <a href="/" target="_blank"><img title="RAINTOTO" src="https://raintoto-hujan.b-cdn.net/casino.raintoto.webp" alt="RAINTOTO"></a>
-                <a href="/" target="_blank"><img title="RAINTOTO" src="https://raintoto-hujan.b-cdn.net/slot.raintoto.webp" alt="RAINTOTO"></a>
+                <a href="/" target="_blank"><img title="DPTOTO" src="https://raintoto-hujan.b-cdn.net/togel.raintoto.webp" alt="DPTOTO"></a>
+                <a href="/" target="_blank"><img title="DPTOTO" src="https://raintoto-hujan.b-cdn.net/casino.raintoto.webp" alt="DPTOTO"></a>
+                <a href="/" target="_blank"><img title="DPTOTO" src="https://raintoto-hujan.b-cdn.net/slot.raintoto.webp" alt="DPTOTO"></a>
             `;
             anchor.insertAdjacentElement('beforebegin', menu);
         }
