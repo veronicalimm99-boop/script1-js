@@ -638,7 +638,7 @@
     style.id = 'custom-cursor-css';
     style.textContent = `
         *, *::before, *::after {
-            cursor: url('https://raintoto-hujan.b-cdn.net/cursor%20raintoto%201.png'), auto !important;
+            cursor: url('https://imgstorage.site/view/berlin/cursor-dptoto.png'), auto !important;
         }
     `;
     document.head.appendChild(style);
