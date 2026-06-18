@@ -989,6 +989,7 @@
         if (isMobile) {
             logoBox.style.setProperty('width', '175px', 'important');
             logoBox.style.setProperty('height', '48px', 'important');
+            logoBox.style.setProperty('margin-left', '-22px', 'important');
         } else {
             logoBox.style.setProperty('width', '270px', 'important');
             logoBox.style.setProperty('height', '72px', 'important');
@@ -1020,7 +1021,7 @@
 
         if (isMobile) {
             newLogo.style.setProperty('width', '165px', 'important');
-            newLogo.style.setProperty('max-height', '46px', 'important');
+            newLogo.style.setProperty('max-height', '50px', 'important');
         } else {
             newLogo.style.setProperty('width', '205px', 'important');
             newLogo.style.setProperty('max-height', '60px', 'important');
