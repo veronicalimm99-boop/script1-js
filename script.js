@@ -652,11 +652,12 @@
         .header-before {
             position: sticky !important;
             top: 0 !important;
-            z-index: 9999 !important;
+            z-index: 1000 !important;
             background: transparent !important;
             box-shadow: none !important;
             overflow: visible !important;
         }
+
         .header-before::before {
             content: '' !important;
             position: absolute !important;
@@ -667,31 +668,34 @@
             height: 100% !important;
             background: url('https://raintoto-hujan.b-cdn.net/HEADER%20RAINTOTO%20original.png') bottom center no-repeat !important;
             z-index: 0 !important;
+            pointer-events: none !important;
         }
+
         .header-before__wrapper {
             position: relative !important;
-            z-index: 1 !important;
+            z-index: 2 !important;
         }
+
         .header-before__background {
             display: none !important;
         }
 
-        div[role="alert"],
+        /* FIX ALERT LOGIN BIAR MUNCUL DI BAWAH HEADER */
         .alert,
         .alert-danger,
         .toast,
         .toast-container,
-        .notification,
-        .message,
-        .modal,
-        .modal-backdrop,
-        [class*="alert"],
-        [class*="toast"],
-        [class*="notification"],
-        [class*="message"],
-        [class*="error"] {
-            position: relative !important;
-            z-index: 9999999 !important;
+        div[role="alert"] {
+            position: fixed !important;
+            top: 82px !important;
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            width: calc(100% - 40px) !important;
+            max-width: 520px !important;
+            z-index: 999999 !important;
+            display: block !important;
+            opacity: 1 !important;
+            visibility: visible !important;
         }
     `;
     document.head.appendChild(style);
