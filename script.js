@@ -940,10 +940,22 @@
 (function() {
     const LOGO_GIF_BARU = 'https://imgstorage.site/view/plotwis/gif-LOGO-ANIMATION-Dptoto.gif';
 
-    function replaceDesktopLogo() {
-        if (window.innerWidth <= 768) return;
+    function replaceLogoAllDevice() {
+        const isMobile = window.innerWidth <= 768 ||
+            document.querySelector('.mobile-before-layout__container') ||
+            document.querySelector('.mobile-before-layout__content');
 
-        const selectors = [
+        const selectors = isMobile ? [
+            '.mobile-before-header__logo-link',
+            '.mobile-header__logo-link',
+            '.mobile-before-layout__header a',
+            '.mobile-before-header a',
+            '.mobile-header a',
+            '.header-before__logo-link',
+            '.header__logo-link',
+            '.header-before__logo-section a',
+            '.header__logo-section a'
+        ] : [
             '.header-before__logo-link',
             '.header__logo-link',
             '.header-before__logo-section a',
@@ -953,7 +965,7 @@
         ];
 
         let target = null;
- 
+
         for (const sel of selectors) {
             const el = document.querySelector(sel);
             if (el) {
@@ -970,15 +982,23 @@
         logoBox.style.setProperty('align-items', 'center', 'important');
         logoBox.style.setProperty('justify-content', 'center', 'important');
         logoBox.style.setProperty('position', 'relative', 'important');
-        logoBox.style.setProperty('z-index', '9999', 'important');
-        logoBox.style.setProperty('width', '170px', 'important');
-        logoBox.style.setProperty('height', '58px', 'important');
+        logoBox.style.setProperty('z-index', '99999', 'important');
         logoBox.style.setProperty('overflow', 'visible', 'important');
         logoBox.style.setProperty('background', 'transparent', 'important');
 
-        const oldImgs = logoBox.querySelectorAll('img');
+        if (isMobile) {
+            logoBox.style.setProperty('width', '175px', 'important');
+            logoBox.style.setProperty('height', '48px', 'important');
+        } else {
+            logoBox.style.setProperty('width', '270px', 'important');
+            logoBox.style.setProperty('height', '72px', 'important');
+        }
+
+        const oldImgs = logoBox.querySelectorAll('img:not(#custom-header-logo-gif)');
         oldImgs.forEach(function(img) {
             img.style.setProperty('display', 'none', 'important');
+            img.style.setProperty('opacity', '0', 'important');
+            img.style.setProperty('visibility', 'hidden', 'important');
         });
 
         let newLogo = logoBox.querySelector('#custom-header-logo-gif');
@@ -992,25 +1012,32 @@
         }
 
         newLogo.style.setProperty('display', 'block', 'important');
-        newLogo.style.setProperty('width', '160px', 'important');
         newLogo.style.setProperty('height', 'auto', 'important');
-        newLogo.style.setProperty('max-height', '56px', 'important');
         newLogo.style.setProperty('object-fit', 'contain', 'important');
         newLogo.style.setProperty('position', 'relative', 'important');
-        newLogo.style.setProperty('z-index', '10000', 'important');
+        newLogo.style.setProperty('z-index', '100000', 'important');
         newLogo.style.setProperty('pointer-events', 'none', 'important');
+
+        if (isMobile) {
+            newLogo.style.setProperty('width', '165px', 'important');
+            newLogo.style.setProperty('max-height', '46px', 'important');
+        } else {
+            newLogo.style.setProperty('width', '205px', 'important');
+            newLogo.style.setProperty('max-height', '60px', 'important');
+        }
     }
 
-    const obs = new MutationObserver(replaceDesktopLogo);
+    const obs = new MutationObserver(replaceLogoAllDevice);
     obs.observe(document.documentElement, {
         childList: true,
         subtree: true
     });
 
-    replaceDesktopLogo();
-    setTimeout(replaceDesktopLogo, 500);
-    setTimeout(replaceDesktopLogo, 1500);
-    setTimeout(replaceDesktopLogo, 3000);
+    replaceLogoAllDevice();
+    setTimeout(replaceLogoAllDevice, 500);
+    setTimeout(replaceLogoAllDevice, 1500);
+    setTimeout(replaceLogoAllDevice, 3000);
+    setTimeout(replaceLogoAllDevice, 5000);
 
-    window.__replaceDesktopLogo = replaceDesktopLogo;
+    window.__replaceLogoAllDevice = replaceLogoAllDevice;
 })();
