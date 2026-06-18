@@ -366,7 +366,7 @@
 
         const banner = document.createElement('div');
         banner.id = 'smart_banner_custom';
-        banner.style.cssText = 'position:relative;width:100%;height:63px;padding:10px;font-family:Verdana,arial,sans-serif;color:#fff;background:linear-gradient(to right,#1b1b1b,#1b1b1b);display:flex;align-items:center;box-sizing:border-box;z-index:9999;';
+        banner.style.cssText = 'position:relative;width:100%;height:63px;padding:10px;font-family:Verdana,arial,sans-serif;color:#fff;background:linear-gradient(to right,#1b1b1b,#1b1b1b);display:flex;align-items:center;box-sizing:border-box;z-index:400;';
         banner.innerHTML = `
             <span class="banner-close" style="cursor:pointer;color:#fff;font-size:18px;margin-right:8px;line-height:1;">x</span>
             <img src="https://imgstorage.site/view/berlin/favicon-dptoto-hd.png" alt="App Icon" style="width:43px;height:43px;object-fit:contain;border-radius:8px;margin-right:10px;">
@@ -674,6 +674,24 @@
         }
         .header-before__background {
             display: none !important;
+        }
+
+        div[role="alert"],
+        .alert,
+        .alert-danger,
+        .toast,
+        .toast-container,
+        .notification,
+        .message,
+        .modal,
+        .modal-backdrop,
+        [class*="alert"],
+        [class*="toast"],
+        [class*="notification"],
+        [class*="message"],
+        [class*="error"] {
+            position: relative !important;
+            z-index: 9999999 !important;
         }
     `;
     document.head.appendChild(style);
