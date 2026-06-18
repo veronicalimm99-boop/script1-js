@@ -934,3 +934,124 @@
     };
     window.addEventListener('popstate', function() { setTimeout(onRouteChange, 300); });
 })();
+
+/* FIX ALERT LOGIN BIAR SELALU DI ATAS HEADER */
+(function() {
+    function injectAlertFixCSS() {
+        if (document.getElementById('rt-alert-fix-css')) return;
+
+        const style = document.createElement('style');
+        style.id = 'rt-alert-fix-css';
+        style.textContent = `
+            .rt-alert-fixed,
+            .rt-alert-fixed *,
+            body > .alert,
+            body > .alert-danger,
+            body > div[role="alert"] {
+                z-index: 2147483647 !important;
+            }
+
+            .rt-alert-fixed,
+            body > .alert,
+            body > .alert-danger,
+            body > div[role="alert"] {
+                position: fixed !important;
+                top: 12px !important;
+                right: 18px !important;
+                left: auto !important;
+                bottom: auto !important;
+                transform: none !important;
+                width: auto !important;
+                min-width: 380px !important;
+                max-width: 520px !important;
+                display: block !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                pointer-events: auto !important;
+            }
+
+            @media (max-width: 768px) {
+                .rt-alert-fixed,
+                body > .alert,
+                body > .alert-danger,
+                body > div[role="alert"] {
+                    top: 10px !important;
+                    left: 10px !important;
+                    right: 10px !important;
+                    width: auto !important;
+                    min-width: 0 !important;
+                    max-width: none !important;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    function isLoginAlert(el) {
+        if (!el || el.nodeType !== 1) return false;
+
+        const text = (el.textContent || '').toLowerCase();
+
+        return (
+            el.matches?.('.alert, .alert-danger, div[role="alert"]') ||
+            text.includes('login failed') ||
+            text.includes('credentials were incorrect') ||
+            text.includes('user credentials')
+        );
+    }
+
+    function fixAlerts() {
+        injectAlertFixCSS();
+
+        document.querySelectorAll('.alert, .alert-danger, div[role="alert"]').forEach(function(alert) {
+            let box = alert;
+
+            /*
+              Naikin parent alert kalau alert-nya dibungkus container,
+              biar bukan cuma isi alert yang naik.
+            */
+            for (let i = 0; i < 3; i++) {
+                if (
+                    box.parentElement &&
+                    box.parentElement !== document.body &&
+                    box.parentElement.children.length <= 3
+                ) {
+                    box = box.parentElement;
+                }
+            }
+
+            if (!isLoginAlert(alert) && !isLoginAlert(box)) return;
+
+            box.classList.add('rt-alert-fixed');
+
+            /*
+              Pindahin ke body supaya lepas dari layer header/nav.
+              Ini kunci biar tidak ketimpa bar biru.
+            */
+            if (box.parentElement !== document.body) {
+                document.body.appendChild(box);
+            }
+
+            box.style.setProperty('position', 'fixed', 'important');
+            box.style.setProperty('top', '12px', 'important');
+            box.style.setProperty('right', '18px', 'important');
+            box.style.setProperty('left', 'auto', 'important');
+            box.style.setProperty('z-index', '2147483647', 'important');
+            box.style.setProperty('display', 'block', 'important');
+            box.style.setProperty('opacity', '1', 'important');
+            box.style.setProperty('visibility', 'visible', 'important');
+            box.style.setProperty('transform', 'none', 'important');
+        });
+    }
+
+    const obs = new MutationObserver(fixAlerts);
+    obs.observe(document.documentElement, {
+        childList: true,
+        subtree: true
+    });
+
+    fixAlerts();
+    setTimeout(fixAlerts, 300);
+    setTimeout(fixAlerts, 800);
+    setTimeout(fixAlerts, 1500);
+})();
