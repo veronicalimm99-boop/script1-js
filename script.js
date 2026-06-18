@@ -680,21 +680,21 @@
             display: none !important;
         }
 
-        /* FIX ALERT LOGIN DESKTOP: KIRI ATAS, TIDAK KETUTUP HEADER */
+        /* FIX ALERT LOGIN DESKTOP: KANAN ATAS, TIMPA HEADER */
         .alert,
         .alert-danger,
         .toast,
         .toast-container,
         div[role="alert"] {
             position: fixed !important;
-            top: 78px !important;
-            left: 72px !important;
-            right: auto !important;
+            top: 12px !important;
+            right: 18px !important;
+            left: auto !important;
             transform: none !important;
             width: auto !important;
             min-width: 380px !important;
             max-width: 520px !important;
-            z-index: 999999 !important;
+            z-index: 9999999 !important;
             display: block !important;
             opacity: 1 !important;
             visibility: visible !important;
@@ -707,7 +707,7 @@
             .toast,
             .toast-container,
             div[role="alert"] {
-                top: 70px !important;
+                top: 10px !important;
                 left: 10px !important;
                 right: 10px !important;
                 width: auto !important;
