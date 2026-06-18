@@ -167,7 +167,7 @@
         const menu = document.createElement('div');
         menu.className = 'list-menu-mobile';
         menu.innerHTML = `
-            <a href="##"><img src="https://imgstorage.site/view/plotwis/prediksi-togel-1.gif" alt="PREDIKSI TOGEL"></a>
+            <a href="##"><img src="https://imgstorage.site/view/plotwis/prediksi-togel-kilau.gif" alt="PREDIKSI TOGEL"></a>
             <a href="https://dub.link/rtpslot"><img src="https://imgstorage.site/view/plotwis/rtp-kilau.gif" alt="RTP SLOT"></a>
             <a href="https://dub.link/promoraintoto"><img src="https://imgstorage.site/view/plotwis/promosi-kilau.gif" alt="PROMOSI"></a>
             <a href="https://dub.link/buktijp"><img src="https://imgstorage.site/view/plotwis/bukti-jp-kilau.gif" alt="BUKTI JP"></a>
