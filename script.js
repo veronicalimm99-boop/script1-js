@@ -311,7 +311,7 @@
         el.innerHTML = `
             <div class="jp-label">&#9889; Progressive Jackpot &#9889;</div>
             <div class="jp-panel">
-                <img src="https://raintoto-hujan.b-cdn.net/progresive%20jackpot%20raintoto%20webp.webp" alt="" loading="lazy">
+                <img src="https://imgstorage.site/view/yuyu/dptoto-progressive-700x141-gif.gif" alt="" loading="lazy">
                 <div class="jp-number">
                     <span class="jp-idr">IDR</span><span class="jp-value">1.166.508.394</span>
                 </div>
@@ -344,7 +344,7 @@
         const gif = document.createElement('div');
         gif.id = 'banner_gif_mobile';
         gif.className = 'gif-raintoto-mobile';
-        gif.innerHTML = `<a href="/"><img src="https://raintoto-hujan.b-cdn.net/gif%20compress.gif" alt="raintoto" style="width:100%" loading="lazy"></a>`;
+        gif.innerHTML = `<a href="/"><img src="https://imgstorage.site/view/yuyu/dptoto-800x106-gif.gif" alt="raintoto" style="width:100%" loading="lazy"></a>`;
 
         login.insertAdjacentElement('afterend', gif);
     }
@@ -374,7 +374,7 @@
                 <div style="font-size:14px;font-weight:bold;color:#11B5DE;">APLIKASI DPTOTO</div>
                 <div style="font-size:11px;color:#FFF;">Kini telah tersedia Aplikasi Android</div>
             </div>
-            <a href="https://dub.link/apk-raintoto" target="_blank" style="font-size:12px;padding:8px 12px;color:#fff;background:linear-gradient(135deg,#00d0ff 0%,#0072ff 100%);border-radius:8px;border:none;text-decoration:none;white-space:nowrap;font-weight:700;animation:pulse-blue-glow 1.5s infinite ease-in-out;"><strong>DOWNLOAD</strong></a>
+            <a href="#" target="_blank" style="font-size:12px;padding:8px 12px;color:#fff;background:linear-gradient(135deg,#00d0ff 0%,#0072ff 100%);border-radius:8px;border:none;text-decoration:none;white-space:nowrap;font-weight:700;animation:pulse-blue-glow 1.5s infinite ease-in-out;"><strong>DOWNLOAD</strong></a>
         `;
 
         banner.querySelector('.banner-close').addEventListener('click', function() {
