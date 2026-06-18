@@ -167,11 +167,11 @@
         const menu = document.createElement('div');
         menu.className = 'list-menu-mobile';
         menu.innerHTML = `
-            <a href="https://dub.link/prediksitogel"><img src="https://raintoto-hujan.b-cdn.net/raintoto/icon/GIF%20RAINTOTO%20BUTTON%204.webp" alt="PREDIKSI TOGEL"></a>
-            <a href="https://dub.link/rtpslot"><img src="https://raintoto-hujan.b-cdn.net/raintoto/icon/GIF%20RAINTOTO%20BUTTON%205.webp" alt="RTP SLOT"></a>
-            <a href="https://dub.link/promoraintoto"><img src="https://raintoto-hujan.b-cdn.net/raintoto/icon/GIF%20RAINTOTO%20BUTTON%203.webp" alt="PROMOSI"></a>
-            <a href="https://dub.link/buktijp"><img src="https://raintoto-hujan.b-cdn.net/raintoto/icon/GIF%20RAINTOTO%20BUTTON%201.webp" alt="BUKTI JP"></a>
-            <a href="https://dub.link/keluhanmember"><img src="https://raintoto-hujan.b-cdn.net/raintoto/icon/GIF%20RAINTOTO%20BUTTON%202.webp" alt="KELUHAN MEMBER"></a>
+            <a href="##"><img src="https://imgstorage.site/view/plotwis/prediksi-togel-1.gif" alt="PREDIKSI TOGEL"></a>
+            <a href="https://dub.link/rtpslot"><img src="https://imgstorage.site/view/plotwis/rtp-kilau.gif" alt="RTP SLOT"></a>
+            <a href="https://dub.link/promoraintoto"><img src="https://imgstorage.site/view/plotwis/promosi-kilau.gif" alt="PROMOSI"></a>
+            <a href="https://dub.link/buktijp"><img src="https://imgstorage.site/view/plotwis/bukti-jp-kilau.gif" alt="BUKTI JP"></a>
+            <a href="https://dub.link/keluhanmember"><img src="https://imgstorage.site/view/plotwis/keluhan-member-kilau.gif" alt="KELUHAN MEMBER"></a>
         `;
         content.appendChild(menu);
     }
@@ -665,7 +665,7 @@
             transform: translateX(-50%) !important;
             width: 100vw !important;
             height: 100% !important;
-            background: url('/') bottom center no-repeat !important;
+            background: url('https://raintoto-hujan.b-cdn.net/HEADER%20RAINTOTO%20original.png') bottom center no-repeat !important;
             z-index: 0 !important;
         }
         .header-before__wrapper {
