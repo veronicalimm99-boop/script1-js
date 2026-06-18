@@ -665,7 +665,7 @@
             transform: translateX(-50%) !important;
             width: 100vw !important;
             height: 100% !important;
-            background: url('https://raintoto-hujan.b-cdn.net/HEADER%20RAINTOTO%20original.png') bottom center no-repeat !important;
+            background: url('/') bottom center no-repeat !important;
             z-index: 0 !important;
         }
         .header-before__wrapper {
