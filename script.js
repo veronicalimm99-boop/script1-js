@@ -680,16 +680,17 @@
             display: none !important;
         }
 
-        /* FIX ALERT LOGIN DESKTOP: KANAN ATAS, TIMPA HEADER */
+        /* FIX ALERT LOGIN DESKTOP: DI BAWAH HEADER */
         .alert,
         .alert-danger,
         .toast,
         .toast-container,
         div[role="alert"] {
             position: fixed !important;
-            top: 12px !important;
+            top: 72px !important;
             right: 18px !important;
             left: auto !important;
+            bottom: auto !important;
             transform: none !important;
             width: auto !important;
             min-width: 380px !important;
@@ -698,16 +699,17 @@
             display: block !important;
             opacity: 1 !important;
             visibility: visible !important;
+            pointer-events: auto !important;
         }
 
-        /* MOBILE BIAR TETAP RAPI */
+        /* MOBILE BIAR TETAP RAPI DI BAWAH HEADER */
         @media (max-width: 768px) {
             .alert,
             .alert-danger,
             .toast,
             .toast-container,
             div[role="alert"] {
-                top: 10px !important;
+                top: 68px !important;
                 left: 10px !important;
                 right: 10px !important;
                 width: auto !important;
