@@ -937,3 +937,80 @@
     window.addEventListener('popstate', function() { setTimeout(onRouteChange, 300); });
 })();
 
+(function() {
+    const LOGO_GIF_BARU = 'https://imgstorage.site/view/plotwis/gif-LOGO-ANIMATION-Dptoto.gif';
+
+    function replaceDesktopLogo() {
+        if (window.innerWidth <= 768) return;
+
+        const selectors = [
+            '.header-before__logo-link',
+            '.header__logo-link',
+            '.header-before__logo-section a',
+            '.header__logo-section a',
+            '.header-before__logo-section',
+            '.header__logo-section'
+        ];
+
+        let target = null;
+ 
+        for (const sel of selectors) {
+            const el = document.querySelector(sel);
+            if (el) {
+                target = el;
+                break;
+            }
+        }
+
+        if (!target) return;
+
+        const logoBox = target.tagName.toLowerCase() === 'a' ? target : target.querySelector('a') || target;
+
+        logoBox.style.setProperty('display', 'flex', 'important');
+        logoBox.style.setProperty('align-items', 'center', 'important');
+        logoBox.style.setProperty('justify-content', 'center', 'important');
+        logoBox.style.setProperty('position', 'relative', 'important');
+        logoBox.style.setProperty('z-index', '9999', 'important');
+        logoBox.style.setProperty('width', '170px', 'important');
+        logoBox.style.setProperty('height', '58px', 'important');
+        logoBox.style.setProperty('overflow', 'visible', 'important');
+        logoBox.style.setProperty('background', 'transparent', 'important');
+
+        const oldImgs = logoBox.querySelectorAll('img');
+        oldImgs.forEach(function(img) {
+            img.style.setProperty('display', 'none', 'important');
+        });
+
+        let newLogo = logoBox.querySelector('#custom-header-logo-gif');
+
+        if (!newLogo) {
+            newLogo = document.createElement('img');
+            newLogo.id = 'custom-header-logo-gif';
+            newLogo.alt = 'DPTOTO';
+            newLogo.src = LOGO_GIF_BARU;
+            logoBox.appendChild(newLogo);
+        }
+
+        newLogo.style.setProperty('display', 'block', 'important');
+        newLogo.style.setProperty('width', '160px', 'important');
+        newLogo.style.setProperty('height', 'auto', 'important');
+        newLogo.style.setProperty('max-height', '56px', 'important');
+        newLogo.style.setProperty('object-fit', 'contain', 'important');
+        newLogo.style.setProperty('position', 'relative', 'important');
+        newLogo.style.setProperty('z-index', '10000', 'important');
+        newLogo.style.setProperty('pointer-events', 'none', 'important');
+    }
+
+    const obs = new MutationObserver(replaceDesktopLogo);
+    obs.observe(document.documentElement, {
+        childList: true,
+        subtree: true
+    });
+
+    replaceDesktopLogo();
+    setTimeout(replaceDesktopLogo, 500);
+    setTimeout(replaceDesktopLogo, 1500);
+    setTimeout(replaceDesktopLogo, 3000);
+
+    window.__replaceDesktopLogo = replaceDesktopLogo;
+})();
