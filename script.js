@@ -680,22 +680,41 @@
             display: none !important;
         }
 
-        /* FIX ALERT LOGIN BIAR MUNCUL DI BAWAH HEADER */
+        /* FIX ALERT LOGIN DESKTOP: KIRI ATAS, TIDAK KETUTUP HEADER */
         .alert,
         .alert-danger,
         .toast,
         .toast-container,
         div[role="alert"] {
             position: fixed !important;
-            top: 82px !important;
-            left: 50% !important;
-            transform: translateX(-50%) !important;
-            width: calc(100% - 40px) !important;
+            top: 78px !important;
+            left: 72px !important;
+            right: auto !important;
+            transform: none !important;
+            width: auto !important;
+            min-width: 380px !important;
             max-width: 520px !important;
             z-index: 999999 !important;
             display: block !important;
             opacity: 1 !important;
             visibility: visible !important;
+        }
+
+        /* MOBILE BIAR TETAP RAPI */
+        @media (max-width: 768px) {
+            .alert,
+            .alert-danger,
+            .toast,
+            .toast-container,
+            div[role="alert"] {
+                top: 70px !important;
+                left: 10px !important;
+                right: 10px !important;
+                width: auto !important;
+                min-width: 0 !important;
+                max-width: none !important;
+                transform: none !important;
+            }
         }
     `;
     document.head.appendChild(style);
