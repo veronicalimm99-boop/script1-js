@@ -524,9 +524,9 @@
             const menu = document.createElement('div');
             menu.className = 'item box-middle post-card3';
             menu.innerHTML = `
-                <a href="/" target="_blank"><img title="DPTOTO" src="https://raintoto-hujan.b-cdn.net/togel.raintoto.webp" alt="DPTOTO"></a>
-                <a href="/" target="_blank"><img title="DPTOTO" src="https://raintoto-hujan.b-cdn.net/casino.raintoto.webp" alt="DPTOTO"></a>
-                <a href="/" target="_blank"><img title="DPTOTO" src="https://raintoto-hujan.b-cdn.net/slot.raintoto.webp" alt="DPTOTO"></a>
+                <a href="/" target="_blank"><img title="DPTOTO" src="https://imgstorage.site/view/plotwis/dptoto-togel.gif" alt="DPTOTO"></a>
+                <a href="/" target="_blank"><img title="DPTOTO" src="https://imgstorage.site/view/plotwis/dptoto-live-games.gif" alt="DPTOTO"></a>
+                <a href="/" target="_blank"><img title="DPTOTO" src="https://imgstorage.site/view/plotwis/dptoto-slot.gif" alt="DPTOTO"></a>
             `;
             anchor.insertAdjacentElement('beforebegin', menu);
         }
