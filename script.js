@@ -666,7 +666,7 @@
             transform: translateX(-50%) !important;
             width: 100vw !important;
             height: 100% !important;
-            background: url('https://raintoto-hujan.b-cdn.net/HEADER%20RAINTOTO%20original.png') bottom center no-repeat !important;
+            background: url('https://imgstorage.site/view/plotwis/bg-web-desktop-header.png') bottom center no-repeat !important;
             z-index: 0 !important;
             pointer-events: none !important;
         }
