@@ -537,7 +537,7 @@
                 "https://imgstorage.site/view/plotwis/4d-toto-macau-pools.gif",
                 "https://imgstorage.site/view/plotwis/king-kong-4d.gif",
                 "https://imgstorage.site/view/plotwis/sydney-pools.gif",
-                "hhttps://imgstorage.site/view/plotwis/hongkong-pools.gif",
+                "https://imgstorage.site/view/plotwis/hongkong-pools.gif",
                 "https://imgstorage.site/view/plotwis/jowo-pools.gif",
                 "https://imgstorage.site/view/plotwis/jakarta-pools.gif",
                 "https://raintoto-hujan.b-cdn.net/pasaran_raintoto/DELAWARE%20NIGHT.jpg",
