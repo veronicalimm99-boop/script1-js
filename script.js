@@ -533,13 +533,13 @@
 
         if (!document.querySelector('.custom-game-slider')) {
             const images = [
-                "https://raintoto-hujan.b-cdn.net/pasaran_raintoto/BULLSEYE.jpg",
-                "https://raintoto-hujan.b-cdn.net/pasaran_raintoto/CALIFORNIA.jpg",
-                "https://raintoto-hujan.b-cdn.net/pasaran_raintoto/CAMBODIA.jpg",
-                "https://raintoto-hujan.b-cdn.net/pasaran_raintoto/CAROLINA%20DAY.jpg",
-                "https://raintoto-hujan.b-cdn.net/pasaran_raintoto/CAROLINA%20EVENING.jpg",
-                "https://raintoto-hujan.b-cdn.net/pasaran_raintoto/CHINA.jpg",
-                "https://raintoto-hujan.b-cdn.net/pasaran_raintoto/DELAWARE%20DAY.jpg",
+                "https://imgstorage.site/view/plotwis/5d-toto-macau-pools.gif",
+                "https://imgstorage.site/view/plotwis/4d-toto-macau-pools.gif",
+                "https://imgstorage.site/view/plotwis/king-kong-4d.gif",
+                "https://imgstorage.site/view/plotwis/sydney-pools.gif",
+                "hhttps://imgstorage.site/view/plotwis/hongkong-pools.gif",
+                "https://imgstorage.site/view/plotwis/jowo-pools.gif",
+                "https://imgstorage.site/view/plotwis/jakarta-pools.gif",
                 "https://raintoto-hujan.b-cdn.net/pasaran_raintoto/DELAWARE%20NIGHT.jpg",
                 "https://raintoto-hujan.b-cdn.net/pasaran_raintoto/FLORIDA%20EVENING.jpg",
                 "https://raintoto-hujan.b-cdn.net/pasaran_raintoto/FLORIDA%20MID.jpg",
