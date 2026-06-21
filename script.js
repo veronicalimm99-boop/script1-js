@@ -168,10 +168,10 @@
         menu.className = 'list-menu-mobile';
         menu.innerHTML = `
             <a href="##"><img src="https://imgstorage.site/view/plotwis/prediksi-togel-kilau.gif" alt="PREDIKSI TOGEL"></a>
-            <a href="https://dub.link/rtpslot"><img src="https://imgstorage.site/view/plotwis/rtp-kilau.gif" alt="RTP SLOT"></a>
-            <a href="https://dub.link/promoraintoto"><img src="https://imgstorage.site/view/plotwis/promosi-kilau.gif" alt="PROMOSI"></a>
-            <a href="https://dub.link/buktijp"><img src="https://imgstorage.site/view/plotwis/bukti-jp-kilau.gif" alt="BUKTI JP"></a>
-            <a href="https://dub.link/keluhanmember"><img src="https://imgstorage.site/view/plotwis/keluhan-member-kilau.gif" alt="KELUHAN MEMBER"></a>
+            <a href="https://vuata.link/rtpslot"><img src="https://imgstorage.site/view/plotwis/rtp-kilau.gif" alt="RTP SLOT"></a>
+            <a href="https://vuata.link/promodptoto"><img src="https://imgstorage.site/view/plotwis/promosi-kilau.gif" alt="PROMOSI"></a>
+            <a href="https://vuata.link/buktijp"><img src="https://imgstorage.site/view/plotwis/bukti-jp-kilau.gif" alt="BUKTI JP"></a>
+            <a href="https://vuata.link/teledptoto"><img src="https://imgstorage.site/view/plotwis/keluhan-member-kilau.gif" alt="KELUHAN MEMBER"></a>
         `;
         content.appendChild(menu);
     }
@@ -192,7 +192,7 @@
 
         const el = document.createElement('div');
         el.id = 'social_network_mobile';
-        el.className = 'social-network-raintoto-';
+        el.className = 'social-network-dptoto-';
         el.innerHTML = `
             <p style="margin-top:5px;text-align:center;margin-bottom:18px;">
                 <span style="font-weight:bolder;color:white;text-shadow:0px 0px 10px #000,0px 0px 20px #000;font-size:15px;font-family:verdana;">KLIK UNTUK MENGHUBUNGI CS DPTOTO:</span>
@@ -203,8 +203,8 @@
                     <a href="https://dub.link/waofficialrain" target="_blank"><img src="https://imgstorage.site/view/berlin/wa-dptoto.png" height="100%" width="100%" style="display:block;"></a>
                 </div>
                 <div style="margin-bottom:5px;display:flex;">
-                    <a href="https://direct.lc.chat/19532541/" target="_blank"><img src="https://imgstorage.site/view/berlin/livechat-dptoto.png" alt="LIVECHAT DPTOTO" height="100%" width="100%" style="display:block;"></a>
-                    <a href="https://dub.link/teleraintoto" target="_blank"><img src="https://imgstorage.site/view/berlin/telegram-dptoto.png" alt="TELEGRAM DPTOTO" height="100%" width="100%" style="display:block;"></a>
+                    <a href="/" target="_blank"><img src="https://imgstorage.site/view/berlin/livechat-dptoto.png" alt="LIVECHAT DPTOTO" height="100%" width="100%" style="display:block;"></a>
+                    <a href="/" target="_blank"><img src="https://imgstorage.site/view/berlin/telegram-dptoto.png" alt="TELEGRAM DPTOTO" height="100%" width="100%" style="display:block;"></a>
                 </div>
             </div>
         `;
@@ -343,8 +343,8 @@
 
         const gif = document.createElement('div');
         gif.id = 'banner_gif_mobile';
-        gif.className = 'gif-raintoto-mobile';
-        gif.innerHTML = `<a href="/"><img src="https://imgstorage.site/view/yuyu/dptoto-800x106-gif.gif" alt="raintoto" style="width:100%" loading="lazy"></a>`;
+        gif.className = 'gif-dptoto-mobile';
+        gif.innerHTML = `<a href="/"><img src="https://imgstorage.site/view/yuyu/dptoto-800x106-gif.gif" alt="dptoto" style="width:100%" loading="lazy"></a>`;
 
         login.insertAdjacentElement('afterend', gif);
     }
@@ -471,14 +471,14 @@
                 margin-bottom: 12px;
                 position: relative;
             }
-            .raintoto-pasaran-grid {
+            .dptoto-pasaran-grid {
                 display: grid;
                 grid-template-columns: repeat(4, 1fr);
                 gap: 8px;
                 padding: 0;
                 background: transparent !important;
             }
-            .raintoto-pasaran-grid .grid-item img {
+            .dptoto-pasaran-grid .grid-item img {
                 width: 100%;
                 display: block;
                 border-radius: 8px;
@@ -548,7 +548,7 @@
             for (let i = 0; i < images.length; i += 4) {
                 const slideDiv = document.createElement('div');
                 const gridDiv = document.createElement('div');
-                gridDiv.className = 'raintoto-pasaran-grid';
+                gridDiv.className = 'dptoto-pasaran-grid';
                 for (let j = 0; j < 4; j++) {
                     if (images[i + j]) {
                         const itemDiv = document.createElement('div');
