@@ -200,7 +200,7 @@
             <div class="buttoncontact">
                 <div style="margin-bottom:5px;display:flex;">
                     <a href="/" target="_blank"><img src="https://imgstorage.site/view/berlin/wa-dptoto.png" height="100%" width="100%" style="display:block;"></a>
-                    <a href="/" target="_blank"><img src="https://imgstorage.site/view/berlin/wa-dptoto.png" height="100%" width="100%" style="display:block;"></a>
+                    <a href="/" target="_blank"><img src="https://imgstorage.site/view/plotwis/facebook-1.png" height="100%" width="100%" style="display:block;"></a>
                 </div>
                 <div style="margin-bottom:5px;display:flex;">
                     <a href="/" target="_blank"><img src="https://imgstorage.site/view/berlin/livechat-dptoto.png" alt="LIVECHAT DPTOTO" height="100%" width="100%" style="display:block;"></a>
