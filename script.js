@@ -344,7 +344,7 @@
         const gif = document.createElement('div');
         gif.id = 'banner_gif_mobile';
         gif.className = 'gif-dptoto-mobile';
-        gif.innerHTML = `<a href="/"><img src="https://imgstorage.site/view/yuyu/dptoto-800x106-gif.gif" alt="dptoto" style="width:100%" loading="lazy"></a>`;
+        gif.innerHTML = `<a href="/"><img src="https://imgstorage.site/view/plotwis/carilink-dptoto.png" alt="dptoto" style="width:100%" loading="lazy"></a>`;
 
         login.insertAdjacentElement('afterend', gif);
     }
