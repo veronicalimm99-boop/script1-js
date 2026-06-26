@@ -344,7 +344,18 @@
         const gif = document.createElement('div');
         gif.id = 'banner_gif_mobile';
         gif.className = 'gif-dptoto-mobile';
-        gif.innerHTML = `<a href="/"><img src="https://imgstorage.site/view/plotwis/carilink-dptoto.png" alt="dptoto" style="width:100%" loading="lazy"></a>`;
+        const linkTujuan = 'https://carilink.link/'; // GANTI LINK TUJUAN DI SINI
+
+    gif.innerHTML = `
+  <a href="${linkTujuan}" target="_blank" rel="noopener noreferrer">
+    <img 
+      src="https://imgstorage.site/view/plotwis/carilink-dptoto.png" 
+      alt="dptoto" 
+      style="width:100%" 
+      loading="lazy"
+    >
+  </a>
+`;
 
         login.insertAdjacentElement('afterend', gif);
     }
