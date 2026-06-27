@@ -168,7 +168,7 @@
         menu.className = 'list-menu-mobile';
         menu.innerHTML = `
             <a href="##"><img src="https://imgstorage.site/view/plotwis/prediksi-togel-kilau.gif" alt="PREDIKSI TOGEL"></a>
-            <a href="https://vuata.link/rtpslot"><img src="https://imgstorage.site/view/plotwis/rtp-kilau.gif" alt="RTP SLOT"></a>
+            <a href="https://vuata.link/rtpslot-dptoto"><img src="https://imgstorage.site/view/plotwis/rtp-kilau.gif" alt="RTP SLOT"></a>
             <a href="https://vuata.link/promodptoto"><img src="https://imgstorage.site/view/plotwis/promosi-kilau.gif" alt="PROMOSI"></a>
             <a href="https://vuata.link/buktijp"><img src="https://imgstorage.site/view/plotwis/bukti-jp-kilau.gif" alt="BUKTI JP"></a>
             <a href="https://vuata.link/teledptoto"><img src="https://imgstorage.site/view/plotwis/keluhan-member-kilau.gif" alt="KELUHAN MEMBER"></a>
