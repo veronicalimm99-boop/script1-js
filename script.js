@@ -1070,134 +1070,126 @@
 
 
 (function() {
-    /* HAPUS STYLE LAMA YANG BIKIN WARNA MASUK KE DALAM */
+    /* HAPUS STYLE LAMA BIAR GA BENTROK */
     [
         'sidebar-animated-glow-css',
         'sidebar-simple-glow-css',
         'sidebar-lampu-bergerak-css',
         'lampu-keliling-sidebar-css',
         'sidebar-important-menu-css',
-        'sidebar-final-border-glow-css'
+        'sidebar-final-border-glow-css',
+        'sidebar-running-border-final-css'
     ].forEach(function(id) {
         const old = document.getElementById(id);
         if (old) old.remove();
     });
 
-    const style = document.createElement('style');
-    style.id = 'sidebar-final-border-glow-css';
+    const cssId = 'sidebar-border-color-js-css';
+    if (!document.getElementById(cssId)) {
+        const style = document.createElement('style');
+        style.id = cssId;
+        style.textContent = `
+            #extra-sidebar-livescore,
+            #extra-sidebar-rtp,
+            #extra-sidebar-bukti,
+            #mobile-extra-livescore,
+            #mobile-extra-rtp,
+            #mobile-extra-bukti {
+                position: relative !important;
+                overflow: hidden !important;
+                border-radius: 35px !important;
+                background-color: inherit !important;
+                transition: border-color .35s ease, box-shadow .35s ease !important;
+            }
 
-    style.textContent = `
-        /* ===== FINAL: BACKGROUND TETAP, WARNA LUAR JALAN LEBIH TERANG ===== */
-        #extra-sidebar-livescore,
-        #extra-sidebar-rtp,
-        #extra-sidebar-bukti,
-        #mobile-extra-livescore,
-        #mobile-extra-rtp,
-        #mobile-extra-bukti {
-            position: relative !important;
-            overflow: hidden !important;
-            border-radius: 35px !important;
+            #extra-sidebar-livescore::before,
+            #extra-sidebar-rtp::before,
+            #extra-sidebar-bukti::before,
+            #mobile-extra-livescore::before,
+            #mobile-extra-rtp::before,
+            #mobile-extra-bukti::before,
+            #extra-sidebar-livescore::after,
+            #extra-sidebar-rtp::after,
+            #extra-sidebar-bukti::after,
+            #mobile-extra-livescore::after,
+            #mobile-extra-rtp::after,
+            #mobile-extra-bukti::after {
+                content: none !important;
+                display: none !important;
+            }
+        `;
+        document.head.appendChild(style);
+    }
 
-            /* BACKGROUND TIDAK DIUBAH */
-            background-color: inherit !important;
-
-            border: 2px solid rgba(255, 230, 40, 1) !important;
-
-            box-shadow:
-                0 0 7px rgba(255, 230, 40, 0.95),
-                0 0 15px rgba(255, 180, 0, 0.65),
-                0 0 22px rgba(0, 235, 255, 0.25),
-                inset 0 0 0 1px rgba(255,255,255,0.08) !important;
-
-            animation: sidebarBorderJalanFinal 2.2s ease-in-out infinite !important;
+    const colors = [
+        {
+            border: 'rgba(255, 230, 40, 1)',
+            shadow1: 'rgba(255, 230, 40, 0.95)',
+            shadow2: 'rgba(255, 180, 0, 0.65)'
+        },
+        {
+            border: 'rgba(0, 255, 255, 1)',
+            shadow1: 'rgba(0, 255, 255, 0.95)',
+            shadow2: 'rgba(0, 170, 255, 0.70)'
+        },
+        {
+            border: 'rgba(35, 120, 255, 1)',
+            shadow1: 'rgba(35, 120, 255, 0.95)',
+            shadow2: 'rgba(0, 220, 255, 0.60)'
+        },
+        {
+            border: 'rgba(190, 80, 255, 1)',
+            shadow1: 'rgba(190, 80, 255, 0.95)',
+            shadow2: 'rgba(120, 80, 255, 0.70)'
+        },
+        {
+            border: 'rgba(0, 255, 170, 1)',
+            shadow1: 'rgba(0, 255, 170, 0.95)',
+            shadow2: 'rgba(0, 220, 150, 0.65)'
         }
+    ];
 
-        /* MATIKAN EFEK BESAR YANG MELEBER */
-        #extra-sidebar-livescore::before,
-        #extra-sidebar-rtp::before,
-        #extra-sidebar-bukti::before,
-        #mobile-extra-livescore::before,
-        #mobile-extra-rtp::before,
-        #mobile-extra-bukti::before,
-        #extra-sidebar-livescore::after,
-        #extra-sidebar-rtp::after,
-        #extra-sidebar-bukti::after,
-        #mobile-extra-livescore::after,
-        #mobile-extra-rtp::after,
-        #mobile-extra-bukti::after {
-            content: none !important;
-            display: none !important;
-        }
+    let index = 0;
 
-        #extra-sidebar-livescore > *,
-        #extra-sidebar-rtp > *,
-        #extra-sidebar-bukti > *,
-        #mobile-extra-livescore > *,
-        #mobile-extra-rtp > *,
-        #mobile-extra-bukti > * {
-            position: relative !important;
-            z-index: 5 !important;
-        }
+    function applySidebarGlow() {
+        const targets = document.querySelectorAll(
+            '#extra-sidebar-livescore, ' +
+            '#extra-sidebar-rtp, ' +
+            '#extra-sidebar-bukti, ' +
+            '#mobile-extra-livescore, ' +
+            '#mobile-extra-rtp, ' +
+            '#mobile-extra-bukti'
+        );
 
-        /* WARNA LUAR JALAN: GOLD TERANG -> CYAN -> BIRU LISTRIK -> UNGU -> HIJAU CYAN */
-        @keyframes sidebarBorderJalanFinal {
-            0% {
-                border-color: rgba(255, 230, 40, 1);
-                box-shadow:
-                    0 0 7px rgba(255, 230, 40, 0.95),
-                    0 0 15px rgba(255, 180, 0, 0.65),
-                    0 0 22px rgba(255, 230, 40, 0.35),
-                    inset 0 0 0 1px rgba(255,255,255,0.08);
-            }
+        if (!targets.length) return;
 
-            20% {
-                border-color: rgba(0, 255, 255, 1);
-                box-shadow:
-                    0 0 7px rgba(0, 255, 255, 0.95),
-                    0 0 15px rgba(0, 190, 255, 0.70),
-                    0 0 22px rgba(0, 255, 255, 0.38),
-                    inset 0 0 0 1px rgba(255,255,255,0.08);
-            }
+        const c = colors[index % colors.length];
 
-            40% {
-                border-color: rgba(30, 130, 255, 1);
-                box-shadow:
-                    0 0 7px rgba(30, 130, 255, 0.95),
-                    0 0 15px rgba(0, 90, 255, 0.70),
-                    0 0 22px rgba(0, 210, 255, 0.34),
-                    inset 0 0 0 1px rgba(255,255,255,0.08);
-            }
+        targets.forEach(function(el) {
+            el.style.setProperty('border', '2px solid ' + c.border, 'important');
+            el.style.setProperty(
+                'box-shadow',
+                '0 0 7px ' + c.shadow1 + ', ' +
+                '0 0 15px ' + c.shadow2 + ', ' +
+                '0 0 22px ' + c.shadow1 + ', ' +
+                'inset 0 0 0 1px rgba(255,255,255,0.08)',
+                'important'
+            );
+        });
 
-            60% {
-                border-color: rgba(185, 80, 255, 1);
-                box-shadow:
-                    0 0 7px rgba(185, 80, 255, 0.95),
-                    0 0 15px rgba(120, 60, 255, 0.70),
-                    0 0 22px rgba(185, 80, 255, 0.35),
-                    inset 0 0 0 1px rgba(255,255,255,0.08);
-            }
+        index++;
+    }
 
-            80% {
-                border-color: rgba(0, 255, 170, 1);
-                box-shadow:
-                    0 0 7px rgba(0, 255, 170, 0.95),
-                    0 0 15px rgba(0, 220, 150, 0.65),
-                    0 0 22px rgba(0, 255, 220, 0.32),
-                    inset 0 0 0 1px rgba(255,255,255,0.08);
-            }
+    applySidebarGlow();
 
-            100% {
-                border-color: rgba(255, 230, 40, 1);
-                box-shadow:
-                    0 0 7px rgba(255, 230, 40, 0.95),
-                    0 0 15px rgba(255, 180, 0, 0.65),
-                    0 0 22px rgba(255, 230, 40, 0.35),
-                    inset 0 0 0 1px rgba(255,255,255,0.08);
-            }
-        }
-    `;
+    if (window.__sidebarGlowColorInterval) {
+        clearInterval(window.__sidebarGlowColorInterval);
+    }
 
-    document.head.appendChild(style);
+    window.__sidebarGlowColorInterval = setInterval(applySidebarGlow, 600);
+
+    const obs = new MutationObserver(applySidebarGlow);
+    obs.observe(document.documentElement, { childList: true, subtree: true });
 })();
 
 
