@@ -1078,7 +1078,7 @@
             #floating-menu-kiri-dptoto {
                 position: fixed !important;
                 left: 8px !important;
-                top: 42% !important;
+                top: 62% !important;
                 transform: translateY(-50%) !important;
                 z-index: 999999 !important;
                 display: flex !important;
@@ -1137,7 +1137,7 @@
             @media (max-width: 768px) {
                 #floating-menu-kiri-dptoto {
                     left: 6px !important;
-                    top: 48% !important;
+                    top: 65% !important;
                     gap: 6px !important;
                 }
 
