@@ -1028,7 +1028,7 @@
             {
                 id: 'extra-sidebar-rtp',
                 text: 'RTP SLOT HARI INI',
-                link: 'LINK-RTP-DI-SINI',
+                link: 'https://vuata.link/rtpslot-dptoto',
                 icon: '🎮'
             },
             {
