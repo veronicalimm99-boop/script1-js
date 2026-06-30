@@ -1069,113 +1069,99 @@
 })();
 
 
-(function () {
-    if (document.getElementById('sidebar-lampu-bergerak-css')) return;
+(function() {
+    if (document.getElementById('sidebar-simple-glow-css')) return;
 
     const style = document.createElement('style');
-    style.id = 'sidebar-lampu-bergerak-css';
+    style.id = 'sidebar-simple-glow-css';
+
     style.textContent = `
-    #extra-sidebar-livescore,
-    #extra-sidebar-rtp,
-    #extra-sidebar-bukti,
-    #mobile-extra-livescore,
-    #mobile-extra-rtp,
-    #mobile-extra-bukti {
-        position: relative !important;
-        border-radius: 16px !important;
-        overflow: visible !important;
-        isolation: isolate !important;
-        z-index: 2 !important;
-    }
-
-    #extra-sidebar-livescore .sidebar-button,
-    #extra-sidebar-rtp .sidebar-button,
-    #extra-sidebar-bukti .sidebar-button,
-    #mobile-extra-livescore .sidebar-button,
-    #mobile-extra-rtp .sidebar-button,
-    #mobile-extra-bukti .sidebar-button {
-        position: relative !important;
-        z-index: 3 !important;
-    }
-
-    #extra-sidebar-livescore::before,
-    #extra-sidebar-rtp::before,
-    #extra-sidebar-bukti::before,
-    #mobile-extra-livescore::before,
-    #mobile-extra-rtp::before,
-    #mobile-extra-bukti::before {
-        content: "" !important;
-        position: absolute !important;
-        inset: -3px !important;
-        border-radius: 18px !important;
-        background: conic-gradient(
-            from 0deg,
-            #00d9ff,
-            #0066ff,
-            #8a2bff,
-            #ff00cc,
-            #ffcc00,
-            #00ffcc,
-            #00d9ff
-        ) !important;
-        filter: blur(8px) !important;
-        opacity: .9 !important;
-        z-index: 0 !important;
-        animation: lampu-sidebar-putar 3.2s linear infinite !important;
-        pointer-events: none !important;
-    }
-
-    #extra-sidebar-livescore::after,
-    #extra-sidebar-rtp::after,
-    #extra-sidebar-bukti::after,
-    #mobile-extra-livescore::after,
-    #mobile-extra-rtp::after,
-    #mobile-extra-bukti::after {
-        content: "" !important;
-        position: absolute !important;
-        inset: -2px !important;
-        border-radius: 17px !important;
-        padding: 2px !important;
-        background: conic-gradient(
-            from 0deg,
-            #00d9ff,
-            #0066ff,
-            #8a2bff,
-            #ff00cc,
-            #ffcc00,
-            #00ffcc,
-            #00d9ff
-        ) !important;
-        z-index: 1 !important;
-        animation: lampu-sidebar-putar 2.8s linear infinite !important;
-        pointer-events: none !important;
-
-        -webkit-mask:
-            linear-gradient(#fff 0 0) content-box,
-            linear-gradient(#fff 0 0);
-        -webkit-mask-composite: xor;
-                mask-composite: exclude;
-    }
-
-    #extra-sidebar-livescore > *,
-    #extra-sidebar-rtp > *,
-    #extra-sidebar-bukti > *,
-    #mobile-extra-livescore > *,
-    #mobile-extra-rtp > *,
-    #mobile-extra-bukti > * {
-        position: relative !important;
-        z-index: 5 !important;
-    }
-
-    @keyframes lampu-sidebar-putar {
-        0% {
-            transform: rotate(0deg);
+        /* ===== RESET EFEK LAMA BIAR GA MELEBER KE DALAM ===== */
+        #extra-sidebar-livescore::before,
+        #extra-sidebar-rtp::before,
+        #extra-sidebar-bukti::before,
+        #mobile-extra-livescore::before,
+        #mobile-extra-rtp::before,
+        #mobile-extra-bukti::before,
+        #extra-sidebar-livescore::after,
+        #extra-sidebar-rtp::after,
+        #extra-sidebar-bukti::after,
+        #mobile-extra-livescore::after,
+        #mobile-extra-rtp::after,
+        #mobile-extra-bukti::after {
+            content: none !important;
+            display: none !important;
         }
-        100% {
-            transform: rotate(360deg);
+
+        /* ===== LAMPU LUAR SIMPLE, BACKGROUND TETAP SAMA ===== */
+        #extra-sidebar-livescore,
+        #extra-sidebar-rtp,
+        #extra-sidebar-bukti,
+        #mobile-extra-livescore,
+        #mobile-extra-rtp,
+        #mobile-extra-bukti {
+            position: relative !important;
+            overflow: hidden !important;
+            border-radius: 35px !important;
+
+            /* background TIDAK DIUBAH */
+            border: 1.5px solid rgba(255, 205, 35, 0.95) !important;
+
+            box-shadow:
+                0 0 5px rgba(255, 205, 35, 0.75),
+                0 0 11px rgba(255, 205, 35, 0.35),
+                inset 0 0 0 1px rgba(255,255,255,0.05) !important;
+
+            animation: sidebarGlowSimple 2.6s ease-in-out infinite !important;
         }
-    }
+
+        /* ===== TEXT DAN ICON TETAP DI ATAS ===== */
+        #extra-sidebar-livescore > *,
+        #extra-sidebar-rtp > *,
+        #extra-sidebar-bukti > *,
+        #mobile-extra-livescore > *,
+        #mobile-extra-rtp > *,
+        #mobile-extra-bukti > * {
+            position: relative !important;
+            z-index: 5 !important;
+        }
+
+        /* ===== ANIMASI WARNA LUAR SAJA ===== */
+        @keyframes sidebarGlowSimple {
+            0% {
+                border-color: rgba(255, 205, 35, 0.95);
+                box-shadow:
+                    0 0 5px rgba(255, 205, 35, 0.75),
+                    0 0 11px rgba(255, 205, 35, 0.35),
+                    inset 0 0 0 1px rgba(255,255,255,0.05);
+            }
+
+            33% {
+                border-color: rgba(0, 235, 255, 0.95);
+                box-shadow:
+                    0 0 5px rgba(0, 235, 255, 0.75),
+                    0 0 11px rgba(0, 160, 255, 0.38),
+                    inset 0 0 0 1px rgba(255,255,255,0.05);
+            }
+
+            66% {
+                border-color: rgba(160, 80, 255, 0.95);
+                box-shadow:
+                    0 0 5px rgba(160, 80, 255, 0.75),
+                    0 0 11px rgba(80, 120, 255, 0.38),
+                    inset 0 0 0 1px rgba(255,255,255,0.05);
+            }
+
+            100% {
+                border-color: rgba(255, 205, 35, 0.95);
+                box-shadow:
+                    0 0 5px rgba(255, 205, 35, 0.75),
+                    0 0 11px rgba(255, 205, 35, 0.35),
+                    inset 0 0 0 1px rgba(255,255,255,0.05);
+            }
+        }
     `;
+
     document.head.appendChild(style);
 })();
 
