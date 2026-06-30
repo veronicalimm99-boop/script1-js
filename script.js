@@ -999,3 +999,71 @@
 
     window.__replaceLogoAllDevice = replaceLogoAllDevice;
 })();
+
+(function() {
+    function tambahMenuSidebarDesktop() {
+        if (document.getElementById('extra-sidebar-livescore')) return;
+
+        const allItems = document.querySelectorAll('.beforesidebar__menu-item');
+        if (!allItems.length) return;
+
+        let promosiItem = null;
+
+        allItems.forEach(function(item) {
+            const text = (item.innerText || item.textContent || '').toLowerCase();
+            if (text.includes('promosi')) {
+                promosiItem = item;
+            }
+        });
+
+        if (!promosiItem) return;
+
+        const menus = [
+            {
+                id: 'extra-sidebar-livescore',
+                text: 'LIVESCORE',
+                link: 'LINK-LIVESCORE-DI-SINI',
+                icon: '📊'
+            },
+            {
+                id: 'extra-sidebar-rtp',
+                text: 'RTP SLOT HARI INI',
+                link: 'LINK-RTP-DI-SINI',
+                icon: '🎮'
+            },
+            {
+                id: 'extra-sidebar-bukti',
+                text: 'BUKTI KEMENANGAN',
+                link: 'LINK-BUKTI-DI-SINI',
+                icon: '🏆'
+            }
+        ];
+
+        let posisi = promosiItem;
+
+        menus.forEach(function(menu) {
+            const a = document.createElement('a');
+
+            a.id = menu.id;
+            a.href = menu.link;
+            a.target = '_blank';
+            a.className = promosiItem.className || 'beforesidebar__menu-item';
+
+            a.innerHTML = `
+                <span style="font-size:16px;min-width:24px;text-align:center;">${menu.icon}</span>
+                <span>${menu.text}</span>
+            `;
+
+            posisi.insertAdjacentElement('afterend', a);
+            posisi = a;
+        });
+    }
+
+    const obs = new MutationObserver(tambahMenuSidebarDesktop);
+    obs.observe(document.documentElement, { childList: true, subtree: true });
+
+    tambahMenuSidebarDesktop();
+    setTimeout(tambahMenuSidebarDesktop, 500);
+    setTimeout(tambahMenuSidebarDesktop, 1500);
+    setTimeout(tambahMenuSidebarDesktop, 3000);
+})();
