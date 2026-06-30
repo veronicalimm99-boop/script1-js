@@ -1267,224 +1267,190 @@ closeBtn.addEventListener('click', function() {
 
 
 (function() {
-    function tambahLoginAtasRegisterPaksa() {
-        if (document.getElementById('custom-login-atas-register')) return;
+    function injectLoginBoxRegisterMobile() {
+        if (document.getElementById('custom-login-register-top')) return;
 
-        const isMobile = window.innerWidth <= 768 ||
-            document.querySelector('.mobile-before-layout__container') ||
-            document.querySelector('.mobile-before-layout__content');
+        const isRegisterPage =
+            document.body.innerText.toLowerCase().includes('daftar akun') ||
+            document.body.innerText.toLowerCase().includes('pengaturan akun') ||
+            document.body.innerText.toLowerCase().includes('pengaturan bank');
 
-        if (!isMobile) return;
+        if (!isRegisterPage) return;
 
-        /* cari input username register yang asli */
-        const firstRegisterInput = document.querySelector(
-            '.registerpage__input, ' +
-            'input[placeholder*="Masukan username"], ' +
-            'input[placeholder*="masukan username"], ' +
-            'input[placeholder*="username"], ' +
-            'input[placeholder*="Username"]'
-        );
+        /* cari input username register */
+        const usernameInput = Array.from(document.querySelectorAll('input')).find(function(input) {
+            const ph = (input.getAttribute('placeholder') || '').toLowerCase();
+            return ph.includes('masukan username') || ph.includes('username');
+        });
 
-        if (!firstRegisterInput) return;
+        if (!usernameInput) return;
 
-        /* cari container register */
-        let targetBox =
-            firstRegisterInput.closest('.registerpage__container') ||
-            firstRegisterInput.closest('.registerpage') ||
-            firstRegisterInput.closest('form') ||
-            firstRegisterInput.parentElement;
+        /* cari container besar register */
+        let registerContainer = usernameInput.parentElement;
 
-        if (!targetBox) return;
+        for (let i = 0; i < 10; i++) {
+            if (!registerContainer || !registerContainer.parentElement) break;
 
-        /* kalau container terlalu kecil, naik beberapa parent */
-        let insertTarget = targetBox;
-        for (let i = 0; i < 4; i++) {
+            const txt = (registerContainer.innerText || '').toLowerCase();
+
             if (
-                insertTarget.parentElement &&
-                insertTarget.parentElement.innerText &&
-                insertTarget.parentElement.innerText.toLowerCase().includes('daftar akun')
+                txt.includes('daftar akun') &&
+                txt.includes('pengaturan akun') &&
+                txt.includes('pengaturan bank')
             ) {
-                insertTarget = insertTarget.parentElement;
                 break;
             }
-            if (insertTarget.parentElement) {
-                insertTarget = insertTarget.parentElement;
-            }
+
+            registerContainer = registerContainer.parentElement;
         }
 
-        if (!insertTarget || !insertTarget.parentElement) return;
+        if (!registerContainer) return;
 
-        if (!document.getElementById('custom-login-atas-register-css')) {
+        /* inject css */
+        if (!document.getElementById('custom-login-register-top-css')) {
             const style = document.createElement('style');
-            style.id = 'custom-login-atas-register-css';
+            style.id = 'custom-login-register-top-css';
             style.textContent = `
-                @media (max-width: 768px) {
-                    #custom-login-atas-register {
-                        width: calc(100% - 28px) !important;
-                        margin: 12px auto 20px !important;
-                        padding: 14px 12px 16px !important;
-                        box-sizing: border-box !important;
-                        background: #000000 !important;
-                        border-radius: 0 !important;
-                    }
+                #custom-login-register-top {
+                    width: calc(100% - 28px) !important;
+                    margin: 12px auto 20px !important;
+                    padding: 14px 12px 16px !important;
+                    box-sizing: border-box !important;
+                    background: #000000 !important;
+                    border-radius: 0 !important;
+                    display: block !important;
+                    position: relative !important;
+                    z-index: 50 !important;
+                }
 
-                    #custom-login-atas-register .login-title-custom {
-                        color: #ffffff !important;
-                        text-align: center !important;
-                        font-size: 15px !important;
-                        font-weight: 500 !important;
-                        margin-bottom: 14px !important;
-                        font-family: Arial, sans-serif !important;
-                    }
+                #custom-login-register-top .custom-login-title {
+                    color: #ffffff !important;
+                    text-align: center !important;
+                    font-size: 15px !important;
+                    font-weight: 500 !important;
+                    margin-bottom: 14px !important;
+                    font-family: Arial, sans-serif !important;
+                }
 
-                    #custom-login-atas-register .login-input-custom {
-                        width: 100% !important;
-                        height: 42px !important;
-                        margin-bottom: 12px !important;
-                        padding: 0 14px !important;
-                        border-radius: 14px !important;
-                        border: 1px solid rgba(0, 230, 255, 0.9) !important;
-                        background: #ffffff !important;
-                        color: #333333 !important;
-                        font-size: 14px !important;
-                        box-sizing: border-box !important;
-                        outline: none !important;
-                        text-align: center !important;
-                        box-shadow:
-                            inset 0 0 4px rgba(0,0,0,.18),
-                            0 0 7px rgba(0, 220, 255, .35) !important;
-                    }
+                #custom-login-register-top .custom-login-input {
+                    width: 100% !important;
+                    height: 42px !important;
+                    margin-bottom: 12px !important;
+                    padding: 0 14px !important;
+                    border-radius: 14px !important;
+                    border: 1px solid rgba(0, 230, 255, 0.9) !important;
+                    background: #ffffff !important;
+                    color: #333333 !important;
+                    font-size: 14px !important;
+                    box-sizing: border-box !important;
+                    outline: none !important;
+                    text-align: center !important;
+                }
 
-                    #custom-login-atas-register .login-input-custom::placeholder {
-                        color: #777777 !important;
-                        opacity: 1 !important;
-                    }
+                #custom-login-register-top .custom-login-input::placeholder {
+                    color: #777777 !important;
+                    opacity: 1 !important;
+                }
 
-                    #custom-login-atas-register .show-pass-custom {
-                        color: #ffffff !important;
-                        font-size: 13px !important;
-                        margin: -2px 0 10px !important;
-                        display: flex !important;
-                        align-items: center !important;
-                        gap: 6px !important;
-                    }
+                #custom-login-register-top .custom-show-pass {
+                    color: #ffffff !important;
+                    font-size: 13px !important;
+                    margin: -2px 0 10px !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    gap: 6px !important;
+                }
 
-                    #custom-login-atas-register .show-pass-custom input {
-                        width: auto !important;
-                        height: auto !important;
-                        margin: 0 !important;
-                    }
+                #custom-login-register-top .custom-show-pass input {
+                    width: auto !important;
+                    height: auto !important;
+                    margin: 0 !important;
+                }
 
-                    #custom-login-atas-register .lite-mode-custom {
-                        display: inline-block !important;
-                        color: #ffffff !important;
-                        font-size: 13px !important;
-                        text-decoration: underline !important;
-                        margin: 0 0 12px !important;
-                    }
+                #custom-login-register-top .custom-lite-mode {
+                    display: inline-block !important;
+                    color: #ffffff !important;
+                    font-size: 13px !important;
+                    text-decoration: underline !important;
+                    margin: 0 0 12px !important;
+                }
 
-                    #custom-login-atas-register .btn-login-custom {
-                        width: 100% !important;
-                        height: 42px !important;
-                        border-radius: 999px !important;
-                        border: 2px solid #ffffff !important;
-                        background:
-                            linear-gradient(
-                                180deg,
-                                #7af4ff 0%,
-                                #18b8ef 38%,
-                                #0874d2 72%,
-                                #03327d 100%
-                            ) !important;
-                        color: #ffffff !important;
-                        font-size: 16px !important;
-                        font-weight: 900 !important;
-                        letter-spacing: 1px !important;
-                        cursor: pointer !important;
-                        text-shadow: 0 1px 2px rgba(0,0,0,0.85) !important;
-                    }
+                #custom-login-register-top .custom-login-button {
+                    width: 100% !important;
+                    height: 42px !important;
+                    border-radius: 999px !important;
+                    border: 2px solid #ffffff !important;
+                    background: linear-gradient(180deg, #7af4ff 0%, #18b8ef 38%, #0874d2 72%, #03327d 100%) !important;
+                    color: #ffffff !important;
+                    font-size: 16px !important;
+                    font-weight: 900 !important;
+                    letter-spacing: 1px !important;
+                    cursor: pointer !important;
+                    text-shadow: 0 1px 2px rgba(0,0,0,0.85) !important;
                 }
             `;
             document.head.appendChild(style);
         }
 
         const loginBox = document.createElement('div');
-        loginBox.id = 'custom-login-atas-register';
-
+        loginBox.id = 'custom-login-register-top';
         loginBox.innerHTML = `
-            <div class="login-title-custom">Silahkan login untuk mulai bermain</div>
+            <div class="custom-login-title">Silahkan login untuk mulai bermain</div>
 
-            <input type="text" id="custom-login-user" class="login-input-custom" placeholder="Username">
+            <input type="text" id="custom-login-user-top" class="custom-login-input" placeholder="Username">
 
-            <input type="password" id="custom-login-pass" class="login-input-custom" placeholder="Password">
+            <input type="password" id="custom-login-pass-top" class="custom-login-input" placeholder="Password">
 
-            <label class="show-pass-custom">
-                <input type="checkbox" id="custom-show-pass">
+            <label class="custom-show-pass">
+                <input type="checkbox" id="custom-show-pass-top">
                 <span>Show Password</span>
             </label>
 
-            <a href="/" class="lite-mode-custom">Lite Mode</a>
+            <a href="/" class="custom-lite-mode">Lite Mode</a>
 
-            <button type="button" class="btn-login-custom">LOGIN</button>
+            <button type="button" class="custom-login-button">LOGIN</button>
         `;
 
-        insertTarget.parentElement.insertBefore(loginBox, insertTarget);
+        registerContainer.insertBefore(loginBox, registerContainer.firstChild);
 
-        const passInput = loginBox.querySelector('#custom-login-pass');
-        const showPass = loginBox.querySelector('#custom-show-pass');
+        const passInput = document.getElementById('custom-login-pass-top');
+        const showPass = document.getElementById('custom-show-pass-top');
 
         showPass.addEventListener('change', function() {
             passInput.type = this.checked ? 'text' : 'password';
         });
 
-        loginBox.querySelector('.btn-login-custom').addEventListener('click', function() {
-            const username = document.getElementById('custom-login-user').value;
-            const password = document.getElementById('custom-login-pass').value;
+        loginBox.querySelector('.custom-login-button').addEventListener('click', function() {
+            const user = document.getElementById('custom-login-user-top').value;
+            const pass = document.getElementById('custom-login-pass-top').value;
 
-            const realUser = document.querySelector(
-                '.home-page__login input[type="text"], ' +
-                '.header-before input[type="text"], ' +
-                'input[name="username"]'
-            );
-
-            const realPass = document.querySelector(
-                '.home-page__login input[type="password"], ' +
-                '.header-before input[type="password"], ' +
-                'input[name="password"]'
-            );
-
-            const realBtn = document.querySelector(
-                '.home-page__login button, ' +
-                '.home-page__login .btn, ' +
-                '.header-before button[type="submit"], ' +
-                '.header-before .btn'
-            );
+            const realUser = document.querySelector('.home-page__login input[type="text"], .header-before input[type="text"], input[name="username"]');
+            const realPass = document.querySelector('.home-page__login input[type="password"], .header-before input[type="password"], input[name="password"]');
+            const realBtn = document.querySelector('.home-page__login button, .home-page__login .btn, .header-before button, .header-before .btn');
 
             if (realUser) {
-                realUser.value = username;
+                realUser.value = user;
                 realUser.dispatchEvent(new Event('input', { bubbles: true }));
                 realUser.dispatchEvent(new Event('change', { bubbles: true }));
             }
 
             if (realPass) {
-                realPass.value = password;
+                realPass.value = pass;
                 realPass.dispatchEvent(new Event('input', { bubbles: true }));
                 realPass.dispatchEvent(new Event('change', { bubbles: true }));
             }
 
-            if (realBtn) {
-                realBtn.click();
-            }
+            if (realBtn) realBtn.click();
         });
     }
 
-    const obs = new MutationObserver(tambahLoginAtasRegisterPaksa);
+    const obs = new MutationObserver(injectLoginBoxRegisterMobile);
     obs.observe(document.documentElement, { childList: true, subtree: true });
 
-    tambahLoginAtasRegisterPaksa();
-    setTimeout(tambahLoginAtasRegisterPaksa, 500);
-    setTimeout(tambahLoginAtasRegisterPaksa, 1500);
-    setTimeout(tambahLoginAtasRegisterPaksa, 3000);
-    setTimeout(tambahLoginAtasRegisterPaksa, 5000);
-    setTimeout(tambahLoginAtasRegisterPaksa, 8000);
+    injectLoginBoxRegisterMobile();
+    setTimeout(injectLoginBoxRegisterMobile, 500);
+    setTimeout(injectLoginBoxRegisterMobile, 1500);
+    setTimeout(injectLoginBoxRegisterMobile, 3000);
+    setTimeout(injectLoginBoxRegisterMobile, 5000);
+    setTimeout(injectLoginBoxRegisterMobile, 8000);
 })();
