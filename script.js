@@ -1173,6 +1173,7 @@
 
         const menu = document.createElement('div');
         menu.id = 'floating-menu-kiri-dptoto';
+        menu.classList.add('floating-hidden');
 
         menu.innerHTML = `
             <a class="floating-menu-item" href="https://vuata.link/tele-dptoto" target="_blank">
@@ -1187,7 +1188,7 @@
                 <img src="https://imgstorage.site/view/plotwis/202603071957230000001b84888ddabacadai__300x300.webp" alt="RTP SLOT DPTOTO">
             </a>
 
-            <button type="button" class="floating-close">×</button>
+            <button type="button" class="floating-close"></button>
         `;
 
         document.body.appendChild(menu);
