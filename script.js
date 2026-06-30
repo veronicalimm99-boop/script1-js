@@ -1070,25 +1070,24 @@
 
 
 (function() {
-    /* HAPUS STYLE GLOW LAMA BIAR GA BENTROK */
+    /* HAPUS STYLE LAMA YANG BIKIN WARNA MASUK KE DALAM */
     [
-        'sidebar-final-border-glow-css',
         'sidebar-animated-glow-css',
         'sidebar-simple-glow-css',
         'sidebar-lampu-bergerak-css',
         'lampu-keliling-sidebar-css',
         'sidebar-important-menu-css',
-        'sidebar-running-border-final-css'
+        'sidebar-final-border-glow-css'
     ].forEach(function(id) {
         const old = document.getElementById(id);
         if (old) old.remove();
     });
 
     const style = document.createElement('style');
-    style.id = 'sidebar-running-border-final-css';
+    style.id = 'sidebar-final-border-glow-css';
 
     style.textContent = `
-        /* ===== FINAL: BACKGROUND TETAP, WARNA LUAR JALAN ===== */
+        /* ===== FINAL: BACKGROUND TETAP, WARNA LUAR JALAN LEBIH TERANG ===== */
         #extra-sidebar-livescore,
         #extra-sidebar-rtp,
         #extra-sidebar-bukti,
@@ -1096,73 +1095,40 @@
         #mobile-extra-rtp,
         #mobile-extra-bukti {
             position: relative !important;
-            overflow: visible !important;
-            isolation: isolate !important;
+            overflow: hidden !important;
             border-radius: 35px !important;
 
-            /* jangan paksa background */
-            border: none !important;
+            /* BACKGROUND TIDAK DIUBAH */
+            background-color: inherit !important;
+
+            border: 2px solid rgba(255, 230, 40, 1) !important;
+
+            box-shadow:
+                0 0 7px rgba(255, 230, 40, 0.95),
+                0 0 15px rgba(255, 180, 0, 0.65),
+                0 0 22px rgba(0, 235, 255, 0.25),
+                inset 0 0 0 1px rgba(255,255,255,0.08) !important;
+
+            animation: sidebarBorderJalanFinal 2.2s ease-in-out infinite !important;
         }
 
-        /* BORDER WARNA JALAN DI LUAR SAJA */
+        /* MATIKAN EFEK BESAR YANG MELEBER */
         #extra-sidebar-livescore::before,
         #extra-sidebar-rtp::before,
         #extra-sidebar-bukti::before,
         #mobile-extra-livescore::before,
         #mobile-extra-rtp::before,
-        #mobile-extra-bukti::before {
-            content: "" !important;
-            position: absolute !important;
-            inset: -2px !important;
-            padding: 2px !important;
-            border-radius: 38px !important;
-            pointer-events: none !important;
-            z-index: 1 !important;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    #ffd84a 0%,
-                    #00eaff 18%,
-                    #1976ff 36%,
-                    #8a5cff 54%,
-                    #00ffcc 72%,
-                    #ffd84a 100%
-                ) !important;
-
-            background-size: 300% 300% !important;
-            animation: sidebarLampuJalanDptoto 1.6s linear infinite !important;
-
-            -webkit-mask:
-                linear-gradient(#fff 0 0) content-box,
-                linear-gradient(#fff 0 0) !important;
-            -webkit-mask-composite: xor !important;
-            mask-composite: exclude !important;
-        }
-
-        /* GLOW TIPIS LUAR, TIDAK MASUK KE DALAM */
+        #mobile-extra-bukti::before,
         #extra-sidebar-livescore::after,
         #extra-sidebar-rtp::after,
         #extra-sidebar-bukti::after,
         #mobile-extra-livescore::after,
         #mobile-extra-rtp::after,
         #mobile-extra-bukti::after {
-            content: "" !important;
-            position: absolute !important;
-            inset: -3px !important;
-            border-radius: 40px !important;
-            pointer-events: none !important;
-            z-index: 0 !important;
-
-            box-shadow:
-                0 0 7px rgba(0, 234, 255, 0.55),
-                0 0 12px rgba(255, 216, 74, 0.35),
-                0 0 16px rgba(138, 92, 255, 0.22) !important;
-
-            animation: sidebarGlowNyalaDptoto 1.6s linear infinite !important;
+            content: none !important;
+            display: none !important;
         }
 
-        /* TEXT + ICON TETAP DI ATAS */
         #extra-sidebar-livescore > *,
         #extra-sidebar-rtp > *,
         #extra-sidebar-bukti > *,
@@ -1173,42 +1139,60 @@
             z-index: 5 !important;
         }
 
-        @keyframes sidebarLampuJalanDptoto {
+        /* WARNA LUAR JALAN: GOLD TERANG -> CYAN -> BIRU LISTRIK -> UNGU -> HIJAU CYAN */
+        @keyframes sidebarBorderJalanFinal {
             0% {
-                background-position: 0% 50%;
+                border-color: rgba(255, 230, 40, 1);
+                box-shadow:
+                    0 0 7px rgba(255, 230, 40, 0.95),
+                    0 0 15px rgba(255, 180, 0, 0.65),
+                    0 0 22px rgba(255, 230, 40, 0.35),
+                    inset 0 0 0 1px rgba(255,255,255,0.08);
             }
+
+            20% {
+                border-color: rgba(0, 255, 255, 1);
+                box-shadow:
+                    0 0 7px rgba(0, 255, 255, 0.95),
+                    0 0 15px rgba(0, 190, 255, 0.70),
+                    0 0 22px rgba(0, 255, 255, 0.38),
+                    inset 0 0 0 1px rgba(255,255,255,0.08);
+            }
+
+            40% {
+                border-color: rgba(30, 130, 255, 1);
+                box-shadow:
+                    0 0 7px rgba(30, 130, 255, 0.95),
+                    0 0 15px rgba(0, 90, 255, 0.70),
+                    0 0 22px rgba(0, 210, 255, 0.34),
+                    inset 0 0 0 1px rgba(255,255,255,0.08);
+            }
+
+            60% {
+                border-color: rgba(185, 80, 255, 1);
+                box-shadow:
+                    0 0 7px rgba(185, 80, 255, 0.95),
+                    0 0 15px rgba(120, 60, 255, 0.70),
+                    0 0 22px rgba(185, 80, 255, 0.35),
+                    inset 0 0 0 1px rgba(255,255,255,0.08);
+            }
+
+            80% {
+                border-color: rgba(0, 255, 170, 1);
+                box-shadow:
+                    0 0 7px rgba(0, 255, 170, 0.95),
+                    0 0 15px rgba(0, 220, 150, 0.65),
+                    0 0 22px rgba(0, 255, 220, 0.32),
+                    inset 0 0 0 1px rgba(255,255,255,0.08);
+            }
+
             100% {
-                background-position: 300% 50%;
-            }
-        }
-
-        @keyframes sidebarGlowNyalaDptoto {
-            0% {
+                border-color: rgba(255, 230, 40, 1);
                 box-shadow:
-                    0 0 7px rgba(255, 216, 74, 0.65),
-                    0 0 12px rgba(0, 234, 255, 0.28),
-                    0 0 16px rgba(138, 92, 255, 0.18) !important;
-            }
-
-            33% {
-                box-shadow:
-                    0 0 7px rgba(0, 234, 255, 0.65),
-                    0 0 12px rgba(25, 118, 255, 0.35),
-                    0 0 16px rgba(255, 216, 74, 0.18) !important;
-            }
-
-            66% {
-                box-shadow:
-                    0 0 7px rgba(138, 92, 255, 0.65),
-                    0 0 12px rgba(0, 255, 204, 0.30),
-                    0 0 16px rgba(0, 234, 255, 0.18) !important;
-            }
-
-            100% {
-                box-shadow:
-                    0 0 7px rgba(255, 216, 74, 0.65),
-                    0 0 12px rgba(0, 234, 255, 0.28),
-                    0 0 16px rgba(138, 92, 255, 0.18) !important;
+                    0 0 7px rgba(255, 230, 40, 0.95),
+                    0 0 15px rgba(255, 180, 0, 0.65),
+                    0 0 22px rgba(255, 230, 40, 0.35),
+                    inset 0 0 0 1px rgba(255,255,255,0.08);
             }
         }
     `;
