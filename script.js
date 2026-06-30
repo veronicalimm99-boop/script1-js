@@ -1075,11 +1075,12 @@
         const style = document.createElement('style');
         style.id = 'floating-menu-kiri-style';
         style.textContent = `
-            #floating-menu-kiri-dptoto {
-                position: fixed !important;
-                left: 8px !important;
-                top: 62% !important;
-                transform: translateY(-50%) !important;
+                #floating-menu-kiri-dptoto {
+                 position: fixed !important;
+                 left: 8px !important;
+                top: auto !important;
+                bottom: 82px !important;
+                transform: none !important;
                 z-index: 999999 !important;
                 display: flex !important;
                 flex-direction: column !important;
@@ -1134,12 +1135,14 @@
                 text-shadow: 0 1px 3px rgba(0,0,0,.75) !important;
             }
 
-            @media (max-width: 768px) {
+                 @media (max-width: 768px) {
                 #floating-menu-kiri-dptoto {
-                    left: 6px !important;
-                    top: 65% !important;
-                    gap: 6px !important;
-                }
+                 left: 6px !important;
+                 top: auto !important;
+                bottom: 75px !important;
+                 transform: none !important;
+                gap: 6px !important;
+             }
 
                 #floating-menu-kiri-dptoto .floating-menu-item {
                     width: 42px !important;
