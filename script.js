@@ -1070,30 +1070,13 @@
 
 
 (function() {
-    if (document.getElementById('sidebar-simple-glow-css')) return;
+    if (document.getElementById('sidebar-animated-glow-css')) return;
 
     const style = document.createElement('style');
-    style.id = 'sidebar-simple-glow-css';
+    style.id = 'sidebar-animated-glow-css';
 
     style.textContent = `
-        /* ===== RESET EFEK LAMA BIAR GA MELEBER KE DALAM ===== */
-        #extra-sidebar-livescore::before,
-        #extra-sidebar-rtp::before,
-        #extra-sidebar-bukti::before,
-        #mobile-extra-livescore::before,
-        #mobile-extra-rtp::before,
-        #mobile-extra-bukti::before,
-        #extra-sidebar-livescore::after,
-        #extra-sidebar-rtp::after,
-        #extra-sidebar-bukti::after,
-        #mobile-extra-livescore::after,
-        #mobile-extra-rtp::after,
-        #mobile-extra-bukti::after {
-            content: none !important;
-            display: none !important;
-        }
-
-        /* ===== LAMPU LUAR SIMPLE, BACKGROUND TETAP SAMA ===== */
+        /* target sidebar tambahan */
         #extra-sidebar-livescore,
         #extra-sidebar-rtp,
         #extra-sidebar-bukti,
@@ -1102,20 +1085,70 @@
         #mobile-extra-bukti {
             position: relative !important;
             overflow: hidden !important;
+            isolation: isolate !important;
             border-radius: 35px !important;
 
-            /* background TIDAK DIUBAH */
-            border: 1.5px solid rgba(255, 205, 35, 0.95) !important;
-
-            box-shadow:
-                0 0 5px rgba(255, 205, 35, 0.75),
-                0 0 11px rgba(255, 205, 35, 0.35),
-                inset 0 0 0 1px rgba(255,255,255,0.05) !important;
-
-            animation: sidebarGlowSimple 2.6s ease-in-out infinite !important;
+            /* background tombol tetap ikut aslinya */
+            z-index: 1 !important;
         }
 
-        /* ===== TEXT DAN ICON TETAP DI ATAS ===== */
+        /* hapus efek lama kalau ada */
+        #extra-sidebar-livescore::after,
+        #extra-sidebar-rtp::after,
+        #extra-sidebar-bukti::after,
+        #mobile-extra-livescore::after,
+        #mobile-extra-rtp::after,
+        #mobile-extra-bukti::after {
+            content: "" !important;
+            position: absolute !important;
+            inset: 0 !important;
+            border-radius: 35px !important;
+            pointer-events: none !important;
+            z-index: 1 !important;
+            box-shadow:
+                0 0 8px rgba(0, 225, 255, 0.30),
+                0 0 14px rgba(255, 196, 0, 0.20) !important;
+        }
+
+        /* border animasi luar */
+        #extra-sidebar-livescore::before,
+        #extra-sidebar-rtp::before,
+        #extra-sidebar-bukti::before,
+        #mobile-extra-livescore::before,
+        #mobile-extra-rtp::before,
+        #mobile-extra-bukti::before {
+            content: "" !important;
+            position: absolute !important;
+            inset: 0 !important;
+            padding: 2px !important;
+            border-radius: 35px !important;
+            pointer-events: none !important;
+            z-index: 2 !important;
+
+            background: linear-gradient(
+                90deg,
+                #00eaff,
+                #1b8cff,
+                #7a5cff,
+                #ffd54a,
+                #00ffd0,
+                #00eaff
+            ) !important;
+            background-size: 300% 300% !important;
+
+            -webkit-mask:
+                linear-gradient(#fff 0 0) content-box,
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+                    mask-composite: exclude;
+
+            animation: dptotoSidebarBorderMove 3s linear infinite !important;
+            box-shadow:
+                0 0 6px rgba(0, 234, 255, 0.35),
+                0 0 10px rgba(255, 213, 74, 0.25) !important;
+        }
+
+        /* biar isi tombol tetap paling atas */
         #extra-sidebar-livescore > *,
         #extra-sidebar-rtp > *,
         #extra-sidebar-bukti > *,
@@ -1126,38 +1159,26 @@
             z-index: 5 !important;
         }
 
-        /* ===== ANIMASI WARNA LUAR SAJA ===== */
-        @keyframes sidebarGlowSimple {
+        @keyframes dptotoSidebarBorderMove {
             0% {
-                border-color: rgba(255, 205, 35, 0.95);
-                box-shadow:
-                    0 0 5px rgba(255, 205, 35, 0.75),
-                    0 0 11px rgba(255, 205, 35, 0.35),
-                    inset 0 0 0 1px rgba(255,255,255,0.05);
+                background-position: 0% 50%;
+                filter: brightness(1);
             }
-
-            33% {
-                border-color: rgba(0, 235, 255, 0.95);
-                box-shadow:
-                    0 0 5px rgba(0, 235, 255, 0.75),
-                    0 0 11px rgba(0, 160, 255, 0.38),
-                    inset 0 0 0 1px rgba(255,255,255,0.05);
+            25% {
+                background-position: 50% 50%;
+                filter: brightness(1.08);
             }
-
-            66% {
-                border-color: rgba(160, 80, 255, 0.95);
-                box-shadow:
-                    0 0 5px rgba(160, 80, 255, 0.75),
-                    0 0 11px rgba(80, 120, 255, 0.38),
-                    inset 0 0 0 1px rgba(255,255,255,0.05);
+            50% {
+                background-position: 100% 50%;
+                filter: brightness(1.15);
             }
-
+            75% {
+                background-position: 50% 50%;
+                filter: brightness(1.08);
+            }
             100% {
-                border-color: rgba(255, 205, 35, 0.95);
-                box-shadow:
-                    0 0 5px rgba(255, 205, 35, 0.75),
-                    0 0 11px rgba(255, 205, 35, 0.35),
-                    inset 0 0 0 1px rgba(255,255,255,0.05);
+                background-position: 0% 50%;
+                filter: brightness(1);
             }
         }
     `;
