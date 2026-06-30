@@ -1070,25 +1070,25 @@
 
 
 (function() {
-    /* HAPUS STYLE LAMA YANG BIKIN WARNA MASUK KE DALAM */
+    /* HAPUS STYLE GLOW LAMA BIAR GA BENTROK */
     [
+        'sidebar-final-border-glow-css',
         'sidebar-animated-glow-css',
         'sidebar-simple-glow-css',
         'sidebar-lampu-bergerak-css',
         'lampu-keliling-sidebar-css',
-        'sidebar-important-menu-css'
+        'sidebar-important-menu-css',
+        'sidebar-running-border-final-css'
     ].forEach(function(id) {
         const old = document.getElementById(id);
         if (old) old.remove();
     });
 
-    if (document.getElementById('sidebar-final-border-glow-css')) return;
-
     const style = document.createElement('style');
-    style.id = 'sidebar-final-border-glow-css';
+    style.id = 'sidebar-running-border-final-css';
 
     style.textContent = `
-        /* ===== FINAL: BACKGROUND TETAP, YANG JALAN CUMA LAMPU LUAR ===== */
+        /* ===== FINAL: BACKGROUND TETAP, WARNA LUAR JALAN ===== */
         #extra-sidebar-livescore,
         #extra-sidebar-rtp,
         #extra-sidebar-bukti,
@@ -1096,39 +1096,73 @@
         #mobile-extra-rtp,
         #mobile-extra-bukti {
             position: relative !important;
-            overflow: hidden !important;
+            overflow: visible !important;
+            isolation: isolate !important;
             border-radius: 35px !important;
 
-            /* BACKGROUND TIDAK DIUBAH */
-            background-color: inherit !important;
-
-            border: 1.5px solid rgba(255, 205, 35, 0.95) !important;
-
-            box-shadow:
-                0 0 5px rgba(255, 205, 35, 0.75),
-                0 0 11px rgba(255, 205, 35, 0.35),
-                inset 0 0 0 1px rgba(255,255,255,0.05) !important;
-
-            animation: sidebarBorderJalanFinal 3s ease-in-out infinite !important;
+            /* jangan paksa background */
+            border: none !important;
         }
 
-        /* MATIKAN EFEK BESAR YANG MELEBER */
+        /* BORDER WARNA JALAN DI LUAR SAJA */
         #extra-sidebar-livescore::before,
         #extra-sidebar-rtp::before,
         #extra-sidebar-bukti::before,
         #mobile-extra-livescore::before,
         #mobile-extra-rtp::before,
-        #mobile-extra-bukti::before,
+        #mobile-extra-bukti::before {
+            content: "" !important;
+            position: absolute !important;
+            inset: -2px !important;
+            padding: 2px !important;
+            border-radius: 38px !important;
+            pointer-events: none !important;
+            z-index: 1 !important;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #ffd84a 0%,
+                    #00eaff 18%,
+                    #1976ff 36%,
+                    #8a5cff 54%,
+                    #00ffcc 72%,
+                    #ffd84a 100%
+                ) !important;
+
+            background-size: 300% 300% !important;
+            animation: sidebarLampuJalanDptoto 1.6s linear infinite !important;
+
+            -webkit-mask:
+                linear-gradient(#fff 0 0) content-box,
+                linear-gradient(#fff 0 0) !important;
+            -webkit-mask-composite: xor !important;
+            mask-composite: exclude !important;
+        }
+
+        /* GLOW TIPIS LUAR, TIDAK MASUK KE DALAM */
         #extra-sidebar-livescore::after,
         #extra-sidebar-rtp::after,
         #extra-sidebar-bukti::after,
         #mobile-extra-livescore::after,
         #mobile-extra-rtp::after,
         #mobile-extra-bukti::after {
-            content: none !important;
-            display: none !important;
+            content: "" !important;
+            position: absolute !important;
+            inset: -3px !important;
+            border-radius: 40px !important;
+            pointer-events: none !important;
+            z-index: 0 !important;
+
+            box-shadow:
+                0 0 7px rgba(0, 234, 255, 0.55),
+                0 0 12px rgba(255, 216, 74, 0.35),
+                0 0 16px rgba(138, 92, 255, 0.22) !important;
+
+            animation: sidebarGlowNyalaDptoto 1.6s linear infinite !important;
         }
 
+        /* TEXT + ICON TETAP DI ATAS */
         #extra-sidebar-livescore > *,
         #extra-sidebar-rtp > *,
         #extra-sidebar-bukti > *,
@@ -1139,46 +1173,42 @@
             z-index: 5 !important;
         }
 
-        /* WARNA PINGGIR JALAN: GOLD -> CYAN -> BIRU -> UNGU -> GOLD */
-        @keyframes sidebarBorderJalanFinal {
+        @keyframes sidebarLampuJalanDptoto {
             0% {
-                border-color: rgba(255, 205, 35, 0.95);
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 300% 50%;
+            }
+        }
+
+        @keyframes sidebarGlowNyalaDptoto {
+            0% {
                 box-shadow:
-                    0 0 5px rgba(255, 205, 35, 0.75),
-                    0 0 11px rgba(255, 205, 35, 0.35),
-                    inset 0 0 0 1px rgba(255,255,255,0.05);
+                    0 0 7px rgba(255, 216, 74, 0.65),
+                    0 0 12px rgba(0, 234, 255, 0.28),
+                    0 0 16px rgba(138, 92, 255, 0.18) !important;
             }
 
-            25% {
-                border-color: rgba(0, 235, 255, 0.95);
+            33% {
                 box-shadow:
-                    0 0 5px rgba(0, 235, 255, 0.75),
-                    0 0 11px rgba(0, 160, 255, 0.38),
-                    inset 0 0 0 1px rgba(255,255,255,0.05);
+                    0 0 7px rgba(0, 234, 255, 0.65),
+                    0 0 12px rgba(25, 118, 255, 0.35),
+                    0 0 16px rgba(255, 216, 74, 0.18) !important;
             }
 
-            50% {
-                border-color: rgba(40, 120, 255, 0.95);
+            66% {
                 box-shadow:
-                    0 0 5px rgba(40, 120, 255, 0.75),
-                    0 0 11px rgba(0, 220, 255, 0.35),
-                    inset 0 0 0 1px rgba(255,255,255,0.05);
-            }
-
-            75% {
-                border-color: rgba(170, 80, 255, 0.95);
-                box-shadow:
-                    0 0 5px rgba(170, 80, 255, 0.75),
-                    0 0 11px rgba(120, 80, 255, 0.38),
-                    inset 0 0 0 1px rgba(255,255,255,0.05);
+                    0 0 7px rgba(138, 92, 255, 0.65),
+                    0 0 12px rgba(0, 255, 204, 0.30),
+                    0 0 16px rgba(0, 234, 255, 0.18) !important;
             }
 
             100% {
-                border-color: rgba(255, 205, 35, 0.95);
                 box-shadow:
-                    0 0 5px rgba(255, 205, 35, 0.75),
-                    0 0 11px rgba(255, 205, 35, 0.35),
-                    inset 0 0 0 1px rgba(255,255,255,0.05);
+                    0 0 7px rgba(255, 216, 74, 0.65),
+                    0 0 12px rgba(0, 234, 255, 0.28),
+                    0 0 16px rgba(138, 92, 255, 0.18) !important;
             }
         }
     `;
