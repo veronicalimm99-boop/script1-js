@@ -1135,6 +1135,19 @@
                 text-shadow: 0 1px 3px rgba(0,0,0,.75) !important;
             }
 
+            #floating-menu-kiri-dptoto.floating-hidden .floating-close {
+            font-size: 0 !important;
+            }
+
+            #floating-menu-kiri-dptoto.floating-hidden .floating-close::before {
+             content: "☰" !important;
+             font-size: 30px !important;
+            color: #ffffff !important;
+            line-height: 1 !important;
+            font-weight: 900 !important;
+             text-shadow: 0 1px 3px rgba(0,0,0,.75) !important;
+            }
+
                  @media (max-width: 768px) {
                 #floating-menu-kiri-dptoto {
                  left: 6px !important;
@@ -1179,10 +1192,17 @@
 
         document.body.appendChild(menu);
 
-        const closeBtn = menu.querySelector('.floating-close');
-        closeBtn.addEventListener('click', function() {
-            menu.classList.toggle('floating-hidden');
-        });
+const closeBtn = menu.querySelector('.floating-close');
+
+closeBtn.addEventListener('click', function() {
+    menu.classList.toggle('floating-hidden');
+
+    if (menu.classList.contains('floating-hidden')) {
+        closeBtn.innerHTML = '';
+    } else {
+        closeBtn.innerHTML = '×';
+    }
+});
     }
 
     tambahFloatingMenuKiri();
