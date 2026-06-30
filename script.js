@@ -1263,3 +1263,161 @@ closeBtn.addEventListener('click', function() {
     setTimeout(tambahSidebarMobileDptoto, 1500);
     setTimeout(tambahSidebarMobileDptoto, 3000);
 })();
+
+
+(function() {
+    function tambahLoginDiAtasRegisterMobile() {
+        if (document.getElementById('login-before-register-mobile')) return;
+
+        const isMobile = window.innerWidth <= 768 || document.querySelector('.mobile-before-layout__container');
+        if (!isMobile) return;
+
+        const registerInput = document.querySelector(
+            '.registerpage__input, input[name*="username"], input[placeholder*="username"], input[placeholder*="Username"]'
+        );
+
+        if (!registerInput) return;
+
+        const registerBox =
+            registerInput.closest('form') ||
+            registerInput.closest('.registerpage') ||
+            registerInput.closest('.registerpage__container') ||
+            registerInput.parentElement;
+
+        if (!registerBox || !registerBox.parentElement) return;
+
+        const style = document.createElement('style');
+        style.id = 'login-before-register-mobile-css';
+        style.textContent = `
+            #login-before-register-mobile {
+                width: calc(100% - 24px) !important;
+                margin: 14px auto 18px !important;
+                padding: 14px 12px 16px !important;
+                box-sizing: border-box !important;
+                border-radius: 14px !important;
+                background: rgba(0, 12, 40, 0.78) !important;
+                border: 1px solid rgba(0, 220, 255, 0.55) !important;
+                box-shadow:
+                    inset 0 1px 0 rgba(255,255,255,0.18),
+                    0 0 12px rgba(0, 220, 255, 0.22) !important;
+            }
+
+            #login-before-register-mobile .login-title-mobile {
+                color: #ffffff !important;
+                text-align: center !important;
+                font-size: 15px !important;
+                font-weight: 700 !important;
+                margin-bottom: 12px !important;
+                font-family: Arial, sans-serif !important;
+                text-shadow: 0 1px 3px rgba(0,0,0,0.9) !important;
+            }
+
+            #login-before-register-mobile input {
+                width: 100% !important;
+                height: 44px !important;
+                margin-bottom: 10px !important;
+                padding: 0 14px !important;
+                box-sizing: border-box !important;
+                border-radius: 10px !important;
+                border: 1px solid rgba(0, 230, 255, 0.85) !important;
+                background:
+                    linear-gradient(
+                        180deg,
+                        rgba(90, 220, 255, 0.28) 0%,
+                        rgba(20, 75, 130, 0.55) 100%
+                    ) !important;
+                color: #ffffff !important;
+                font-size: 14px !important;
+                font-weight: 600 !important;
+                outline: none !important;
+                box-shadow:
+                    inset 0 1px 0 rgba(255,255,255,0.24),
+                    0 0 8px rgba(0, 220, 255, 0.25) !important;
+            }
+
+            #login-before-register-mobile input::placeholder {
+                color: rgba(235,255,255,0.8) !important;
+                font-style: italic !important;
+            }
+
+            #login-before-register-mobile .login-btn-mobile {
+                width: 100% !important;
+                height: 42px !important;
+                border: none !important;
+                border-radius: 10px !important;
+                margin-top: 2px !important;
+                cursor: pointer !important;
+
+                background:
+                    linear-gradient(
+                        180deg,
+                        #7af4ff 0%,
+                        #18b8ef 38%,
+                        #0874d2 72%,
+                        #03327d 100%
+                    ) !important;
+
+                color: #ffffff !important;
+                font-size: 15px !important;
+                font-weight: 900 !important;
+                letter-spacing: 1px !important;
+                text-transform: uppercase !important;
+
+                box-shadow:
+                    inset 0 1px 0 rgba(255,255,255,0.65),
+                    inset 0 -6px 12px rgba(0,20,80,0.55),
+                    0 0 10px rgba(0,220,255,0.45) !important;
+
+                text-shadow: 0 1px 2px rgba(0,0,0,0.85) !important;
+            }
+
+            #login-before-register-mobile .lite-mode-mobile {
+                display: block !important;
+                color: #ffffff !important;
+                font-size: 13px !important;
+                text-decoration: underline !important;
+                margin: 8px 0 12px !important;
+                text-align: left !important;
+            }
+        `;
+        document.head.appendChild(style);
+
+        const loginBox = document.createElement('div');
+        loginBox.id = 'login-before-register-mobile';
+        loginBox.innerHTML = `
+            <div class="login-title-mobile">Silahkan login untuk mulai bermain</div>
+            <input type="text" id="login-mobile-username-extra" placeholder="Username">
+            <input type="password" id="login-mobile-password-extra" placeholder="Password">
+            <a href="/" class="lite-mode-mobile">Lite Mode</a>
+            <button type="button" class="login-btn-mobile">LOGIN</button>
+        `;
+
+        registerBox.parentElement.insertBefore(loginBox, registerBox);
+
+        loginBox.querySelector('.login-btn-mobile').addEventListener('click', function() {
+            const username = document.getElementById('login-mobile-username-extra').value;
+            const password = document.getElementById('login-mobile-password-extra').value;
+
+            const realUser = document.querySelector('.home-page__login input[type="text"], .header-before__input[type="text"], input[name="username"]');
+            const realPass = document.querySelector('.home-page__login input[type="password"], .header-before__input[type="password"], input[name="password"]');
+            const realBtn = document.querySelector('.home-page__login button, .home-page__login .btn, button[type="submit"]');
+
+            if (realUser) realUser.value = username;
+            if (realPass) realPass.value = password;
+
+            if (realBtn) {
+                realBtn.click();
+            } else {
+                window.location.href = '/';
+            }
+        });
+    }
+
+    const obs = new MutationObserver(tambahLoginDiAtasRegisterMobile);
+    obs.observe(document.documentElement, { childList: true, subtree: true });
+
+    tambahLoginDiAtasRegisterMobile();
+    setTimeout(tambahLoginDiAtasRegisterMobile, 500);
+    setTimeout(tambahLoginDiAtasRegisterMobile, 1500);
+    setTimeout(tambahLoginDiAtasRegisterMobile, 3000);
+})();
