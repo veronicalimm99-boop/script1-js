@@ -1240,7 +1240,7 @@ closeBtn.addEventListener('click', function() {
         livescore.href = 'LINK-LIVESCORE-DI-SINI';
         livescore.setAttribute('target', '_blank');
       livescore.innerHTML = `
-        <span style="width:100%;text-align:center;display:block;">LIVESCORE</span>
+        <span style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;">LIVESCORE</span>
         `;
 
         const rtp = promosiBtn.cloneNode(true);
@@ -1248,7 +1248,7 @@ closeBtn.addEventListener('click', function() {
         rtp.href = 'https://vuata.link/rtpslot-dptoto';
         rtp.setAttribute('target', '_blank');
         rtp.innerHTML = `
-         <span style="width:100%;text-align:center;display:block;">RTP SLOT HARI INI</span>
+        <span style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;">RTP SLOT HARI INI</span>
         `;
 
         promosiBtn.insertAdjacentElement('afterend', rtp);
