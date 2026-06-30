@@ -1021,21 +1021,21 @@
         const menus = [
             {
                 id: 'extra-sidebar-livescore',
-                text: 'LIVESCORE',
+                text: 'Livescore',
                 link: 'LINK-LIVESCORE-DI-SINI',
-                icon: '📊'
+                icon: '▥'
             },
             {
                 id: 'extra-sidebar-rtp',
-                text: 'RTP SLOT HARI INI',
+                text: 'Rtp Slot Hari Ini',
                 link: 'https://vuata.link/rtpslot-dptoto',
-                icon: '🎮'
+                icon: '◉'
             },
             {
                 id: 'extra-sidebar-bukti',
-                text: 'BUKTI KEMENANGAN',
+                text: 'Bukti Kemenangan',
                 link: 'LINK-BUKTI-DI-SINI',
-                icon: '🏆'
+                icon: '♛'
             }
         ];
 
