@@ -1181,7 +1181,7 @@
             </a>
 
             <a class="floating-menu-item" href="https://vuata.link/facebook-dptoto" target="_blank">
-                <img src="https://imgstorage.site/view/plotwis/fb-dptoto.png" alt="FACEBOOK DPTOTO">
+                <img src="https://imgstorage.site/view/plotwis/fb.gif" alt="FACEBOOK DPTOTO">
             </a>
 
             <a class="floating-menu-item" href="https://vuata.link/rtpslot-dptoto" target="_blank">
