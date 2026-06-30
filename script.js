@@ -1078,7 +1078,7 @@
             #floating-menu-kiri-dptoto {
                 position: fixed !important;
                 left: 8px !important;
-                top: 58% !important;
+                top: 42% !important;
                 transform: translateY(-50%) !important;
                 z-index: 999999 !important;
                 display: flex !important;
@@ -1090,8 +1090,9 @@
 
             #floating-menu-kiri-dptoto.floating-hidden .floating-menu-item {
                 display: none !important;
+            }
 
-                #floating-menu-kiri-dptoto .floating-menu-item {
+            #floating-menu-kiri-dptoto .floating-menu-item {
                 width: 46px !important;
                 height: 46px !important;
                 display: flex !important;
@@ -1099,71 +1100,39 @@
                 justify-content: center !important;
                 border-radius: 12px !important;
                 overflow: hidden !important;
-
-                background:
-                 linear-gradient(
-                     180deg,
-                     #7af4ff 0%,
-                     #1bb8f2 38%,
-                     #076ed1 72%,
-                     #032f7a 100%
-                    ) !important;
-
-                border: 2px solid #65efff !important;
-
+                background: linear-gradient(180deg, #ffe85a 0%, #ffbf00 45%, #7a5500 100%) !important;
+                border: 2px solid #fff000 !important;
                 box-shadow:
-                    inset 0 1px 0 rgba(255,255,255,.65),
-                 inset 0 -6px 12px rgba(0,20,80,.55),
-                  00 8px rgba(0,220,255,.65),
-                 0 0 16px rgba(0,120,255,.35) !important;
-                }
+                    0 0 8px rgba(255, 230, 0, .75),
+                    inset 0 1px 0 rgba(255,255,255,.65) !important;
+            }
 
             #floating-menu-kiri-dptoto .floating-menu-item img {
-            width: 88% !important;
-             height: 88% !important;
-            object-fit: contain !important;
-            display: block !important;
-
-            filter:
-             drop-shadow(0 0 4px rgba(255,255,255,.75))
-            drop-shadow(0 0 7px rgba(0,220,255,.65)) !important;
+                width: 100% !important;
+                height: 100% !important;
+                object-fit: contain !important;
+                display: block !important;
             }
 
             #floating-menu-kiri-dptoto .floating-close {
-             width: 50px !important;
-            height: 50px !important;
-             border-radius: 12px !important;
-
-            border: 2px solid #7af4ff !important;
-
-             background:
-             linear-gradient(
-            180deg,
-            #8df7ff 0%,
-            #1bb8f2 38%,
-            #076ed1 72%,
-            #032f7a 100%
-        ) !important;
-
-            color: #ffffff !important;
-            font-size: 34px !important;
-            font-weight: 900 !important;
-             line-height: 1 !important;
-             display: flex !important;
-             align-items: center !important;
-             justify-content: center !important;
-            cursor: pointer !important;
-
-        box-shadow:
-         inset 0 1px 0 rgba(255,255,255,.7),
-         inset 0 -6px 12px rgba(0,20,80,.58),
-         0 0 10px rgba(0,230,255,.75),
-         0 0 18px rgba(0,100,255,.42) !important;
-
-         text-shadow:
-             0 1px 3px rgba(0,0,0,.8),
-            0 0 8px rgba(255,255,255,.45) !important;
-}
+                width: 50px !important;
+                height: 50px !important;
+                border-radius: 12px !important;
+                border: 2px solid #fff000 !important;
+                background: linear-gradient(180deg, #ffe85a 0%, #ffc400 45%, #b78200 100%) !important;
+                color: #ffffff !important;
+                font-size: 34px !important;
+                font-weight: 900 !important;
+                line-height: 1 !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                cursor: pointer !important;
+                box-shadow:
+                    0 0 10px rgba(255, 230, 0, .9),
+                    inset 0 1px 0 rgba(255,255,255,.7) !important;
+                text-shadow: 0 1px 3px rgba(0,0,0,.75) !important;
+            }
 
             @media (max-width: 768px) {
                 #floating-menu-kiri-dptoto {
