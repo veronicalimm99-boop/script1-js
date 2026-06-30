@@ -1022,7 +1022,7 @@
             {
                 id: 'extra-sidebar-livescore',
                 text: 'Livescore',
-                link: 'LINK-LIVESCORE-DI-SINI',
+                link: 'https://vuata.link/livescore',
                 icon: '▥'
             },
             {
@@ -1034,7 +1034,7 @@
             {
                 id: 'extra-sidebar-bukti',
                 text: 'Bukti Kemenangan',
-                link: 'LINK-BUKTI-DI-SINI',
+                link: 'https://vuata.link/buktijp',
                 icon: '♛'
             }
         ];
@@ -1237,7 +1237,7 @@ closeBtn.addEventListener('click', function() {
 
         const livescore = promosiBtn.cloneNode(true);
         livescore.id = 'mobile-extra-livescore';
-        livescore.href = 'LINK-LIVESCORE-DI-SINI';
+        livescore.href = 'https://vuata.link/livescore';
         livescore.setAttribute('target', '_blank');
       livescore.innerHTML = `
         <span style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;">LIVESCORE</span>
