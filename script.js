@@ -1069,112 +1069,113 @@
 })();
 
 
-(function() {
-    if (document.getElementById('lampu-keliling-sidebar-css')) return;
+(function () {
+    if (document.getElementById('sidebar-lampu-bergerak-css')) return;
 
     const style = document.createElement('style');
-    style.id = 'lampu-keliling-sidebar-css';
+    style.id = 'sidebar-lampu-bergerak-css';
     style.textContent = `
-        /* ===== LAMPU KELILING SIDEBAR - BACKGROUND TETAP SAMA ===== */
-        #extra-sidebar-livescore,
-        #extra-sidebar-rtp,
-        #extra-sidebar-bukti,
-        #mobile-extra-livescore,
-        #mobile-extra-rtp,
-        #mobile-extra-bukti {
-            position: relative !important;
-            overflow: visible !important;
-            isolation: isolate !important;
-            z-index: 5 !important;
+    #extra-sidebar-livescore,
+    #extra-sidebar-rtp,
+    #extra-sidebar-bukti,
+    #mobile-extra-livescore,
+    #mobile-extra-rtp,
+    #mobile-extra-bukti {
+        position: relative !important;
+        border-radius: 16px !important;
+        overflow: visible !important;
+        isolation: isolate !important;
+        z-index: 2 !important;
+    }
+
+    #extra-sidebar-livescore .sidebar-button,
+    #extra-sidebar-rtp .sidebar-button,
+    #extra-sidebar-bukti .sidebar-button,
+    #mobile-extra-livescore .sidebar-button,
+    #mobile-extra-rtp .sidebar-button,
+    #mobile-extra-bukti .sidebar-button {
+        position: relative !important;
+        z-index: 3 !important;
+    }
+
+    #extra-sidebar-livescore::before,
+    #extra-sidebar-rtp::before,
+    #extra-sidebar-bukti::before,
+    #mobile-extra-livescore::before,
+    #mobile-extra-rtp::before,
+    #mobile-extra-bukti::before {
+        content: "" !important;
+        position: absolute !important;
+        inset: -3px !important;
+        border-radius: 18px !important;
+        background: conic-gradient(
+            from 0deg,
+            #00d9ff,
+            #0066ff,
+            #8a2bff,
+            #ff00cc,
+            #ffcc00,
+            #00ffcc,
+            #00d9ff
+        ) !important;
+        filter: blur(8px) !important;
+        opacity: .9 !important;
+        z-index: 0 !important;
+        animation: lampu-sidebar-putar 3.2s linear infinite !important;
+        pointer-events: none !important;
+    }
+
+    #extra-sidebar-livescore::after,
+    #extra-sidebar-rtp::after,
+    #extra-sidebar-bukti::after,
+    #mobile-extra-livescore::after,
+    #mobile-extra-rtp::after,
+    #mobile-extra-bukti::after {
+        content: "" !important;
+        position: absolute !important;
+        inset: -2px !important;
+        border-radius: 17px !important;
+        padding: 2px !important;
+        background: conic-gradient(
+            from 0deg,
+            #00d9ff,
+            #0066ff,
+            #8a2bff,
+            #ff00cc,
+            #ffcc00,
+            #00ffcc,
+            #00d9ff
+        ) !important;
+        z-index: 1 !important;
+        animation: lampu-sidebar-putar 2.8s linear infinite !important;
+        pointer-events: none !important;
+
+        -webkit-mask:
+            linear-gradient(#fff 0 0) content-box,
+            linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+                mask-composite: exclude;
+    }
+
+    #extra-sidebar-livescore > *,
+    #extra-sidebar-rtp > *,
+    #extra-sidebar-bukti > *,
+    #mobile-extra-livescore > *,
+    #mobile-extra-rtp > *,
+    #mobile-extra-bukti > * {
+        position: relative !important;
+        z-index: 5 !important;
+    }
+
+    @keyframes lampu-sidebar-putar {
+        0% {
+            transform: rotate(0deg);
         }
-
-        /* glow luar warna-warni */
-        #extra-sidebar-livescore::before,
-        #extra-sidebar-rtp::before,
-        #extra-sidebar-bukti::before,
-        #mobile-extra-livescore::before,
-        #mobile-extra-rtp::before,
-        #mobile-extra-bukti::before {
-            content: "" !important;
-            position: absolute !important;
-            inset: -5px !important;
-            border-radius: 38px !important;
-            z-index: -2 !important;
-
-            background:
-                conic-gradient(
-                    from 0deg,
-                    #00eaff,
-                    #00ff8a,
-                    #fff200,
-                    #ff8c00,
-                    #ff3cff,
-                    #00eaff
-                ) !important;
-
-            filter: blur(9px) !important;
-            opacity: 0.95 !important;
-            animation: lampuKelilingSidebar 3s linear infinite !important;
-            pointer-events: none !important;
+        100% {
+            transform: rotate(360deg);
         }
-
-        /* garis pinggir warna-warni */
-        #extra-sidebar-livescore::after,
-        #extra-sidebar-rtp::after,
-        #extra-sidebar-bukti::after,
-        #mobile-extra-livescore::after,
-        #mobile-extra-rtp::after,
-        #mobile-extra-bukti::after {
-            content: "" !important;
-            position: absolute !important;
-            inset: -2px !important;
-            border-radius: 38px !important;
-            padding: 2px !important;
-            z-index: -1 !important;
-
-            background:
-                conic-gradient(
-                    from 0deg,
-                    #00eaff,
-                    #00ff8a,
-                    #fff200,
-                    #ff8c00,
-                    #ff3cff,
-                    #00eaff
-                ) !important;
-
-            -webkit-mask:
-                linear-gradient(#fff 0 0) content-box,
-                linear-gradient(#fff 0 0) !important;
-            -webkit-mask-composite: xor !important;
-            mask-composite: exclude !important;
-
-            animation: lampuKelilingSidebar 3s linear infinite !important;
-            pointer-events: none !important;
-        }
-
-        /* isi tombol tetap di atas lampu */
-        #extra-sidebar-livescore > *,
-        #extra-sidebar-rtp > *,
-        #extra-sidebar-bukti > *,
-        #mobile-extra-livescore > *,
-        #mobile-extra-rtp > *,
-        #mobile-extra-bukti > * {
-            position: relative !important;
-            z-index: 10 !important;
-        }
-
-        @keyframes lampuKelilingSidebar {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
+    }
     `;
-
     document.head.appendChild(style);
 })();
 
