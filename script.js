@@ -1067,3 +1067,123 @@
     setTimeout(tambahMenuSidebarDesktop, 1500);
     setTimeout(tambahMenuSidebarDesktop, 3000);
 })();
+
+(function() {
+    function tambahFloatingMenuKiri() {
+        if (document.getElementById('floating-menu-kiri-dptoto')) return;
+
+        const style = document.createElement('style');
+        style.id = 'floating-menu-kiri-style';
+        style.textContent = `
+            #floating-menu-kiri-dptoto {
+                position: fixed !important;
+                left: 8px !important;
+                top: 42% !important;
+                transform: translateY(-50%) !important;
+                z-index: 999999 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 8px !important;
+                align-items: flex-start !important;
+                transition: all .25s ease !important;
+            }
+
+            #floating-menu-kiri-dptoto.floating-hidden .floating-menu-item {
+                display: none !important;
+            }
+
+            #floating-menu-kiri-dptoto .floating-menu-item {
+                width: 46px !important;
+                height: 46px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                border-radius: 12px !important;
+                overflow: hidden !important;
+                background: linear-gradient(180deg, #ffe85a 0%, #ffbf00 45%, #7a5500 100%) !important;
+                border: 2px solid #fff000 !important;
+                box-shadow:
+                    0 0 8px rgba(255, 230, 0, .75),
+                    inset 0 1px 0 rgba(255,255,255,.65) !important;
+            }
+
+            #floating-menu-kiri-dptoto .floating-menu-item img {
+                width: 100% !important;
+                height: 100% !important;
+                object-fit: contain !important;
+                display: block !important;
+            }
+
+            #floating-menu-kiri-dptoto .floating-close {
+                width: 50px !important;
+                height: 50px !important;
+                border-radius: 12px !important;
+                border: 2px solid #fff000 !important;
+                background: linear-gradient(180deg, #ffe85a 0%, #ffc400 45%, #b78200 100%) !important;
+                color: #ffffff !important;
+                font-size: 34px !important;
+                font-weight: 900 !important;
+                line-height: 1 !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                cursor: pointer !important;
+                box-shadow:
+                    0 0 10px rgba(255, 230, 0, .9),
+                    inset 0 1px 0 rgba(255,255,255,.7) !important;
+                text-shadow: 0 1px 3px rgba(0,0,0,.75) !important;
+            }
+
+            @media (max-width: 768px) {
+                #floating-menu-kiri-dptoto {
+                    left: 6px !important;
+                    top: 48% !important;
+                    gap: 6px !important;
+                }
+
+                #floating-menu-kiri-dptoto .floating-menu-item {
+                    width: 42px !important;
+                    height: 42px !important;
+                }
+
+                #floating-menu-kiri-dptoto .floating-close {
+                    width: 45px !important;
+                    height: 45px !important;
+                    font-size: 30px !important;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        const menu = document.createElement('div');
+        menu.id = 'floating-menu-kiri-dptoto';
+
+        menu.innerHTML = `
+            <a class="floating-menu-item" href="https://vuata.link/tele-dptoto" target="_blank">
+                <img src="https://imgstorage.site/view/plotwis/wired-lineal-2559-logo-telegram_transparent.gif" alt="TELEGRAM DPTOTO">
+            </a>
+
+            <a class="floating-menu-item" href="https://vuata.link/facebook-dptoto" target="_blank">
+                <img src="https://imgstorage.site/view/plotwis/fb-dptoto.png" alt="FACEBOOK DPTOTO">
+            </a>
+
+            <a class="floating-menu-item" href="https://vuata.link/rtpslot-dptoto" target="_blank">
+                <img src="https://imgstorage.site/view/plotwis/202603071957230000001b84888ddabacadai__300x300.webp" alt="RTP SLOT DPTOTO">
+            </a>
+
+            <button type="button" class="floating-close">×</button>
+        `;
+
+        document.body.appendChild(menu);
+
+        const closeBtn = menu.querySelector('.floating-close');
+        closeBtn.addEventListener('click', function() {
+            menu.classList.toggle('floating-hidden');
+        });
+    }
+
+    tambahFloatingMenuKiri();
+    setTimeout(tambahFloatingMenuKiri, 500);
+    setTimeout(tambahFloatingMenuKiri, 1500);
+    setTimeout(tambahFloatingMenuKiri, 3000);
+})();
