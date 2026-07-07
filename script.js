@@ -524,43 +524,6 @@
                 padding: 6px 0;
             }
 
-#desktop-long-banner-dptoto {
-    width: 100% !important;
-    max-width: none !important;
-    margin: 18px 0 18px 0 !important;
-    display: block !important;
-    box-sizing: border-box !important;
-    background: #061a44 !important;
-    border-radius: 10px !important;
-    border: 2px solid #00bfff !important;
-    box-shadow: 0 0 14px rgba(0,191,255,.65) !important;
-    overflow: hidden !important;
-}
-
-#desktop-long-banner-dptoto a {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 100% !important;
-    height: 145px !important;
-    text-decoration: none !important;
-}
-
-#desktop-long-banner-dptoto img {
-    width: 92% !important;
-    height: 135px !important;
-    object-fit: contain !important;
-    object-position: center !important;
-    display: block !important;
-    border: none !important;
-    box-shadow: none !important;
-}
-
-@media (max-width: 768px) {
-    #desktop-long-banner-dptoto {
-        display: none !important;
-    }
-}
         `;
         document.head.appendChild(style);
     }
