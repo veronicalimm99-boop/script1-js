@@ -542,13 +542,13 @@
     align-items: center !important;
     justify-content: center !important;
     width: 100% !important;
-    height: 110px !important;
+    height: 145px !important;
     text-decoration: none !important;
 }
 
 #desktop-long-banner-dptoto img {
-    width: 100% !important;
-    height: 110px !important;
+    width: 92% !important;
+    height: 135px !important;
     object-fit: contain !important;
     object-position: center !important;
     display: block !important;
