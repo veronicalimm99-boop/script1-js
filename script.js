@@ -526,7 +526,7 @@
 
             #desktop-long-banner-dptoto {
     width: 100% !important;
-    max-width: 720px !important;
+    max-width: 580px !important;
     margin: 10px auto 14px auto !important;
     display: block !important;
     box-sizing: border-box !important;
