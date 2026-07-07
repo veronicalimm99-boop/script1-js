@@ -530,10 +530,17 @@
     margin: 18px 0 18px 0 !important;
     display: block !important;
     box-sizing: border-box !important;
+    background: #061a44 !important;
+    border-radius: 10px !important;
+    border: 2px solid #00bfff !important;
+    box-shadow: 0 0 14px rgba(0,191,255,.65) !important;
+    overflow: hidden !important;
 }
 
 #desktop-long-banner-dptoto a {
-    display: block !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     width: 100% !important;
     height: 110px !important;
     text-decoration: none !important;
@@ -542,11 +549,11 @@
 #desktop-long-banner-dptoto img {
     width: 100% !important;
     height: 110px !important;
-    object-fit: fill !important;
+    object-fit: contain !important;
+    object-position: center !important;
     display: block !important;
-    border-radius: 10px !important;
-    border: 2px solid #00bfff !important;
-    box-shadow: 0 0 14px rgba(0,191,255,.65) !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 @media (max-width: 768px) {
