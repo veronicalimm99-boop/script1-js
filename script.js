@@ -1407,3 +1407,45 @@ closeBtn.addEventListener('click', function() {
     setTimeout(tambahSidebarMobileDptoto, 3000);
 })();
 
+
+(function() {
+    const LINK_PROMOSI = 'https://vuata.link/promodptoto'; // GANTI LINK PROMO DI SINI
+
+    function fixPromosiMobile() {
+        const isMobile = window.innerWidth <= 768 ||
+            document.querySelector('.mobile-before-layout__container') ||
+            document.querySelector('.mobile-before-layout__content');
+
+        if (!isMobile) return;
+
+        const allEl = document.querySelectorAll('a, button, div, span');
+
+        allEl.forEach(function(el) {
+            const text = (el.innerText || el.textContent || '').trim().toLowerCase();
+
+            if (text === 'promosi') {
+                el.style.setProperty('cursor', 'pointer', 'important');
+                el.style.setProperty('pointer-events', 'auto', 'important');
+
+                el.onclick = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.location.href = LINK_PROMOSI;
+                };
+
+                if (el.tagName.toLowerCase() === 'a') {
+                    el.setAttribute('href', LINK_PROMOSI);
+                    el.setAttribute('target', '_self');
+                }
+            }
+        });
+    }
+
+    const obs = new MutationObserver(fixPromosiMobile);
+    obs.observe(document.documentElement, { childList: true, subtree: true });
+
+    fixPromosiMobile();
+    setTimeout(fixPromosiMobile, 500);
+    setTimeout(fixPromosiMobile, 1500);
+    setTimeout(fixPromosiMobile, 3000);
+})();
