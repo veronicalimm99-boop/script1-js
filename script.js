@@ -531,6 +531,18 @@
         const anchor = document.querySelector('.banklist__wrapper');
         if (!anchor) return;
 
+    if (!document.getElementById('desktop-long-banner-dptoto')) {
+    const longBanner = document.createElement('div');
+    longBanner.id = 'desktop-long-banner-dptoto';
+    longBanner.innerHTML = `
+        <a href="https://carilink.link/" target="_blank" rel="noopener noreferrer">
+            <img src="https://imgstorage.site/view/plotwis/carilink-dptoto.png" alt="Banner Panjang DPTOTO" loading="lazy">
+        </a>
+    `;
+
+    anchor.insertAdjacentElement('beforebegin', longBanner);
+}
+
         if (!document.querySelector('.item.box-middle.post-card3')) {
             const menu = document.createElement('div');
             menu.className = 'item box-middle post-card3';
