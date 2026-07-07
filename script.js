@@ -523,6 +523,35 @@
                 text-align: center;
                 padding: 6px 0;
             }
+
+            #desktop-long-banner-dptoto {
+    width: 100% !important;
+    max-width: 720px !important;
+    margin: 10px auto 14px auto !important;
+    display: block !important;
+    box-sizing: border-box !important;
+}
+
+#desktop-long-banner-dptoto a {
+    display: block !important;
+    width: 100% !important;
+    text-decoration: none !important;
+}
+
+#desktop-long-banner-dptoto img {
+    width: 100% !important;
+    height: auto !important;
+    display: block !important;
+    border-radius: 10px !important;
+    border: 2px solid #00bfff !important;
+    box-shadow: 0 0 14px rgba(0,191,255,.65) !important;
+}
+
+@media (max-width: 768px) {
+    #desktop-long-banner-dptoto {
+        display: none !important;
+    }
+}
         `;
         document.head.appendChild(style);
     }
