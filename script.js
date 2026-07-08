@@ -1015,17 +1015,42 @@
 
 (function() {
     function tambahMenuSidebarDesktop() {
-        if (document.getElementById('extra-sidebar-livescore')) return;
+        if (window.innerWidth <= 768) return;
 
-        const allItems = document.querySelectorAll('.beforesidebar__menu-item');
-        if (!allItems.length) return;
+        const oldIds = [
+            'extra-sidebar-livescore',
+            'extra-sidebar-rtp',
+            'extra-sidebar-bukti'
+        ];
+
+        const lengkap = oldIds.every(function(id) {
+            const el = document.getElementById(id);
+            return el && document.body.contains(el);
+        });
+
+        if (lengkap) return;
+
+        oldIds.forEach(function(id) {
+            const old = document.getElementById(id);
+            if (old) old.remove();
+        });
 
         let promosiItem = null;
 
-        allItems.forEach(function(item) {
-            const text = (item.innerText || item.textContent || '').toLowerCase();
-            if (text.includes('promosi')) {
-                promosiItem = item;
+        document.querySelectorAll('a, button, div').forEach(function(el) {
+            if (promosiItem) return;
+
+            const text = (el.innerText || el.textContent || '').trim().toLowerCase();
+            const rect = el.getBoundingClientRect();
+
+            if (
+                text.includes('promosi') &&
+                rect.width >= 150 &&
+                rect.height >= 30 &&
+                rect.left > 300 &&
+                rect.top > 80
+            ) {
+                promosiItem = el;
             }
         });
 
@@ -1060,17 +1085,30 @@
             a.id = menu.id;
             a.href = menu.link;
             a.target = '_blank';
-            a.className = promosiItem.className || 'beforesidebar__menu-item';
+            a.className = promosiItem.className || '';
 
             a.innerHTML = `
                 <span style="font-size:16px;min-width:24px;text-align:center;">${menu.icon}</span>
                 <span>${menu.text}</span>
             `;
 
+            a.style.setProperty('display', 'flex', 'important');
+            a.style.setProperty('align-items', 'center', 'important');
+            a.style.setProperty('gap', '10px', 'important');
+            a.style.setProperty('visibility', 'visible', 'important');
+            a.style.setProperty('opacity', '1', 'important');
+            a.style.setProperty('pointer-events', 'auto', 'important');
+            a.style.setProperty('text-decoration', 'none', 'important');
+            a.style.setProperty('color', '#fff', 'important');
+            a.style.setProperty('font-weight', '700', 'important');
+            a.style.setProperty('z-index', '99999', 'important');
+
             posisi.insertAdjacentElement('afterend', a);
             posisi = a;
         });
     }
+
+    window.__rt_promo_run = tambahMenuSidebarDesktop;
 
     const obs = new MutationObserver(tambahMenuSidebarDesktop);
     obs.observe(document.documentElement, { childList: true, subtree: true });
@@ -1079,6 +1117,8 @@
     setTimeout(tambahMenuSidebarDesktop, 500);
     setTimeout(tambahMenuSidebarDesktop, 1500);
     setTimeout(tambahMenuSidebarDesktop, 3000);
+    setTimeout(tambahMenuSidebarDesktop, 5000);
+    setInterval(tambahMenuSidebarDesktop, 1200);
 })();
 
 
