@@ -1450,31 +1450,82 @@ closeBtn.addEventListener('click', function() {
     setTimeout(fixPromosiMobile, 3000);
 })();
 
-/* FIX DESKTOP: 3 TOMBOL SIDEBAR TETAP MUNCUL */
+
+/* FIX FINAL DESKTOP: 3 TOMBOL SIDEBAR TETAP MUNCUL SETELAH REFRESH PROMOTIONS */
 (function() {
-    function tambahMenuSidebarDesktopFix() {
-        if (window.innerWidth <= 768) return;
+    function isDesktop() {
+        return window.innerWidth > 768 && !document.querySelector('.mobile-before-layout__container');
+    }
 
-        const allItems = document.querySelectorAll('.beforesidebar__menu-item');
-        if (!allItems.length) return;
+    function findPromosiButton() {
+        const els = document.querySelectorAll('a, button, div');
 
-        let promosiItem = null;
+        let found = null;
 
-        allItems.forEach(function(item) {
-            const text = (item.innerText || item.textContent || '').trim().toLowerCase();
-            if (text.includes('promosi')) {
-                promosiItem = item;
+        els.forEach(function(el) {
+            const text = (el.innerText || el.textContent || '').trim().toLowerCase();
+
+            if (
+                text === 'promosi' ||
+                text.includes('promosi')
+            ) {
+                const rect = el.getBoundingClientRect();
+
+                if (
+                    rect.width > 120 &&
+                    rect.height > 25 &&
+                    rect.top > 80 &&
+                    rect.left > 250
+                ) {
+                    found = el;
+                }
             }
         });
 
-        if (!promosiItem) return;
+        return found;
+    }
 
-        const lengkap =
+    function createMenu(id, text, link, icon, sampleClass) {
+        const a = document.createElement('a');
+
+        a.id = id;
+        a.href = link;
+        a.target = '_blank';
+        a.className = sampleClass || '';
+
+        a.innerHTML = `
+            <span style="font-size:16px;min-width:24px;text-align:center;">${icon}</span>
+            <span>${text}</span>
+        `;
+
+        a.style.setProperty('display', 'flex', 'important');
+        a.style.setProperty('align-items', 'center', 'important');
+        a.style.setProperty('gap', '10px', 'important');
+        a.style.setProperty('visibility', 'visible', 'important');
+        a.style.setProperty('opacity', '1', 'important');
+        a.style.setProperty('pointer-events', 'auto', 'important');
+        a.style.setProperty('text-decoration', 'none', 'important');
+        a.style.setProperty('color', '#ffffff', 'important');
+        a.style.setProperty('font-weight', '700', 'important');
+
+        return a;
+    }
+
+    function fixSidebarDesktop() {
+        if (!isDesktop()) return;
+
+        const promosi = findPromosiButton();
+        if (!promosi) return;
+
+        const parent = promosi.parentElement;
+        if (!parent) return;
+
+        const sudahLengkap =
             document.getElementById('extra-sidebar-livescore') &&
             document.getElementById('extra-sidebar-rtp') &&
             document.getElementById('extra-sidebar-bukti');
 
-        if (lengkap) return;
+        if (sudahLengkap) return;
 
         [
             'extra-sidebar-livescore',
@@ -1485,60 +1536,73 @@ closeBtn.addEventListener('click', function() {
             if (old) old.remove();
         });
 
-        const menus = [
-            {
-                id: 'extra-sidebar-livescore',
-                text: 'Livescore',
-                link: 'https://vuata.link/livescore',
-                icon: '▥'
-            },
-            {
-                id: 'extra-sidebar-rtp',
-                text: 'Rtp Slot Hari Ini',
-                link: 'https://vuata.link/rtpslot-dptoto',
-                icon: '◉'
-            },
-            {
-                id: 'extra-sidebar-bukti',
-                text: 'Bukti Kemenangan',
-                link: 'https://vuata.link/buktijp',
-                icon: '♛'
-            }
-        ];
+        const sampleClass = promosi.className;
 
-        let posisi = promosiItem;
+        const livescore = createMenu(
+            'extra-sidebar-livescore',
+            'Livescore',
+            'https://vuata.link/livescore',
+            '▥',
+            sampleClass
+        );
 
-        menus.forEach(function(menu) {
-            const a = document.createElement('a');
+        const rtp = createMenu(
+            'extra-sidebar-rtp',
+            'Rtp Slot Hari Ini',
+            'https://vuata.link/rtpslot-dptoto',
+            '◉',
+            sampleClass
+        );
 
-            a.id = menu.id;
-            a.href = menu.link;
-            a.target = '_blank';
-            a.className = promosiItem.className || 'beforesidebar__menu-item';
+        const bukti = createMenu(
+            'extra-sidebar-bukti',
+            'Bukti Kemenangan',
+            'https://vuata.link/buktijp',
+            '♛',
+            sampleClass
+        );
 
-            a.innerHTML = `
-                <span style="font-size:16px;min-width:24px;text-align:center;">${menu.icon}</span>
-                <span>${menu.text}</span>
-            `;
-
-            a.style.setProperty('display', 'flex', 'important');
-            a.style.setProperty('visibility', 'visible', 'important');
-            a.style.setProperty('opacity', '1', 'important');
-            a.style.setProperty('pointer-events', 'auto', 'important');
-
-            posisi.insertAdjacentElement('afterend', a);
-            posisi = a;
-        });
+        promosi.insertAdjacentElement('afterend', bukti);
+        promosi.insertAdjacentElement('afterend', rtp);
+        promosi.insertAdjacentElement('afterend', livescore);
     }
 
-    window.__rt_promo_run = tambahMenuSidebarDesktopFix;
+    window.__rt_promo_run = fixSidebarDesktop;
 
-    const obs = new MutationObserver(tambahMenuSidebarDesktopFix);
-    obs.observe(document.documentElement, { childList: true, subtree: true });
+    const style = document.createElement('style');
+    style.id = 'fix-extra-sidebar-final-css';
+    style.textContent = `
+        #extra-sidebar-livescore,
+        #extra-sidebar-rtp,
+        #extra-sidebar-bukti {
+            display: flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            margin-top: 8px !important;
+            margin-bottom: 0 !important;
+            position: relative !important;
+            z-index: 9999 !important;
+        }
+    `;
+    document.head.appendChild(style);
 
-    tambahMenuSidebarDesktopFix();
-    setTimeout(tambahMenuSidebarDesktopFix, 500);
-    setTimeout(tambahMenuSidebarDesktopFix, 1500);
-    setTimeout(tambahMenuSidebarDesktopFix, 3000);
-    setTimeout(tambahMenuSidebarDesktopFix, 5000);
+    const obs = new MutationObserver(function() {
+        fixSidebarDesktop();
+    });
+
+    obs.observe(document.documentElement, {
+        childList: true,
+        subtree: true
+    });
+
+    fixSidebarDesktop();
+
+    setTimeout(fixSidebarDesktop, 500);
+    setTimeout(fixSidebarDesktop, 1500);
+    setTimeout(fixSidebarDesktop, 3000);
+    setTimeout(fixSidebarDesktop, 5000);
+    setTimeout(fixSidebarDesktop, 8000);
+
+    setInterval(fixSidebarDesktop, 1200);
 })();
