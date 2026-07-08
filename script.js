@@ -1013,11 +1013,9 @@
     window.__replaceLogoAllDevice = replaceLogoAllDevice;
 })();
 
-/* FIX DESKTOP: 3 TOMBOL SIDEBAR TETAP MUNCUL DI /promotions */
 (function() {
-    function tambahMenuSidebarDesktopFix() {
-        /* DESKTOP ONLY */
-        if (window.innerWidth <= 768) return;
+    function tambahMenuSidebarDesktop() {
+        if (document.getElementById('extra-sidebar-livescore')) return;
 
         const allItems = document.querySelectorAll('.beforesidebar__menu-item');
         if (!allItems.length) return;
@@ -1025,32 +1023,13 @@
         let promosiItem = null;
 
         allItems.forEach(function(item) {
-            const text = (item.innerText || item.textContent || '').trim().toLowerCase();
+            const text = (item.innerText || item.textContent || '').toLowerCase();
             if (text.includes('promosi')) {
                 promosiItem = item;
             }
         });
 
         if (!promosiItem) return;
-
-        /* Kalau tombol sudah ada dan masih nempel di halaman, jangan dobel */
-        if (
-            document.getElementById('extra-sidebar-livescore') &&
-            document.getElementById('extra-sidebar-rtp') &&
-            document.getElementById('extra-sidebar-bukti')
-        ) {
-            return;
-        }
-
-        /* Bersihkan sisa tombol lama kalau ada yang nyangkut */
-        [
-            'extra-sidebar-livescore',
-            'extra-sidebar-rtp',
-            'extra-sidebar-bukti'
-        ].forEach(function(id) {
-            const old = document.getElementById(id);
-            if (old) old.remove();
-        });
 
         const menus = [
             {
@@ -1088,33 +1067,18 @@
                 <span>${menu.text}</span>
             `;
 
-            a.style.setProperty('display', 'flex', 'important');
-            a.style.setProperty('visibility', 'visible', 'important');
-            a.style.setProperty('opacity', '1', 'important');
-            a.style.setProperty('pointer-events', 'auto', 'important');
-
             posisi.insertAdjacentElement('afterend', a);
             posisi = a;
         });
     }
 
-    /* Ini penting, karena script route lu sudah manggil window.__rt_promo_run */
-    window.__rt_promo_run = tambahMenuSidebarDesktopFix;
+    const obs = new MutationObserver(tambahMenuSidebarDesktop);
+    obs.observe(document.documentElement, { childList: true, subtree: true });
 
-    const obs = new MutationObserver(function() {
-        tambahMenuSidebarDesktopFix();
-    });
-
-    obs.observe(document.documentElement, {
-        childList: true,
-        subtree: true
-    });
-
-    tambahMenuSidebarDesktopFix();
-    setTimeout(tambahMenuSidebarDesktopFix, 500);
-    setTimeout(tambahMenuSidebarDesktopFix, 1500);
-    setTimeout(tambahMenuSidebarDesktopFix, 3000);
-    setTimeout(tambahMenuSidebarDesktopFix, 5000);
+    tambahMenuSidebarDesktop();
+    setTimeout(tambahMenuSidebarDesktop, 500);
+    setTimeout(tambahMenuSidebarDesktop, 1500);
+    setTimeout(tambahMenuSidebarDesktop, 3000);
 })();
 
 
@@ -1486,3 +1450,95 @@ closeBtn.addEventListener('click', function() {
     setTimeout(fixPromosiMobile, 3000);
 })();
 
+/* FIX DESKTOP: 3 TOMBOL SIDEBAR TETAP MUNCUL */
+(function() {
+    function tambahMenuSidebarDesktopFix() {
+        if (window.innerWidth <= 768) return;
+
+        const allItems = document.querySelectorAll('.beforesidebar__menu-item');
+        if (!allItems.length) return;
+
+        let promosiItem = null;
+
+        allItems.forEach(function(item) {
+            const text = (item.innerText || item.textContent || '').trim().toLowerCase();
+            if (text.includes('promosi')) {
+                promosiItem = item;
+            }
+        });
+
+        if (!promosiItem) return;
+
+        const lengkap =
+            document.getElementById('extra-sidebar-livescore') &&
+            document.getElementById('extra-sidebar-rtp') &&
+            document.getElementById('extra-sidebar-bukti');
+
+        if (lengkap) return;
+
+        [
+            'extra-sidebar-livescore',
+            'extra-sidebar-rtp',
+            'extra-sidebar-bukti'
+        ].forEach(function(id) {
+            const old = document.getElementById(id);
+            if (old) old.remove();
+        });
+
+        const menus = [
+            {
+                id: 'extra-sidebar-livescore',
+                text: 'Livescore',
+                link: 'https://vuata.link/livescore',
+                icon: '▥'
+            },
+            {
+                id: 'extra-sidebar-rtp',
+                text: 'Rtp Slot Hari Ini',
+                link: 'https://vuata.link/rtpslot-dptoto',
+                icon: '◉'
+            },
+            {
+                id: 'extra-sidebar-bukti',
+                text: 'Bukti Kemenangan',
+                link: 'https://vuata.link/buktijp',
+                icon: '♛'
+            }
+        ];
+
+        let posisi = promosiItem;
+
+        menus.forEach(function(menu) {
+            const a = document.createElement('a');
+
+            a.id = menu.id;
+            a.href = menu.link;
+            a.target = '_blank';
+            a.className = promosiItem.className || 'beforesidebar__menu-item';
+
+            a.innerHTML = `
+                <span style="font-size:16px;min-width:24px;text-align:center;">${menu.icon}</span>
+                <span>${menu.text}</span>
+            `;
+
+            a.style.setProperty('display', 'flex', 'important');
+            a.style.setProperty('visibility', 'visible', 'important');
+            a.style.setProperty('opacity', '1', 'important');
+            a.style.setProperty('pointer-events', 'auto', 'important');
+
+            posisi.insertAdjacentElement('afterend', a);
+            posisi = a;
+        });
+    }
+
+    window.__rt_promo_run = tambahMenuSidebarDesktopFix;
+
+    const obs = new MutationObserver(tambahMenuSidebarDesktopFix);
+    obs.observe(document.documentElement, { childList: true, subtree: true });
+
+    tambahMenuSidebarDesktopFix();
+    setTimeout(tambahMenuSidebarDesktopFix, 500);
+    setTimeout(tambahMenuSidebarDesktopFix, 1500);
+    setTimeout(tambahMenuSidebarDesktopFix, 3000);
+    setTimeout(tambahMenuSidebarDesktopFix, 5000);
+})();
