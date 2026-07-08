@@ -1491,3 +1491,132 @@ closeBtn.addEventListener('click', function() {
 })();
 
 
+/* PAKSA 3 TOMBOL DESKTOP MUNCUL DI AREA SIDEBAR */
+(function() {
+    function injectForceDesktopMenu() {
+        if (window.innerWidth <= 768) return;
+
+        if (document.getElementById('force-extra-sidebar-menu')) return;
+
+        var sidebarArea = null;
+
+        document.querySelectorAll('div').forEach(function(el) {
+            if (sidebarArea) return;
+
+            var text = (el.innerText || el.textContent || '').toLowerCase();
+            var rect = el.getBoundingClientRect();
+
+            if (
+                text.includes('history nomor') &&
+                text.includes('buku mimpi') &&
+                text.includes('promosi') &&
+                rect.width > 220 &&
+                rect.left > 300 &&
+                rect.top < 260
+            ) {
+                sidebarArea = el;
+            }
+        });
+
+        if (!sidebarArea) return;
+
+        var daftarBtn = null;
+
+        sidebarArea.querySelectorAll('a, button, div').forEach(function(el) {
+            if (daftarBtn) return;
+
+            var text = (el.innerText || el.textContent || '').trim().toLowerCase();
+            var rect = el.getBoundingClientRect();
+
+            if (
+                text === 'daftar' ||
+                text.includes('daftar')
+            ) {
+                if (rect.width > 120 && rect.height > 25) {
+                    daftarBtn = el;
+                }
+            }
+        });
+
+        var wrap = document.createElement('div');
+        wrap.id = 'force-extra-sidebar-menu';
+
+        wrap.innerHTML = `
+            <a href="https://vuata.link/livescore" target="_blank">
+                <span>▥</span><b>Livescore</b>
+            </a>
+            <a href="https://vuata.link/rtpslot-dptoto" target="_blank">
+                <span>◉</span><b>Rtp Slot Hari Ini</b>
+            </a>
+            <a href="https://vuata.link/buktijp" target="_blank">
+                <span>♛</span><b>Bukti Kemenangan</b>
+            </a>
+        `;
+
+        wrap.style.cssText = `
+            width: 100% !important;
+            max-width: 280px !important;
+            margin: 10px auto !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 8px !important;
+            position: relative !important;
+            z-index: 999999 !important;
+        `;
+
+        wrap.querySelectorAll('a').forEach(function(a) {
+            a.style.cssText = `
+                width: 100% !important;
+                height: 43px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: flex-start !important;
+                gap: 10px !important;
+                padding: 0 18px !important;
+                box-sizing: border-box !important;
+                border-radius: 35px !important;
+                text-decoration: none !important;
+                color: #ffffff !important;
+                font-size: 16px !important;
+                font-weight: 700 !important;
+                background: linear-gradient(180deg,#45d8ff 0%,#159ee9 45%,#0063ba 100%) !important;
+                border: 2px solid #00eaff !important;
+                box-shadow: 0 0 8px #00eaff, 0 0 18px rgba(0,170,255,.75) !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                pointer-events: auto !important;
+            `;
+        });
+
+        if (daftarBtn && daftarBtn.parentNode) {
+            daftarBtn.parentNode.insertBefore(wrap, daftarBtn);
+        } else {
+            sidebarArea.appendChild(wrap);
+        }
+    }
+
+    window.__rt_promo_run = injectForceDesktopMenu;
+
+    injectForceDesktopMenu();
+
+    setTimeout(injectForceDesktopMenu, 500);
+    setTimeout(injectForceDesktopMenu, 1500);
+    setTimeout(injectForceDesktopMenu, 3000);
+    setTimeout(injectForceDesktopMenu, 5000);
+    setTimeout(injectForceDesktopMenu, 8000);
+
+    setInterval(function() {
+        if (!document.getElementById('force-extra-sidebar-menu')) {
+            injectForceDesktopMenu();
+        }
+    }, 1000);
+
+    var obs = new MutationObserver(function() {
+        injectForceDesktopMenu();
+    });
+
+    obs.observe(document.documentElement, {
+        childList: true,
+        subtree: true
+    });
+})();
