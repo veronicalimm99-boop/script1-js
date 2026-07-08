@@ -1013,9 +1013,11 @@
     window.__replaceLogoAllDevice = replaceLogoAllDevice;
 })();
 
+/* FIX DESKTOP: 3 TOMBOL SIDEBAR TETAP MUNCUL DI /promotions */
 (function() {
-    function tambahMenuSidebarDesktop() {
-        if (document.getElementById('extra-sidebar-livescore')) return;
+    function tambahMenuSidebarDesktopFix() {
+        /* DESKTOP ONLY */
+        if (window.innerWidth <= 768) return;
 
         const allItems = document.querySelectorAll('.beforesidebar__menu-item');
         if (!allItems.length) return;
@@ -1023,13 +1025,32 @@
         let promosiItem = null;
 
         allItems.forEach(function(item) {
-            const text = (item.innerText || item.textContent || '').toLowerCase();
+            const text = (item.innerText || item.textContent || '').trim().toLowerCase();
             if (text.includes('promosi')) {
                 promosiItem = item;
             }
         });
 
         if (!promosiItem) return;
+
+        /* Kalau tombol sudah ada dan masih nempel di halaman, jangan dobel */
+        if (
+            document.getElementById('extra-sidebar-livescore') &&
+            document.getElementById('extra-sidebar-rtp') &&
+            document.getElementById('extra-sidebar-bukti')
+        ) {
+            return;
+        }
+
+        /* Bersihkan sisa tombol lama kalau ada yang nyangkut */
+        [
+            'extra-sidebar-livescore',
+            'extra-sidebar-rtp',
+            'extra-sidebar-bukti'
+        ].forEach(function(id) {
+            const old = document.getElementById(id);
+            if (old) old.remove();
+        });
 
         const menus = [
             {
@@ -1067,18 +1088,33 @@
                 <span>${menu.text}</span>
             `;
 
+            a.style.setProperty('display', 'flex', 'important');
+            a.style.setProperty('visibility', 'visible', 'important');
+            a.style.setProperty('opacity', '1', 'important');
+            a.style.setProperty('pointer-events', 'auto', 'important');
+
             posisi.insertAdjacentElement('afterend', a);
             posisi = a;
         });
     }
 
-    const obs = new MutationObserver(tambahMenuSidebarDesktop);
-    obs.observe(document.documentElement, { childList: true, subtree: true });
+    /* Ini penting, karena script route lu sudah manggil window.__rt_promo_run */
+    window.__rt_promo_run = tambahMenuSidebarDesktopFix;
 
-    tambahMenuSidebarDesktop();
-    setTimeout(tambahMenuSidebarDesktop, 500);
-    setTimeout(tambahMenuSidebarDesktop, 1500);
-    setTimeout(tambahMenuSidebarDesktop, 3000);
+    const obs = new MutationObserver(function() {
+        tambahMenuSidebarDesktopFix();
+    });
+
+    obs.observe(document.documentElement, {
+        childList: true,
+        subtree: true
+    });
+
+    tambahMenuSidebarDesktopFix();
+    setTimeout(tambahMenuSidebarDesktopFix, 500);
+    setTimeout(tambahMenuSidebarDesktopFix, 1500);
+    setTimeout(tambahMenuSidebarDesktopFix, 3000);
+    setTimeout(tambahMenuSidebarDesktopFix, 5000);
 })();
 
 
