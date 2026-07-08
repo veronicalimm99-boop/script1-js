@@ -1451,81 +1451,91 @@ closeBtn.addEventListener('click', function() {
 })();
 
 
-/* FIX FINAL DESKTOP: 3 TOMBOL SIDEBAR TETAP MUNCUL SETELAH REFRESH PROMOTIONS */
+/* FIX KERAS DESKTOP: SISIPKAN 3 TOMBOL SEBELUM TOMBOL DAFTAR */
 (function() {
-    function isDesktop() {
-        return window.innerWidth > 768 && !document.querySelector('.mobile-before-layout__container');
+    function isVisible(el) {
+        if (!el) return false;
+        const r = el.getBoundingClientRect();
+        return r.width > 80 && r.height > 20 && r.top > 0;
     }
 
-    function findPromosiButton() {
+    function findDesktopButtonByText(keyword) {
         const els = document.querySelectorAll('a, button, div');
-
         let found = null;
 
         els.forEach(function(el) {
+            if (found) return;
+
             const text = (el.innerText || el.textContent || '').trim().toLowerCase();
+            const r = el.getBoundingClientRect();
 
             if (
-                text === 'promosi' ||
-                text.includes('promosi')
+                text.includes(keyword) &&
+                isVisible(el) &&
+                r.left > 300 &&
+                r.width > 120
             ) {
-                const rect = el.getBoundingClientRect();
-
-                if (
-                    rect.width > 120 &&
-                    rect.height > 25 &&
-                    rect.top > 80 &&
-                    rect.left > 250
-                ) {
-                    found = el;
-                }
+                found = el;
             }
         });
 
         return found;
     }
 
-    function createMenu(id, text, link, icon, sampleClass) {
+    function makeExtraButton(id, text, link, icon) {
         const a = document.createElement('a');
-
         a.id = id;
         a.href = link;
         a.target = '_blank';
-        a.className = sampleClass || '';
 
         a.innerHTML = `
             <span style="font-size:16px;min-width:24px;text-align:center;">${icon}</span>
             <span>${text}</span>
         `;
 
-        a.style.setProperty('display', 'flex', 'important');
-        a.style.setProperty('align-items', 'center', 'important');
-        a.style.setProperty('gap', '10px', 'important');
-        a.style.setProperty('visibility', 'visible', 'important');
-        a.style.setProperty('opacity', '1', 'important');
-        a.style.setProperty('pointer-events', 'auto', 'important');
-        a.style.setProperty('text-decoration', 'none', 'important');
-        a.style.setProperty('color', '#ffffff', 'important');
-        a.style.setProperty('font-weight', '700', 'important');
+        a.style.cssText = `
+            width: 260px !important;
+            height: 43px !important;
+            margin: 8px auto !important;
+            padding: 0 18px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            gap: 10px !important;
+            border-radius: 35px !important;
+            text-decoration: none !important;
+            color: #ffffff !important;
+            font-size: 16px !important;
+            font-weight: 700 !important;
+            background: linear-gradient(180deg,#45d8ff 0%,#129be6 48%,#005cae 100%) !important;
+            border: 2px solid #00eaff !important;
+            box-shadow: 0 0 8px #00eaff, 0 0 18px rgba(0,170,255,.75) !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            position: relative !important;
+            z-index: 999999 !important;
+            box-sizing: border-box !important;
+        `;
 
         return a;
     }
 
-    function fixSidebarDesktop() {
-        if (!isDesktop()) return;
+    function injectExtraButtons() {
+        if (window.innerWidth <= 768) return;
 
-        const promosi = findPromosiButton();
-        if (!promosi) return;
+        const daftar = findDesktopButtonByText('daftar');
+        if (!daftar) return;
 
-        const parent = promosi.parentElement;
+        const parent = daftar.parentElement;
         if (!parent) return;
 
-        const sudahLengkap =
+        const sudahAda =
             document.getElementById('extra-sidebar-livescore') &&
             document.getElementById('extra-sidebar-rtp') &&
             document.getElementById('extra-sidebar-bukti');
 
-        if (sudahLengkap) return;
+        if (sudahAda) return;
 
         [
             'extra-sidebar-livescore',
@@ -1536,73 +1546,44 @@ closeBtn.addEventListener('click', function() {
             if (old) old.remove();
         });
 
-        const sampleClass = promosi.className;
-
-        const livescore = createMenu(
+        const livescore = makeExtraButton(
             'extra-sidebar-livescore',
             'Livescore',
             'https://vuata.link/livescore',
-            '▥',
-            sampleClass
+            '▥'
         );
 
-        const rtp = createMenu(
+        const rtp = makeExtraButton(
             'extra-sidebar-rtp',
             'Rtp Slot Hari Ini',
             'https://vuata.link/rtpslot-dptoto',
-            '◉',
-            sampleClass
+            '◉'
         );
 
-        const bukti = createMenu(
+        const bukti = makeExtraButton(
             'extra-sidebar-bukti',
             'Bukti Kemenangan',
             'https://vuata.link/buktijp',
-            '♛',
-            sampleClass
+            '♛'
         );
 
-        promosi.insertAdjacentElement('afterend', bukti);
-        promosi.insertAdjacentElement('afterend', rtp);
-        promosi.insertAdjacentElement('afterend', livescore);
+        parent.insertBefore(livescore, daftar);
+        parent.insertBefore(rtp, daftar);
+        parent.insertBefore(bukti, daftar);
     }
 
-    window.__rt_promo_run = fixSidebarDesktop;
+    window.__rt_promo_run = injectExtraButtons;
 
-    const style = document.createElement('style');
-    style.id = 'fix-extra-sidebar-final-css';
-    style.textContent = `
-        #extra-sidebar-livescore,
-        #extra-sidebar-rtp,
-        #extra-sidebar-bukti {
-            display: flex !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-            pointer-events: auto !important;
-            margin-top: 8px !important;
-            margin-bottom: 0 !important;
-            position: relative !important;
-            z-index: 9999 !important;
-        }
-    `;
-    document.head.appendChild(style);
-
-    const obs = new MutationObserver(function() {
-        fixSidebarDesktop();
-    });
-
+    const obs = new MutationObserver(injectExtraButtons);
     obs.observe(document.documentElement, {
         childList: true,
         subtree: true
     });
 
-    fixSidebarDesktop();
-
-    setTimeout(fixSidebarDesktop, 500);
-    setTimeout(fixSidebarDesktop, 1500);
-    setTimeout(fixSidebarDesktop, 3000);
-    setTimeout(fixSidebarDesktop, 5000);
-    setTimeout(fixSidebarDesktop, 8000);
-
-    setInterval(fixSidebarDesktop, 1200);
+    injectExtraButtons();
+    setTimeout(injectExtraButtons, 500);
+    setTimeout(injectExtraButtons, 1500);
+    setTimeout(injectExtraButtons, 3000);
+    setTimeout(injectExtraButtons, 5000);
+    setInterval(injectExtraButtons, 1000);
 })();
