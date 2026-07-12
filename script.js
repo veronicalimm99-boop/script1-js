@@ -1327,10 +1327,6 @@
                 <img src="https://imgstorage.site/view/plotwis/202603071957230000001b84888ddabacadai__300x300.webp" alt="RTP SLOT DPTOTO">
             </a>
 
-             <a class="floating-menu-item" href="https://vuata.link/ODS-DPTOTO" target="_blank">
-                <img src="https://imgstorage.site/view/plotwis/11-02-22-664_512.webp" alt="ODS SPORTBOOK ">
-            </a>
-
             <button type="button" class="floating-close"></button>
         `;
 
@@ -1449,5 +1445,4 @@ closeBtn.addEventListener('click', function() {
     setTimeout(fixPromosiMobile, 1500);
     setTimeout(fixPromosiMobile, 3000);
 })();
-
 
