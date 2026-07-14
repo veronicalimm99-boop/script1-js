@@ -1447,138 +1447,151 @@ closeBtn.addEventListener('click', function() {
 })();
 
 
-/* ===== LOGIN MOBILE DI HALAMAN REGISTER ===== */
+/* ===== LOGIN MOBILE DI ATAS DAFTAR AKUN ===== */
 (function () {
-    function tambahLoginMobileRegister() {
-        const isMobile =
-            window.innerWidth <= 768 ||
-            document.querySelector('.mobile-before-layout__container') ||
-            document.querySelector('.mobile-before-layout__content');
+    function pasangLoginRegister() {
+        /* Hanya halaman register dan ukuran mobile */
+        if (!location.pathname.toLowerCase().includes('register')) return;
+        if (window.innerWidth > 768) return;
+        if (document.getElementById('custom-login-register-mobile')) return;
 
-        if (!isMobile) return;
+        /*
+         * Cari input username milik form register.
+         * Website kamu menggunakan placeholder "Masukan username".
+         */
+        const registerUsername =
+            document.querySelector('input[placeholder*="Masukan username" i]') ||
+            document.querySelector('input[name*="username" i]');
 
-        /* Hanya tampil di halaman register */
-        if (!location.pathname.toLowerCase().includes('/register')) return;
+        if (!registerUsername) return;
 
-        /* Biar tidak muncul dua kali */
-        if (document.getElementById('login-mobile-register')) return;
-
-        /* Cari tulisan DAFTAR AKUN */
-        const semuaElemen = document.querySelectorAll(
-            'h1, h2, h3, h4, div, span, p'
-        );
-
+        /* Cari judul DAFTAR AKUN */
         let judulDaftar = null;
 
-        semuaElemen.forEach(function (el) {
-            const text = (el.innerText || el.textContent || '')
+        const semuaElemen = document.querySelectorAll(
+            'h1, h2, h3, h4, h5, strong, b, span, div, p'
+        );
+
+        for (const el of semuaElemen) {
+            const teks = (el.textContent || '')
+                .replace(/\s+/g, ' ')
                 .trim()
-                .toLowerCase();
+                .toUpperCase();
 
-            if (text === 'daftar akun') {
+            if (teks === 'DAFTAR AKUN') {
                 judulDaftar = el;
+                break;
             }
-        });
+        }
 
-        if (!judulDaftar) return;
-
-        /* Tambahkan CSS */
-        if (!document.getElementById('login-mobile-register-css')) {
+        /* CSS */
+        if (!document.getElementById('custom-login-register-mobile-css')) {
             const style = document.createElement('style');
-            style.id = 'login-mobile-register-css';
+            style.id = 'custom-login-register-mobile-css';
 
             style.textContent = `
-                #login-mobile-register {
-                    display: none;
+                #custom-login-register-mobile {
+                    width: calc(100% - 28px) !important;
+                    margin: 14px auto 22px !important;
+                    padding: 18px 14px !important;
+                    box-sizing: border-box !important;
+                    background: #020202 !important;
+                    border-radius: 9px !important;
                 }
 
-                @media (max-width: 768px) {
-                    #login-mobile-register {
-                        display: block !important;
-                        width: calc(100% - 28px) !important;
-                        margin: 16px auto 25px !important;
-                        padding: 18px 14px !important;
-                        box-sizing: border-box !important;
-                        background: #030303 !important;
-                        border-radius: 10px !important;
-                    }
+                #custom-login-register-mobile .login-mobile-title {
+                    margin: 0 0 17px !important;
+                    color: #ffffff !important;
+                    font-family: Arial, sans-serif !important;
+                    font-size: 13px !important;
+                    font-weight: 500 !important;
+                    text-align: center !important;
+                }
 
-                    #login-mobile-register .login-register-title {
-                        margin-bottom: 18px !important;
-                        color: #ffffff !important;
-                        font-size: 14px !important;
-                        font-weight: 500 !important;
-                        text-align: center !important;
-                    }
+                #custom-login-register-mobile .login-mobile-field {
+                    position: relative !important;
+                    width: 100% !important;
+                    margin-bottom: 12px !important;
+                }
 
-                    #login-mobile-register .login-register-input-wrap {
-                        position: relative !important;
-                        width: 100% !important;
-                        margin-bottom: 12px !important;
-                    }
+                #custom-login-register-mobile input {
+                    display: block !important;
+                    width: 100% !important;
+                    height: 44px !important;
+                    margin: 0 !important;
+                    padding: 0 43px 0 15px !important;
+                    box-sizing: border-box !important;
+                    color: #222222 !important;
+                    font-family: Arial, sans-serif !important;
+                    font-size: 14px !important;
+                    text-align: center !important;
+                    background: #ffffff !important;
+                    border: 2px solid #12cfff !important;
+                    border-radius: 15px !important;
+                    outline: none !important;
+                    box-shadow:
+                        0 0 7px rgba(0, 207, 255, .85),
+                        0 0 14px rgba(0, 112, 255, .45) !important;
+                }
 
-                    #login-mobile-register input {
-                        width: 100% !important;
-                        height: 45px !important;
-                        padding: 0 43px 0 15px !important;
-                        box-sizing: border-box !important;
-                        color: #333333 !important;
-                        font-size: 14px !important;
-                        text-align: center !important;
-                        background: #ffffff !important;
-                        border: 2px solid #00cfff !important;
-                        border-radius: 15px !important;
-                        outline: none !important;
-                        box-shadow:
-                            0 0 6px rgba(0,207,255,.8),
-                            0 0 13px rgba(0,120,255,.45) !important;
-                    }
+                #custom-login-register-mobile input::placeholder {
+                    color: #777777 !important;
+                    opacity: 1 !important;
+                }
 
-                    #login-mobile-register input::placeholder {
-                        color: #777777 !important;
-                    }
+                #custom-login-register-mobile .login-password-eye {
+                    position: absolute !important;
+                    top: 50% !important;
+                    right: 12px !important;
+                    transform: translateY(-50%) !important;
+                    width: 25px !important;
+                    height: 25px !important;
+                    padding: 0 !important;
+                    color: #555555 !important;
+                    font-size: 17px !important;
+                    line-height: 25px !important;
+                    background: transparent !important;
+                    border: none !important;
+                    cursor: pointer !important;
+                }
 
-                    #login-mobile-register .show-password-register {
-                        position: absolute !important;
-                        top: 50% !important;
-                        right: 12px !important;
-                        transform: translateY(-50%) !important;
-                        padding: 3px !important;
-                        color: #555555 !important;
-                        font-size: 16px !important;
-                        background: transparent !important;
-                        border: none !important;
-                        cursor: pointer !important;
-                    }
+                #custom-login-register-mobile .login-mobile-button {
+                    display: block !important;
+                    width: 100% !important;
+                    height: 42px !important;
+                    margin: 3px 0 0 !important;
+                    padding: 0 !important;
+                    color: #ffffff !important;
+                    font-family: Arial, sans-serif !important;
+                    font-size: 17px !important;
+                    font-weight: 800 !important;
+                    background:
+                        linear-gradient(
+                            180deg,
+                            #25dcff 0%,
+                            #0089db 45%,
+                            #003c81 100%
+                        ) !important;
+                    border: 1px solid #57eaff !important;
+                    border-radius: 23px !important;
+                    box-shadow:
+                        0 0 10px rgba(0, 205, 255, .8),
+                        inset 0 1px 0 rgba(255, 255, 255, .6) !important;
+                    cursor: pointer !important;
+                }
 
-                    #login-mobile-register .login-register-btn {
-                        width: 100% !important;
-                        height: 43px !important;
-                        margin-top: 3px !important;
-                        color: #ffffff !important;
-                        font-size: 18px !important;
-                        font-weight: 800 !important;
-                        background:
-                            linear-gradient(
-                                180deg,
-                                #22dfff 0%,
-                                #007dcc 45%,
-                                #003875 100%
-                            ) !important;
-                        border: 1px solid #5beaff !important;
-                        border-radius: 24px !important;
-                        box-shadow:
-                            0 0 9px rgba(0,207,255,.8),
-                            inset 0 1px 0 rgba(255,255,255,.6) !important;
-                        cursor: pointer !important;
-                    }
+                #custom-login-register-mobile .login-mobile-separator {
+                    margin: 21px 0 0 !important;
+                    color: #ffffff !important;
+                    font-family: Arial, sans-serif !important;
+                    font-size: 15px !important;
+                    font-weight: 800 !important;
+                    text-align: center !important;
+                }
 
-                    #login-mobile-register .register-separator {
-                        margin-top: 22px !important;
-                        color: #ffffff !important;
-                        font-size: 15px !important;
-                        font-weight: 800 !important;
-                        text-align: center !important;
+                @media (min-width: 769px) {
+                    #custom-login-register-mobile {
+                        display: none !important;
                     }
                 }
             `;
@@ -1586,97 +1599,102 @@ closeBtn.addEventListener('click', function() {
             document.head.appendChild(style);
         }
 
-        /* Buat menu login */
-        const loginBox = document.createElement('div');
-        loginBox.id = 'login-mobile-register';
+        /* Kotak login */
+        const box = document.createElement('div');
+        box.id = 'custom-login-register-mobile';
 
-        loginBox.innerHTML = `
-            <div class="login-register-title">
+        box.innerHTML = `
+            <div class="login-mobile-title">
                 Silakan login untuk mulai bermain
             </div>
 
-            <div class="login-register-input-wrap">
+            <div class="login-mobile-field">
                 <input
+                    id="custom-login-username"
                     type="text"
-                    id="login-register-username"
-                    name="username"
                     placeholder="Username"
                     autocomplete="username"
                 >
             </div>
 
-            <div class="login-register-input-wrap">
+            <div class="login-mobile-field">
                 <input
+                    id="custom-login-password"
                     type="password"
-                    id="login-register-password"
-                    name="password"
                     placeholder="Password"
                     autocomplete="current-password"
                 >
 
                 <button
                     type="button"
-                    class="show-password-register"
+                    class="login-password-eye"
                     aria-label="Tampilkan password"
-                >
-                    ◉
-                </button>
+                >◉</button>
             </div>
 
             <button
                 type="button"
-                class="login-register-btn"
+                class="login-mobile-button"
             >
                 LOGIN
             </button>
 
-            <div class="register-separator">
+            <div class="login-mobile-separator">
                 ATAU DAFTAR AKUN BARU
             </div>
         `;
 
-        /* Taruh tepat sebelum DAFTAR AKUN */
-        judulDaftar.insertAdjacentElement('beforebegin', loginBox);
+        /*
+         * Prioritas pertama: taruh tepat sebelum DAFTAR AKUN.
+         * Fallback: taruh sebelum form register.
+         */
+        if (judulDaftar) {
+            judulDaftar.insertAdjacentElement('beforebegin', box);
+        } else {
+            const registerForm = registerUsername.closest('form');
 
-        /* Tombol tampilkan password */
-        const passwordInput = loginBox.querySelector(
-            '#login-register-password'
-        );
+            if (registerForm) {
+                registerForm.insertAdjacentElement('beforebegin', box);
+            } else {
+                registerUsername.parentElement.insertAdjacentElement(
+                    'beforebegin',
+                    box
+                );
+            }
+        }
 
-        const showPasswordBtn = loginBox.querySelector(
-            '.show-password-register'
-        );
+        /* Mata password */
+        const password = box.querySelector('#custom-login-password');
+        const eye = box.querySelector('.login-password-eye');
 
-        showPasswordBtn.addEventListener('click', function () {
-            passwordInput.type =
-                passwordInput.type === 'password'
-                    ? 'text'
-                    : 'password';
+        eye.addEventListener('click', function () {
+            password.type =
+                password.type === 'password' ? 'text' : 'password';
         });
 
         /*
-         * Sementara tombol LOGIN diarahkan ke halaman login.
-         * Ganti /login kalau alamat login website berbeda.
+         * Tombol LOGIN menuju halaman login asli.
          */
-        const loginBtn = loginBox.querySelector('.login-register-btn');
-
-        loginBtn.addEventListener('click', function () {
-            window.location.href = '/login';
-        });
+        box
+            .querySelector('.login-mobile-button')
+            .addEventListener('click', function () {
+                window.location.href = '/login';
+            });
     }
 
-    const observerLoginRegister = new MutationObserver(function () {
-        tambahLoginMobileRegister();
+    const observer = new MutationObserver(function () {
+        pasangLoginRegister();
     });
 
-    observerLoginRegister.observe(document.documentElement, {
+    observer.observe(document.documentElement, {
         childList: true,
         subtree: true
     });
 
-    tambahLoginMobileRegister();
-    setTimeout(tambahLoginMobileRegister, 500);
-    setTimeout(tambahLoginMobileRegister, 1500);
-    setTimeout(tambahLoginMobileRegister, 3000);
-    setTimeout(tambahLoginMobileRegister, 5000);
+    pasangLoginRegister();
+    setTimeout(pasangLoginRegister, 500);
+    setTimeout(pasangLoginRegister, 1500);
+    setTimeout(pasangLoginRegister, 3000);
+    setTimeout(pasangLoginRegister, 5000);
+    setTimeout(pasangLoginRegister, 8000);
 })();
