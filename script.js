@@ -1801,3 +1801,105 @@ function ubahAngkaStatistik() {
     bermainEl.textContent =
         formatAngkaIndonesia(sedangBermainBerjalan);
 }
+
+
+/* ===== PAKSA ANGKA TOTAL DIMENANGKAN TERUS BERUBAH ===== */
+(function () {
+    let totalMenang = 1624864247;
+    let pemainAktif = 21248;
+
+    function formatID(angka) {
+        return Math.floor(angka).toLocaleString('id-ID');
+    }
+
+    function cariElemenAngka() {
+        const box = document.getElementById(
+            'desktop-total-winner-dptoto'
+        );
+
+        if (!box) return null;
+
+        const semuaValue = box.querySelectorAll('.stats-value');
+
+        if (semuaValue.length < 2) return null;
+
+        const totalValue = semuaValue[0];
+
+        const pemainValue =
+            semuaValue[1].querySelector('span:last-child') ||
+            semuaValue[1];
+
+        return {
+            box: box,
+            total: totalValue,
+            pemain: pemainValue
+        };
+    }
+
+    function ubahAngka() {
+        if (window.innerWidth <= 768) return;
+
+        const elemen = cariElemenAngka();
+
+        if (!elemen) return;
+
+        /* Total terus naik */
+        totalMenang +=
+            Math.floor(Math.random() * 750000) + 250000;
+
+        /* Pemain naik atau turun sedikit */
+        pemainAktif +=
+            Math.floor(Math.random() * 31) - 12;
+
+        if (pemainAktif < 21000) {
+            pemainAktif = 21000;
+        }
+
+        elemen.total.textContent =
+            'Rp' + formatID(totalMenang);
+
+        elemen.pemain.textContent =
+            formatID(pemainAktif);
+
+        /* Efek kecil saat angka berubah */
+        elemen.total.style.setProperty(
+            'transform',
+            'scale(1.06)',
+            'important'
+        );
+
+        elemen.pemain.style.setProperty(
+            'transform',
+            'scale(1.06)',
+            'important'
+        );
+
+        setTimeout(function () {
+            elemen.total.style.setProperty(
+                'transform',
+                'scale(1)',
+                'important'
+            );
+
+            elemen.pemain.style.setProperty(
+                'transform',
+                'scale(1)',
+                'important'
+            );
+        }, 180);
+    }
+
+    /* Matikan interval lama kalau ada */
+    if (window.__dptotoAngkaBerjalanInterval) {
+        clearInterval(
+            window.__dptotoAngkaBerjalanInterval
+        );
+    }
+
+    /* Jalankan pertama kali */
+    setTimeout(ubahAngka, 700);
+
+    /* Ganti angka setiap 1 detik */
+    window.__dptotoAngkaBerjalanInterval =
+        setInterval(ubahAngka, 1000);
+})();
