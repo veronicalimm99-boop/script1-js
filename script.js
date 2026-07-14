@@ -1484,37 +1484,70 @@ closeBtn.addEventListener('click', function() {
                     position: relative !important;
                 }
 
-               #${BOX_ID}::before {
-                content: "" !important;
-                display: block !important;
-                width: 100% !important;
-                height: 8px !important;
-                background:
-                linear-gradient(
-                110deg,
-                rgba(150, 165, 185, .28) 0%,
-                rgba(190, 205, 225, .45) 30%,
-                rgba(255, 255, 255, 1) 48%,
-                rgba(220, 230, 245, .9) 54%,
-                rgba(165, 180, 205, .35) 72%,
-                rgba(145, 160, 185, .25) 100%
-                ) !important;
-                background-size: 250% 100% !important;
-                box-shadow:
-                0 0 6px rgba(230, 238, 250, .8),
-                0 0 15px rgba(175, 195, 220, .6) !important;
-                animation: silverShineDptoto 2.2s linear infinite !important;
-                }
+#${BOX_ID}::before {
+    content: "" !important;
+    display: block !important;
+    width: 100% !important;
+    height: 8px !important;
+    background:
+        linear-gradient(
+            90deg,
+            #7f8b9c 0%,
+            #d9e2ed 35%,
+            #aeb9c8 65%,
+            #eef3f8 100%
+        ) !important;
+    box-shadow:
+        0 0 6px rgba(225,235,248,.65),
+        0 0 12px rgba(170,190,215,.45) !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
 
-                @keyframes silverShineDptoto {
-                0% {
-                 background-position: 220% 0;
-                }
+#${BOX_ID}::after {
+    content: "" !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: -55% !important;
+    width: 45% !important;
+    height: 8px !important;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,0) 0%,
+            rgba(255,255,255,.25) 20%,
+            rgba(255,255,255,1) 50%,
+            rgba(255,255,255,.25) 80%,
+            rgba(255,255,255,0) 100%
+        ) !important;
+    filter: blur(1px) !important;
+    box-shadow:
+        0 0 8px rgba(255,255,255,.95),
+        0 0 16px rgba(210,225,245,.80) !important;
+    animation: dptotoSilverSweep 2.4s ease-in-out infinite !important;
+    pointer-events: none !important;
+    z-index: 3 !important;
+}
 
-                100% {
-                background-position: -120% 0;
-                }
-                }
+@keyframes dptotoSilverSweep {
+    0% {
+        left: -55%;
+        opacity: 0;
+    }
+
+    12% {
+        opacity: 1;
+    }
+
+    70% {
+        opacity: 1;
+    }
+
+    100% {
+        left: 115%;
+        opacity: 0;
+    }
+}
 
                 #${BOX_ID} .stats-wrap {
                     display: grid !important;
