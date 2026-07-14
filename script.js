@@ -1719,3 +1719,134 @@ closeBtn.addEventListener('click', function() {
         }
     });
 })();
+
+/* ===== PAKSA KILAU SILVER BERGERAK ===== */
+(function () {
+    let shineFrame = null;
+    let shineStart = null;
+
+    function jalankanKilauSilver() {
+        if (window.innerWidth <= 768) return;
+
+        const box = document.getElementById(
+            'desktop-total-winner-dptoto'
+        );
+
+        if (!box) return;
+
+        let bar = box.querySelector('.silver-bar');
+
+        if (!bar) {
+            bar = document.createElement('div');
+            bar.className = 'silver-bar';
+            box.insertAdjacentElement('afterbegin', bar);
+        }
+
+        let kilau = bar.querySelector('.silver-sweep');
+
+        if (!kilau) {
+            kilau = document.createElement('span');
+            kilau.className = 'silver-sweep';
+            bar.appendChild(kilau);
+        }
+
+        /* Paksa bentuk garis silver */
+        bar.style.setProperty('position', 'relative', 'important');
+        bar.style.setProperty('display', 'block', 'important');
+        bar.style.setProperty('width', '100%', 'important');
+        bar.style.setProperty('height', '9px', 'important');
+        bar.style.setProperty('overflow', 'hidden', 'important');
+        bar.style.setProperty(
+            'background',
+            'linear-gradient(180deg,#f8fbff 0%,#c3cedb 38%,#778496 68%,#e5ebf2 100%)',
+            'important'
+        );
+
+        /* Paksa bentuk cahaya kilau */
+        kilau.style.setProperty('position', 'absolute', 'important');
+        kilau.style.setProperty('top', '-4px', 'important');
+        kilau.style.setProperty('left', '0', 'important');
+        kilau.style.setProperty('display', 'block', 'important');
+        kilau.style.setProperty('width', '38%', 'important');
+        kilau.style.setProperty('height', '17px', 'important');
+        kilau.style.setProperty(
+            'background',
+            'linear-gradient(90deg,transparent 0%,rgba(255,255,255,.15) 20%,#ffffff 50%,rgba(255,255,255,.15) 80%,transparent 100%)',
+            'important'
+        );
+        kilau.style.setProperty('filter', 'blur(1px)', 'important');
+        kilau.style.setProperty(
+            'box-shadow',
+            '0 0 10px #ffffff,0 0 20px rgba(210,230,255,.95)',
+            'important'
+        );
+        kilau.style.setProperty('z-index', '999', 'important');
+        kilau.style.setProperty('pointer-events', 'none', 'important');
+        kilau.style.setProperty('animation', 'none', 'important');
+
+        if (shineFrame) {
+            cancelAnimationFrame(shineFrame);
+        }
+
+        shineStart = null;
+
+        function gerakkanKilau(waktu) {
+            if (!document.body.contains(kilau)) {
+                shineFrame = null;
+                return;
+            }
+
+            if (!shineStart) shineStart = waktu;
+
+            /*
+             * 1,7 detik bergerak.
+             * 0,6 detik jeda.
+             */
+            const durasiGerak = 1700;
+            const durasiJeda = 600;
+            const totalDurasi = durasiGerak + durasiJeda;
+            const berjalan = (waktu - shineStart) % totalDurasi;
+
+            if (berjalan <= durasiGerak) {
+                const progress = berjalan / durasiGerak;
+                const posisi = -45 + (progress * 190);
+
+                kilau.style.setProperty(
+                    'transform',
+                    'translate3d(' + posisi + '%,0,0)',
+                    'important'
+                );
+
+                kilau.style.setProperty('opacity', '1', 'important');
+            } else {
+                kilau.style.setProperty('opacity', '0', 'important');
+            }
+
+            shineFrame = requestAnimationFrame(gerakkanKilau);
+        }
+
+        shineFrame = requestAnimationFrame(gerakkanKilau);
+    }
+
+    jalankanKilauSilver();
+
+    setTimeout(jalankanKilauSilver, 500);
+    setTimeout(jalankanKilauSilver, 1500);
+    setTimeout(jalankanKilauSilver, 3000);
+
+    const observerKilau = new MutationObserver(function () {
+        if (
+            document.getElementById(
+                'desktop-total-winner-dptoto'
+            ) &&
+            !shineFrame
+        ) {
+            jalankanKilauSilver();
+        }
+    });
+
+    observerKilau.observe(document.documentElement, {
+        childList: true,
+        subtree: true
+    });
+})();
