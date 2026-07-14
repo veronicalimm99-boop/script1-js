@@ -1583,10 +1583,24 @@ closeBtn.addEventListener('click', function() {
                 padding-top: 8px !important;
                 border-top:
                 1px solid rgba(255,255,255,.14) !important;
+                align-self: stretch !important;
                 }
 
-                #${BOX_ID} .stats-second-row.right .stats-value {
+                #${BOX_ID} .stats-second-row .stats-label {
+                margin-bottom: 5px !important;
+                line-height: 1.15 !important;
+                }
+
+                #${BOX_ID} .stats-second-row .stats-value {
+                display: block !important;
+                margin: 0 !important;
                 font-size: 12px !important;
+                line-height: 1.15 !important;
+                }
+
+                #${BOX_ID} .stats-second-row.right {
+                display: block !important;
+                text-align: right !important;
                 }
 
                 #${BOX_ID} .stats-label {
@@ -1608,11 +1622,11 @@ closeBtn.addEventListener('click', function() {
                     transition: transform .18s ease !important;
                 }
 
-                #${BOX_ID} .right .stats-value {
-                    display: inline-flex !important;
-                    align-items: center !important;
-                    justify-content: flex-end !important;
-                    gap: 5px !important;
+                #${BOX_ID} .stats-col.right:not(.stats-second-row) .stats-value {
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: flex-end !important;
+                gap: 5px !important;
                 }
 
                 #${BOX_ID} .playing-dot {
@@ -1688,7 +1702,7 @@ box.innerHTML = `
 
         <div class="stats-col right stats-second-row">
             <div class="stats-label">
-                Total WD
+                Total Withdraw
             </div>
 
             <div
@@ -1800,7 +1814,7 @@ function ubahAngka() {
     } while (depositBaru === totalDeposit);
 
     /*
-     * Total WD:
+     * Total Withdraw:
      * Rp750.000.000 sampai Rp1.000.000.000
      */
     do {
