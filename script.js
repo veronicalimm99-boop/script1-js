@@ -1548,8 +1548,8 @@ closeBtn.addEventListener('click', function() {
                     width: 11px !important;
                     height: 11px !important;
                     border-radius: 50% !important;
-                    background: #ffb100 !important;
-                    box-shadow: 0 0 5px rgba(255,177,0,.7) !important;
+                    background: #0226c9 !important;
+                    box-shadow: 0 0 5px rgba(37, 77, 255, 0.7) !important;
                     flex: 0 0 11px !important;
                     display: inline-block !important;
                 }
@@ -1573,14 +1573,14 @@ closeBtn.addEventListener('click', function() {
             <div class="stats-wrap">
                 <div class="stats-col left">
                     <div class="stats-label">Total Dimenangkan</div>
-                    <div class="stats-value">Rp429.860.331</div>
+                    <div class="stats-value">Rp1.624.864.247</div>
                 </div>
 
                 <div class="stats-col right">
                     <div class="stats-label">Sedang Bermain</div>
                     <div class="stats-value">
                         <span class="playing-dot"></span>
-                        <span>973</span>
+                        <span>21.248</span>
                     </div>
                 </div>
             </div>
