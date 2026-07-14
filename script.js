@@ -1015,10 +1015,7 @@
 })();
 
 (function () {
-    var sidebarObserver = null;
-    var sidebarTimer = null;
-
-    const MENUS = [
+    const CUSTOM_MENUS = [
         {
             id: 'extra-sidebar-livescore',
             text: 'Livescore',
@@ -1039,235 +1036,169 @@
         }
     ];
 
-    function getPromosiItem() {
+    function elementVisible(el) {
+        if (!el || !el.isConnected) return false;
+
+        const style = window.getComputedStyle(el);
+        const rect = el.getBoundingClientRect();
+
+        return (
+            style.display !== 'none' &&
+            style.visibility !== 'hidden' &&
+            rect.width > 0 &&
+            rect.height > 0
+        );
+    }
+
+    function cariPromosiAktif() {
         const items = document.querySelectorAll(
             '.beforesidebar__menu-item'
         );
 
-        let target = null;
+        let fallback = null;
 
-        items.forEach(function (item) {
+        for (const item of items) {
             const text = (
                 item.innerText ||
                 item.textContent ||
                 ''
             ).trim().toLowerCase();
 
-            if (
-                text === 'promosi' ||
-                text.includes('promosi')
-            ) {
-                /*
-                  Utamakan menu promosi yang sedang tampil.
-                */
-                const rect = item.getBoundingClientRect();
-                const style = window.getComputedStyle(item);
+            if (!text.includes('promosi')) continue;
 
-                const visible =
-                    style.display !== 'none' &&
-                    style.visibility !== 'hidden' &&
-                    rect.width > 0 &&
-                    rect.height > 0;
+            if (!fallback) fallback = item;
 
-                if (visible) {
-                    target = item;
-                } else if (!target) {
-                    target = item;
-                }
+            if (elementVisible(item)) {
+                return item;
             }
-        });
+        }
 
-        return target;
+        return fallback;
     }
 
-    function isAfterTarget(element, target) {
-        if (!element || !target) return false;
+    function buatMenu(data, contoh) {
+        const menu = document.createElement('a');
 
-        const sidebarParent = target.parentElement;
+        menu.id = data.id;
+        menu.href = data.link;
+        menu.target = '_blank';
+        menu.rel = 'noopener noreferrer';
+        menu.className =
+            contoh.className || 'beforesidebar__menu-item';
 
-        return (
-            element.isConnected &&
-            sidebarParent &&
-            element.parentElement === sidebarParent
-        );
-    }
-
-    function removeWrongButtons(target) {
-        MENUS.forEach(function (menu) {
-            document
-                .querySelectorAll('#' + menu.id)
-                .forEach(function (element) {
-                    /*
-                      Hapus tombol duplikat atau tombol yang masih
-                      menempel pada sidebar lama.
-                    */
-                    if (!isAfterTarget(element, target)) {
-                        element.remove();
-                    }
-                });
-        });
-    }
-
-    function createMenu(menu, referenceItem) {
-        const link = document.createElement('a');
-
-        link.id = menu.id;
-        link.href = menu.link;
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-
-        link.className =
-            referenceItem.className ||
-            'beforesidebar__menu-item';
-
-        link.innerHTML = `
+        menu.innerHTML = `
             <span
                 style="
                     font-size:16px;
                     min-width:24px;
                     text-align:center;
                 "
-            >
-                ${menu.icon}
-            </span>
+            >${data.icon}</span>
 
-            <span>${menu.text}</span>
+            <span>${data.text}</span>
         `;
 
-        return link;
+        return menu;
     }
 
-    function tambahMenuSidebarDesktop() {
-        /*
-          Jangan jalankan versi desktop pada layar mobile.
-        */
+    function pasangMenuTambahan() {
         if (window.innerWidth <= 768) return;
 
-        const promosiItem = getPromosiItem();
+        const promosi = cariPromosiAktif();
 
-        if (!promosiItem || !promosiItem.parentElement) {
-            return;
-        }
+        if (!promosi || !promosi.parentElement) return;
 
-        removeWrongButtons(promosiItem);
+        const parentAktif = promosi.parentElement;
 
-        let position = promosiItem;
+        /*
+         * Hapus tombol lama yang menempel pada sidebar
+         * tersembunyi atau sidebar sebelumnya.
+         */
+        CUSTOM_MENUS.forEach(function (data) {
+            document
+                .querySelectorAll('[id="' + data.id + '"]')
+                .forEach(function (el) {
+                    if (el.parentElement !== parentAktif) {
+                        el.remove();
+                    }
+                });
+        });
 
-        MENUS.forEach(function (menu) {
-            let existing = document.getElementById(menu.id);
+        let posisi = promosi;
 
-            /*
-              Kalau tombol sudah berada di sidebar aktif,
-              susun kembali posisinya agar tetap berurutan.
-            */
-            if (
-                existing &&
-                existing.parentElement === promosiItem.parentElement
-            ) {
-                position.insertAdjacentElement(
-                    'afterend',
-                    existing
-                );
+        CUSTOM_MENUS.forEach(function (data) {
+            let menu = parentAktif.querySelector(
+                '#' + data.id
+            );
 
-                position = existing;
-                return;
+            if (!menu) {
+                menu = buatMenu(data, promosi);
             }
 
             /*
-              Hapus ID lama jika masih ditemukan pada sidebar lain.
-            */
-            if (existing) {
-                existing.remove();
-            }
-
-            const newMenu = createMenu(
-                menu,
-                promosiItem
-            );
-
-            position.insertAdjacentElement(
-                'afterend',
-                newMenu
-            );
-
-            position = newMenu;
+             * Selalu susun kembali setelah Promosi:
+             * Promosi → Livescore → RTP → Bukti Kemenangan.
+             */
+            posisi.insertAdjacentElement('afterend', menu);
+            posisi = menu;
         });
     }
 
-    function scheduleSidebarFix() {
-        clearTimeout(sidebarTimer);
+    /*
+     * Jalankan langsung dan ulangi karena sidebar website
+     * dirender ulang setelah halaman selesai dimuat.
+     */
+    pasangMenuTambahan();
 
-        sidebarTimer = setTimeout(function () {
-            tambahMenuSidebarDesktop();
-        }, 100);
-
-        setTimeout(tambahMenuSidebarDesktop, 400);
-        setTimeout(tambahMenuSidebarDesktop, 900);
-        setTimeout(tambahMenuSidebarDesktop, 1800);
-        setTimeout(tambahMenuSidebarDesktop, 3500);
-        setTimeout(tambahMenuSidebarDesktop, 6000);
-    }
+    setTimeout(pasangMenuTambahan, 300);
+    setTimeout(pasangMenuTambahan, 800);
+    setTimeout(pasangMenuTambahan, 1500);
+    setTimeout(pasangMenuTambahan, 3000);
+    setTimeout(pasangMenuTambahan, 5000);
 
     /*
-      Observer tetap aktif ketika React/Vue merender ulang sidebar.
-    */
-    sidebarObserver = new MutationObserver(function () {
-        scheduleSidebarFix();
+     * Cek terus agar tombol kembali ketika sidebar diganti.
+     */
+    if (window.__dptotoSidebarInterval) {
+        clearInterval(window.__dptotoSidebarInterval);
+    }
+
+    window.__dptotoSidebarInterval = setInterval(
+        pasangMenuTambahan,
+        500
+    );
+
+    /*
+     * Pantau perubahan DOM.
+     */
+    const observer = new MutationObserver(function () {
+        pasangMenuTambahan();
     });
 
-    sidebarObserver.observe(document.documentElement, {
+    observer.observe(document.documentElement, {
         childList: true,
         subtree: true
     });
 
     /*
-      Tangani perpindahan halaman tanpa reload penuh.
-    */
-    const originalPushState = history.pushState;
-    const originalReplaceState = history.replaceState;
-
-    history.pushState = function () {
-        const result = originalPushState.apply(
-            history,
-            arguments
-        );
-
-        scheduleSidebarFix();
-        return result;
-    };
-
-    history.replaceState = function () {
-        const result = originalReplaceState.apply(
-            history,
-            arguments
-        );
-
-        scheduleSidebarFix();
-        return result;
-    };
-
+     * Jalankan juga setelah refresh dari cache browser.
+     */
     window.addEventListener(
-        'popstate',
-        scheduleSidebarFix
+        'load',
+        pasangMenuTambahan
     );
 
     window.addEventListener(
         'pageshow',
-        scheduleSidebarFix
+        pasangMenuTambahan
     );
 
     window.addEventListener(
-        'load',
-        scheduleSidebarFix
+        'popstate',
+        pasangMenuTambahan
     );
 
-    /*
-      Bisa dipanggil oleh route handler scriptmu.
-    */
-    window.__rt_sidebar_run =
-        tambahMenuSidebarDesktop;
-
-    scheduleSidebarFix();
+    window.__rt_sidebar_run = pasangMenuTambahan;
 })();
 
 
