@@ -1775,21 +1775,9 @@ function ubahAngka() {
         return;
     }
 
-    let totalBaru;
     let pemainBaru;
     let depositBaru;
     let wdBaru;
-
-    /*
-     * Total Dimenangkan:
-     * Rp700.000.000 sampai Rp900.000.000
-     */
-    do {
-        totalBaru = angkaAcak(
-            700000000,
-            900000000
-        );
-    } while (totalBaru === totalMenang);
 
     /*
      * Sedang Bermain:
@@ -1824,13 +1812,41 @@ function ubahAngka() {
         );
     } while (wdBaru === totalWd);
 
-    totalMenang = totalBaru;
     pemainAktif = pemainBaru;
     totalDeposit = depositBaru;
     totalWd = wdBaru;
 
+    /*
+     * Total Dimenangkan dihitung otomatis:
+    * Total Deposit dikurangi Total Withdraw.
+    */
+    totalMenang = totalDeposit - totalWd;
+
+    if (totalMenang < 0) {
+    totalEl.textContent =
+        '-Rp' + formatID(Math.abs(totalMenang));
+
+    totalEl.style.setProperty(
+        'color',
+        '#ff3030',
+        'important'
+    );
+
+    totalEl.style.setProperty(
+        'text-shadow',
+        '0 0 7px rgba(255,48,48,.75)',
+        'important'
+    );
+    } else {
     totalEl.textContent =
         'Rp' + formatID(totalMenang);
+
+    totalEl.style.setProperty(
+        'color',
+        '#ffffff',
+        'important'
+        );
+     }
 
     pemainEl.textContent =
         formatID(pemainAktif);
