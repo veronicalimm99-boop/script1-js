@@ -1484,22 +1484,36 @@ closeBtn.addEventListener('click', function() {
                     position: relative !important;
                 }
 
-                #${BOX_ID}::before {
+               #${BOX_ID}::before {
                 content: "" !important;
                 display: block !important;
                 width: 100% !important;
                 height: 8px !important;
                 background:
                 linear-gradient(
-                90deg,
-                rgba(190, 200, 215, .25) 0%,
-                rgba(245, 248, 255, .85) 50%,
-                rgba(190, 200, 215, .25) 100%
+                110deg,
+                rgba(150, 165, 185, .28) 0%,
+                rgba(190, 205, 225, .45) 30%,
+                rgba(255, 255, 255, 1) 48%,
+                rgba(220, 230, 245, .9) 54%,
+                rgba(165, 180, 205, .35) 72%,
+                rgba(145, 160, 185, .25) 100%
                 ) !important;
+                background-size: 250% 100% !important;
                 box-shadow:
-                0 0 6px rgba(220, 230, 245, .75),
-                0 0 14px rgba(175, 195, 220, .55) !important;
-                filter: blur(.3px) !important;
+                0 0 6px rgba(230, 238, 250, .8),
+                0 0 15px rgba(175, 195, 220, .6) !important;
+                animation: silverShineDptoto 2.2s linear infinite !important;
+                }
+
+                @keyframes silverShineDptoto {
+                0% {
+                 background-position: 220% 0;
+                }
+
+                100% {
+                background-position: -120% 0;
+                }
                 }
 
                 #${BOX_ID} .stats-wrap {
@@ -1548,8 +1562,8 @@ closeBtn.addEventListener('click', function() {
                     width: 11px !important;
                     height: 11px !important;
                     border-radius: 50% !important;
-                    background: #0226c9 !important;
-                    box-shadow: 0 0 5px rgba(37, 77, 255, 0.7) !important;
+                    background: #08ad24 !important;
+                    box-shadow: 0 0 5px rgba(18, 110, 26, 0.7) !important;
                     flex: 0 0 11px !important;
                     display: inline-block !important;
                 }
