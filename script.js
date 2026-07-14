@@ -1447,14 +1447,14 @@ closeBtn.addEventListener('click', function() {
 })();
 
 
-/* ===== TOTAL DIMENANGKAN DESKTOP + GLOW KEDAP-KEDIP ===== */
+/* ===== TOTAL DIMENANGKAN DESKTOP + GLOW + ANGKA BERJALAN ===== */
 (function() {
     const BOX_ID = 'desktop-total-winner-dptoto';
     const STYLE_ID = 'desktop-total-winner-dptoto-css';
 
     let warnaIndex = 0;
-    let totalMenangBerjalan = 1624864247;
-    let sedangBermainBerjalan = 21248;
+    let totalMenang = 1624864247;
+    let pemainAktif = 21248;
 
     const warnaGlow = [
         {
@@ -1484,20 +1484,18 @@ closeBtn.addEventListener('click', function() {
         }
     ];
 
+    function formatID(angka) {
+        return Math.floor(angka).toLocaleString('id-ID');
+    }
+
     function hapusBox() {
         const box = document.getElementById(BOX_ID);
-
-        if (box) {
-            box.remove();
-        }
+        if (box) box.remove();
     }
 
     function pasangStyle() {
         const styleLama = document.getElementById(STYLE_ID);
-
-        if (styleLama) {
-            styleLama.remove();
-        }
+        if (styleLama) styleLama.remove();
 
         const style = document.createElement('style');
         style.id = STYLE_ID;
@@ -1582,6 +1580,7 @@ closeBtn.addEventListener('click', function() {
                     font-weight: 800 !important;
                     line-height: 1.15 !important;
                     white-space: nowrap !important;
+                    transition: transform .18s ease !important;
                 }
 
                 #${BOX_ID} .right .stats-value {
@@ -1627,10 +1626,11 @@ closeBtn.addEventListener('click', function() {
                         Total Dimenangkan
                     </div>
 
-                    <div class="stats-value">
-                <span id="desktop-total-menang-value">
-                    Rp1.624.864.247
-                        </span>
+                    <div
+                        class="stats-value"
+                        id="desktop-total-menang-value"
+                    >
+                        Rp1.624.864.247
                     </div>
                 </div>
 
@@ -1639,10 +1639,12 @@ closeBtn.addEventListener('click', function() {
                         Sedang Bermain
                     </div>
 
-                    <span class="playing-dot"></span>
-                <span id="desktop-sedang-bermain-value">
-                    21.248
-                </span>
+                    <div class="stats-value">
+                        <span class="playing-dot"></span>
+
+                        <span id="desktop-sedang-bermain-value">
+                            21.248
+                        </span>
                     </div>
                 </div>
             </div>
@@ -1653,12 +1655,10 @@ closeBtn.addEventListener('click', function() {
 
     function ubahWarnaGlow() {
         const box = document.getElementById(BOX_ID);
-
         if (!box) return;
 
-        const warna = warnaGlow[
-            warnaIndex % warnaGlow.length
-        ];
+        const warna =
+            warnaGlow[warnaIndex % warnaGlow.length];
 
         box.style.setProperty(
             'border',
@@ -1676,6 +1676,60 @@ closeBtn.addEventListener('click', function() {
         );
 
         warnaIndex++;
+    }
+
+    function ubahAngka() {
+        const totalEl = document.getElementById(
+            'desktop-total-menang-value'
+        );
+
+        const pemainEl = document.getElementById(
+            'desktop-sedang-bermain-value'
+        );
+
+        if (!totalEl || !pemainEl) return;
+
+        totalMenang +=
+            Math.floor(Math.random() * 750000) + 250000;
+
+        pemainAktif +=
+            Math.floor(Math.random() * 25) - 10;
+
+        if (pemainAktif < 21000) {
+            pemainAktif = 21000;
+        }
+
+        totalEl.textContent =
+            'Rp' + formatID(totalMenang);
+
+        pemainEl.textContent =
+            formatID(pemainAktif);
+
+        totalEl.style.setProperty(
+            'transform',
+            'scale(1.06)',
+            'important'
+        );
+
+        pemainEl.style.setProperty(
+            'transform',
+            'scale(1.06)',
+            'important'
+        );
+
+        setTimeout(function() {
+            totalEl.style.setProperty(
+                'transform',
+                'scale(1)',
+                'important'
+            );
+
+            pemainEl.style.setProperty(
+                'transform',
+                'scale(1)',
+                'important'
+            );
+        }, 180);
     }
 
     function pasangBoxDesktop() {
@@ -1712,29 +1766,29 @@ closeBtn.addEventListener('click', function() {
         );
 
         ubahWarnaGlow();
+        ubahAngka();
     }
 
     if (window.__totalWinnerGlowInterval) {
-        clearInterval(window.__totalWinnerGlowInterval);
+        clearInterval(
+            window.__totalWinnerGlowInterval
+        );
     }
 
-    window.__totalWinnerGlowInterval = setInterval(
-        ubahWarnaGlow,
-        600
-    );
+    window.__totalWinnerGlowInterval =
+        setInterval(ubahWarnaGlow, 600);
 
     if (window.__totalWinnerNumberInterval) {
-    clearInterval(window.__totalWinnerNumberInterval);
+        clearInterval(
+            window.__totalWinnerNumberInterval
+        );
     }
 
-    window.__totalWinnerNumberInterval = setInterval(
-    ubahAngkaStatistik,
-    900
-    );
+    window.__totalWinnerNumberInterval =
+        setInterval(ubahAngka, 1000);
 
-    const observer = new MutationObserver(function() {
-        pasangBoxDesktop();
-    });
+    const observer =
+        new MutationObserver(pasangBoxDesktop);
 
     observer.observe(document.documentElement, {
         childList: true,
@@ -1755,151 +1809,4 @@ closeBtn.addEventListener('click', function() {
             pasangBoxDesktop();
         }
     });
-})();
-
-function formatAngkaIndonesia(angka) {
-    return Math.floor(angka).toLocaleString('id-ID');
-}
-
-function ubahAngkaStatistik() {
-    const totalEl = document.getElementById(
-        'desktop-total-menang-value'
-    );
-
-    const bermainEl = document.getElementById(
-        'desktop-sedang-bermain-value'
-    );
-
-    if (!totalEl || !bermainEl) return;
-
-    /*
-     * Total dimenangkan terus bertambah.
-     */
-    const tambahanTotal =
-        Math.floor(Math.random() * 850000) + 150000;
-
-    totalMenangBerjalan += tambahanTotal;
-
-    /*
-     * Sedang bermain naik atau turun secara acak.
-     */
-    const perubahanPemain =
-        Math.floor(Math.random() * 19) - 7;
-
-    sedangBermainBerjalan += perubahanPemain;
-
-    /*
-     * Supaya jumlah pemain tidak turun terlalu jauh.
-     */
-    if (sedangBermainBerjalan < 21000) {
-        sedangBermainBerjalan = 21000;
-    }
-
-    totalEl.textContent =
-        'Rp' + formatAngkaIndonesia(totalMenangBerjalan);
-
-    bermainEl.textContent =
-        formatAngkaIndonesia(sedangBermainBerjalan);
-}
-
-
-/* ===== PAKSA ANGKA TOTAL DIMENANGKAN TERUS BERUBAH ===== */
-(function () {
-    let totalMenang = 1624864247;
-    let pemainAktif = 21248;
-
-    function formatID(angka) {
-        return Math.floor(angka).toLocaleString('id-ID');
-    }
-
-    function cariElemenAngka() {
-        const box = document.getElementById(
-            'desktop-total-winner-dptoto'
-        );
-
-        if (!box) return null;
-
-        const semuaValue = box.querySelectorAll('.stats-value');
-
-        if (semuaValue.length < 2) return null;
-
-        const totalValue = semuaValue[0];
-
-        const pemainValue =
-            semuaValue[1].querySelector('span:last-child') ||
-            semuaValue[1];
-
-        return {
-            box: box,
-            total: totalValue,
-            pemain: pemainValue
-        };
-    }
-
-    function ubahAngka() {
-        if (window.innerWidth <= 768) return;
-
-        const elemen = cariElemenAngka();
-
-        if (!elemen) return;
-
-        /* Total terus naik */
-        totalMenang +=
-            Math.floor(Math.random() * 750000) + 250000;
-
-        /* Pemain naik atau turun sedikit */
-        pemainAktif +=
-            Math.floor(Math.random() * 31) - 12;
-
-        if (pemainAktif < 21000) {
-            pemainAktif = 21000;
-        }
-
-        elemen.total.textContent =
-            'Rp' + formatID(totalMenang);
-
-        elemen.pemain.textContent =
-            formatID(pemainAktif);
-
-        /* Efek kecil saat angka berubah */
-        elemen.total.style.setProperty(
-            'transform',
-            'scale(1.06)',
-            'important'
-        );
-
-        elemen.pemain.style.setProperty(
-            'transform',
-            'scale(1.06)',
-            'important'
-        );
-
-        setTimeout(function () {
-            elemen.total.style.setProperty(
-                'transform',
-                'scale(1)',
-                'important'
-            );
-
-            elemen.pemain.style.setProperty(
-                'transform',
-                'scale(1)',
-                'important'
-            );
-        }, 180);
-    }
-
-    /* Matikan interval lama kalau ada */
-    if (window.__dptotoAngkaBerjalanInterval) {
-        clearInterval(
-            window.__dptotoAngkaBerjalanInterval
-        );
-    }
-
-    /* Jalankan pertama kali */
-    setTimeout(ubahAngka, 700);
-
-    /* Ganti angka setiap 1 detik */
-    window.__dptotoAngkaBerjalanInterval =
-        setInterval(ubahAngka, 1000);
 })();
