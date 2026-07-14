@@ -1447,18 +1447,25 @@ closeBtn.addEventListener('click', function() {
 })();
 
 
-/* ===== INFO TOTAL DIMENANGKAN KHUSUS DESKTOP - FIX ===== */
+/* ===== INFO TOTAL DIMENANGKAN DESKTOP + KILAU SILVER ===== */
 (function() {
     const BOX_ID = 'desktop-total-winner-dptoto';
     const STYLE_ID = 'desktop-total-winner-dptoto-css';
 
     function hapusBox() {
         const box = document.getElementById(BOX_ID);
-        if (box) box.remove();
+
+        if (box) {
+            box.remove();
+        }
     }
 
-    function injectStyle() {
-        if (document.getElementById(STYLE_ID)) return;
+    function pasangStyle() {
+        const styleLama = document.getElementById(STYLE_ID);
+
+        if (styleLama) {
+            styleLama.remove();
+        }
 
         const style = document.createElement('style');
         style.id = STYLE_ID;
@@ -1474,6 +1481,9 @@ closeBtn.addEventListener('click', function() {
                     width: 100% !important;
                     max-width: 345px !important;
                     margin: 14px 0 0 !important;
+                    padding: 0 !important;
+                    box-sizing: border-box !important;
+                    position: relative !important;
                     background: #05143d !important;
                     border-radius: 14px !important;
                     overflow: hidden !important;
@@ -1481,69 +1491,64 @@ closeBtn.addEventListener('click', function() {
                         0 3px 10px rgba(0,0,0,.30),
                         inset 0 1px 0 rgba(255,255,255,.04) !important;
                     font-family: Arial, sans-serif !important;
-                    position: relative !important;
                 }
 
-#${BOX_ID} .silver-bar {
-    position: relative !important;
-    display: block !important;
-    width: 100% !important;
-    height: 8px !important;
-    overflow: hidden !important;
-    background:
-        linear-gradient(
-            90deg,
-            #788596 0%,
-            #dce4ed 35%,
-            #9faaba 65%,
-            #eef3f8 100%
-        ) !important;
-    box-shadow:
-        0 0 6px rgba(225,235,248,.75),
-        0 0 13px rgba(170,190,215,.55) !important;
-}
+                #${BOX_ID} .silver-bar {
+                    position: relative !important;
+                    display: block !important;
+                    width: 100% !important;
+                    height: 9px !important;
+                    overflow: hidden !important;
+                    background:
+                        linear-gradient(
+                            180deg,
+                            #f7f9fc 0%,
+                            #bec8d5 35%,
+                            #778496 65%,
+                            #dce3ec 100%
+                        ) !important;
+                    box-shadow:
+                        0 0 7px rgba(235,242,252,.85),
+                        0 0 14px rgba(175,195,220,.65) !important;
+                }
 
-#${BOX_ID} .silver-sweep {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    display: block !important;
-    width: 38% !important;
-    height: 100% !important;
-    background:
-        linear-gradient(
-            90deg,
-            transparent 0%,
-            rgba(255,255,255,.20) 20%,
-            rgba(255,255,255,1) 50%,
-            rgba(255,255,255,.20) 80%,
-            transparent 100%
-        ) !important;
-    filter: blur(.5px) !important;
-    box-shadow:
-        0 0 8px rgba(255,255,255,1),
-        0 0 16px rgba(215,230,250,.9) !important;
-    transform: translateX(-150%) !important;
-    animation: dptotoSilverMove 2.2s linear infinite !important;
-    will-change: transform !important;
-    pointer-events: none !important;
-}
-
-@keyframes dptotoSilverMove {
-    0% {
-        transform: translateX(-150%);
-    }
-
-    100% {
-        transform: translateX(420%);
-    }
-}
+                #${BOX_ID} .silver-sweep {
+                    position: absolute !important;
+                    top: -3px !important;
+                    left: 0 !important;
+                    display: block !important;
+                    width: 42% !important;
+                    height: 15px !important;
+                    background:
+                        linear-gradient(
+                            90deg,
+                            rgba(255,255,255,0) 0%,
+                            rgba(255,255,255,.12) 18%,
+                            rgba(255,255,255,.65) 35%,
+                            rgba(255,255,255,1) 50%,
+                            rgba(255,255,255,.65) 65%,
+                            rgba(255,255,255,.12) 82%,
+                            rgba(255,255,255,0) 100%
+                        ) !important;
+                    filter: blur(.8px) !important;
+                    box-shadow:
+                        0 0 10px rgba(255,255,255,1),
+                        0 0 18px rgba(220,232,248,.95) !important;
+                    transform: translate3d(-160%, 0, 0) !important;
+                    animation:
+                        dptotoSilverSweepMove 2.1s linear infinite !important;
+                    will-change: transform !important;
+                    pointer-events: none !important;
+                    z-index: 5 !important;
+                }
 
                 #${BOX_ID} .stats-wrap {
                     display: grid !important;
-                    grid-template-columns: 1fr 1fr !important;
-                    gap: 10px !important;
+                    grid-template-columns:
+                        minmax(0, 1fr)
+                        minmax(0, 1fr) !important;
                     align-items: start !important;
+                    gap: 10px !important;
                     padding: 11px 14px 12px !important;
                     box-sizing: border-box !important;
                 }
@@ -1582,19 +1587,37 @@ closeBtn.addEventListener('click', function() {
                 }
 
                 #${BOX_ID} .playing-dot {
+                    display: inline-block !important;
                     width: 11px !important;
                     height: 11px !important;
-                    border-radius: 50% !important;
-                    background: #08ad24 !important;
-                    box-shadow: 0 0 5px rgba(18, 110, 26, 0.7) !important;
                     flex: 0 0 11px !important;
-                    display: inline-block !important;
+                    background: #08ad24 !important;
+                    border-radius: 50% !important;
+                    box-shadow:
+                        0 0 6px rgba(40,220,70,.75) !important;
+                }
+            }
+
+            @keyframes dptotoSilverSweepMove {
+                0% {
+                    transform: translate3d(-160%, 0, 0);
+                }
+
+                100% {
+                    transform: translate3d(340%, 0, 0);
                 }
             }
 
             @media screen and (max-width: 768px) {
                 #${BOX_ID} {
                     display: none !important;
+                }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                #${BOX_ID} .silver-sweep {
+                    animation:
+                        dptotoSilverSweepMove 2.1s linear infinite !important;
                 }
             }
         `;
@@ -1607,18 +1630,26 @@ closeBtn.addEventListener('click', function() {
         box.id = BOX_ID;
 
         box.innerHTML = `
-        <div class="silver-bar">
-        <span class="silver-sweep"></span>
-        </div>
+            <div class="silver-bar">
+                <span class="silver-sweep"></span>
+            </div>
 
-        <div class="stats-wrap">
+            <div class="stats-wrap">
                 <div class="stats-col left">
-                    <div class="stats-label">Total Dimenangkan</div>
-                    <div class="stats-value">Rp1.624.864.247</div>
+                    <div class="stats-label">
+                        Total Dimenangkan
+                    </div>
+
+                    <div class="stats-value">
+                        Rp1.624.864.247
+                    </div>
                 </div>
 
                 <div class="stats-col right">
-                    <div class="stats-label">Sedang Bermain</div>
+                    <div class="stats-label">
+                        Sedang Bermain
+                    </div>
+
                     <div class="stats-value">
                         <span class="playing-dot"></span>
                         <span>21.248</span>
@@ -1636,20 +1667,32 @@ closeBtn.addEventListener('click', function() {
             return;
         }
 
-        if (location.pathname.toLowerCase().includes('/register')) {
+        const path = location.pathname.toLowerCase();
+
+        if (
+            path.includes('/register') ||
+            path.includes('/login')
+        ) {
             hapusBox();
             return;
         }
 
         if (document.getElementById(BOX_ID)) return;
 
-        const hasilTerakhir = document.querySelector('.resulthistory__wrapper');
+        const hasilTerakhir = document.querySelector(
+            '.resulthistory__wrapper'
+        );
+
         if (!hasilTerakhir) return;
 
-        injectStyle();
+        pasangStyle();
 
         const box = buatBox();
-        hasilTerakhir.insertAdjacentElement('afterend', box);
+
+        hasilTerakhir.insertAdjacentElement(
+            'afterend',
+            box
+        );
     }
 
     const observer = new MutationObserver(function() {
@@ -1662,6 +1705,7 @@ closeBtn.addEventListener('click', function() {
     });
 
     pasangBoxDesktop();
+
     setTimeout(pasangBoxDesktop, 500);
     setTimeout(pasangBoxDesktop, 1500);
     setTimeout(pasangBoxDesktop, 3000);
