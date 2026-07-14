@@ -1453,8 +1453,21 @@ closeBtn.addEventListener('click', function() {
     const STYLE_ID = 'desktop-total-winner-dptoto-css';
 
     let warnaIndex = 0;
+
     let totalMenang = 783421607;
     let pemainAktif = 18437;
+
+    /* ANGKA AWAL TOTAL DEPOSIT DAN TOTAL WD */
+    let totalDeposit = 583726419;
+    let totalWd = 914305782;
+
+    /* BATAS ACAK TOTAL DEPOSIT */
+    const MIN_DEPOSIT = 500000000;
+    const MAX_DEPOSIT = 700000000;
+
+    /* BATAS ACAK TOTAL WD */
+    const MIN_WD = 750000000;
+    const MAX_WD = 1000000000;
 
     const warnaGlow = [
         {
@@ -1564,6 +1577,13 @@ closeBtn.addEventListener('click', function() {
                     text-align: right !important;
                 }
 
+                #${BOX_ID} .stats-second-row {
+                margin-top: 4px !important;
+                padding-top: 9px !important;
+                border-top:
+                1px solid rgba(255,255,255,.14) !important;
+                }
+
                 #${BOX_ID} .stats-label {
                     margin: 0 0 5px !important;
                     color: rgba(255,255,255,.68) !important;
@@ -1617,38 +1637,64 @@ closeBtn.addEventListener('click', function() {
         const box = document.createElement('div');
         box.id = BOX_ID;
 
-        box.innerHTML = `
-            <div class="silver-bar"></div>
+box.innerHTML = `
+    <div class="silver-bar"></div>
 
-            <div class="stats-wrap">
-                <div class="stats-col left">
-                    <div class="stats-label">
-                        Total Dimenangkan
-                    </div>
-
-                    <div
-                        class="stats-value"
-                        id="desktop-total-menang-value"
-                    >
-                        Rp1.624.864.247
-                    </div>
-                </div>
-
-                <div class="stats-col right">
-                    <div class="stats-label">
-                        Sedang Bermain
-                    </div>
-
-                    <div class="stats-value">
-                        <span class="playing-dot"></span>
-
-                        <span id="desktop-sedang-bermain-value">
-                            21.248
-                        </span>
-                    </div>
-                </div>
+    <div class="stats-wrap">
+        <div class="stats-col left">
+            <div class="stats-label">
+                Total Dimenangkan
             </div>
-        `;
+
+            <div
+                class="stats-value"
+                id="desktop-total-menang-value"
+            >
+                Rp783.421.607
+            </div>
+        </div>
+
+        <div class="stats-col right">
+            <div class="stats-label">
+                Sedang Bermain
+            </div>
+
+            <div class="stats-value">
+                <span class="playing-dot"></span>
+
+                <span id="desktop-sedang-bermain-value">
+                    18.437
+                </span>
+            </div>
+        </div>
+
+        <div class="stats-col left stats-second-row">
+            <div class="stats-label">
+                Total Deposit
+            </div>
+
+            <div
+                class="stats-value"
+                id="desktop-total-deposit-value"
+            >
+                Rp583.726.419
+            </div>
+        </div>
+
+        <div class="stats-col right stats-second-row">
+            <div class="stats-label">
+                Total WD
+            </div>
+
+            <div
+                class="stats-value"
+                id="desktop-total-wd-value"
+            >
+                Rp914.305.782
+            </div>
+        </div>
+    </div>
+`;
 
         return box;
     }
@@ -1693,14 +1739,32 @@ function ubahAngka() {
         'desktop-sedang-bermain-value'
     );
 
-    if (!totalEl || !pemainEl) return;
+    const depositEl = document.getElementById(
+        'desktop-total-deposit-value'
+    );
+
+    const wdEl = document.getElementById(
+        'desktop-total-wd-value'
+    );
+
+    if (
+        !totalEl ||
+        !pemainEl ||
+        !depositEl ||
+        !wdEl
+    ) {
+        return;
+    }
+
+    let totalBaru;
+    let pemainBaru;
+    let depositBaru;
+    let wdBaru;
 
     /*
-     * Total dimenangkan:
-     * acak dari Rp700.000.000 sampai Rp900.000.000.
+     * Total Dimenangkan:
+     * Rp700.000.000 sampai Rp900.000.000
      */
-    let totalBaru;
-
     do {
         totalBaru = angkaAcak(
             700000000,
@@ -1709,11 +1773,9 @@ function ubahAngka() {
     } while (totalBaru === totalMenang);
 
     /*
-     * Sedang bermain:
-     * acak dari 16.000 sampai 22.000.
+     * Sedang Bermain:
+     * 16.000 sampai 22.000
      */
-    let pemainBaru;
-
     do {
         pemainBaru = angkaAcak(
             16000,
@@ -1721,8 +1783,32 @@ function ubahAngka() {
         );
     } while (pemainBaru === pemainAktif);
 
+    /*
+     * Total Deposit:
+     * Rp500.000.000 sampai Rp700.000.000
+     */
+    do {
+        depositBaru = angkaAcak(
+            MIN_DEPOSIT,
+            MAX_DEPOSIT
+        );
+    } while (depositBaru === totalDeposit);
+
+    /*
+     * Total WD:
+     * Rp750.000.000 sampai Rp1.000.000.000
+     */
+    do {
+        wdBaru = angkaAcak(
+            MIN_WD,
+            MAX_WD
+        );
+    } while (wdBaru === totalWd);
+
     totalMenang = totalBaru;
     pemainAktif = pemainBaru;
+    totalDeposit = depositBaru;
+    totalWd = wdBaru;
 
     totalEl.textContent =
         'Rp' + formatID(totalMenang);
@@ -1730,53 +1816,45 @@ function ubahAngka() {
     pemainEl.textContent =
         formatID(pemainAktif);
 
-    /*
-     * Efek kecil saat angka berubah.
-     */
-    totalEl.style.setProperty(
-        'transform',
-        'scale(1.06)',
-        'important'
-    );
+    depositEl.textContent =
+        'Rp' + formatID(totalDeposit);
 
-    pemainEl.style.setProperty(
-        'transform',
-        'scale(1.06)',
-        'important'
-    );
+    wdEl.textContent =
+        'Rp' + formatID(totalWd);
 
-    totalEl.style.setProperty(
-        'text-shadow',
-        '0 0 8px rgba(255,255,255,.75)',
-        'important'
-    );
+    const semuaAngka = [
+        totalEl,
+        pemainEl,
+        depositEl,
+        wdEl
+    ];
 
-    pemainEl.style.setProperty(
-        'text-shadow',
-        '0 0 8px rgba(255,255,255,.75)',
-        'important'
-    );
+    semuaAngka.forEach(function(el) {
+        el.style.setProperty(
+            'transform',
+            'scale(1.05)',
+            'important'
+        );
+
+        el.style.setProperty(
+            'text-shadow',
+            '0 0 8px rgba(255,255,255,.75)',
+            'important'
+        );
+    });
 
     setTimeout(function() {
-        totalEl.style.setProperty(
-            'transform',
-            'scale(1)',
-            'important'
-        );
+        semuaAngka.forEach(function(el) {
+            el.style.setProperty(
+                'transform',
+                'scale(1)',
+                'important'
+            );
 
-        pemainEl.style.setProperty(
-            'transform',
-            'scale(1)',
-            'important'
-        );
-
-        totalEl.style.removeProperty(
-            'text-shadow'
-        );
-
-        pemainEl.style.removeProperty(
-            'text-shadow'
-        );
+            el.style.removeProperty(
+                'text-shadow'
+            );
+        });
     }, 220);
 }
 
