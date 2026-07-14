@@ -1447,141 +1447,124 @@ closeBtn.addEventListener('click', function() {
 })();
 
 
-/* ===== LOGIN MOBILE KHUSUS HALAMAN REGISTER ===== */
+/* ===== LOGIN MOBILE REGISTER - VERSI BERSIH ===== */
 (function () {
     const BOX_ID = 'custom-login-register-mobile';
-    const CSS_ID = 'custom-login-register-mobile-css';
+    const STYLE_ID = 'custom-login-register-mobile-css';
+    const STORAGE_KEY = 'dptoto_temp_login';
 
-    function sedangDiHalamanRegister() {
-        const pathRegister = location.pathname
-            .toLowerCase()
-            .includes('/register');
-
-        const adaKonfirmasiPassword =
-            document.querySelector(
-                'input[placeholder*="konfirmasi password" i]'
-            ) ||
-            document.querySelector(
-                'input[placeholder*="ulangi password" i]'
-            );
-
-        return pathRegister && !!adaKonfirmasiPassword;
+    function isMobile() {
+        return window.innerWidth <= 768;
     }
 
-    function hapusLoginTambahan() {
+    function isRegisterPage() {
+        return location.pathname.toLowerCase().includes('/register');
+    }
+
+    function removeCustomLogin() {
         const box = document.getElementById(BOX_ID);
-
-        if (box) {
-            box.remove();
-        }
+        if (box) box.remove();
     }
 
-    function pasangCSS() {
-        if (document.getElementById(CSS_ID)) return;
+    function injectStyle() {
+        if (document.getElementById(STYLE_ID)) return;
 
         const style = document.createElement('style');
-        style.id = CSS_ID;
+        style.id = STYLE_ID;
 
         style.textContent = `
-            #custom-login-register-mobile {
+            #${BOX_ID} {
                 display: none !important;
             }
 
             @media (max-width: 768px) {
-                #custom-login-register-mobile {
+                #${BOX_ID} {
                     display: block !important;
                     width: calc(100% - 28px) !important;
                     margin: 14px auto 22px !important;
                     padding: 18px 14px !important;
                     box-sizing: border-box !important;
                     background: #020202 !important;
-                    border-radius: 9px !important;
+                    border-radius: 10px !important;
                 }
 
-                #custom-login-register-mobile .login-mobile-title {
-                    margin: 0 0 17px !important;
-                    color: #ffffff !important;
+                #${BOX_ID} .custom-login-title {
+                    margin-bottom: 17px !important;
+                    color: #fff !important;
                     font-family: Arial, sans-serif !important;
                     font-size: 13px !important;
-                    font-weight: 500 !important;
                     text-align: center !important;
                 }
 
-                #custom-login-register-mobile .login-mobile-field {
+                #${BOX_ID} .custom-login-field {
                     position: relative !important;
                     width: 100% !important;
                     margin-bottom: 12px !important;
                 }
 
-                #custom-login-register-mobile input {
+                #${BOX_ID} input {
                     display: block !important;
                     width: 100% !important;
                     height: 44px !important;
                     margin: 0 !important;
                     padding: 0 43px 0 15px !important;
                     box-sizing: border-box !important;
-                    color: #222222 !important;
+                    color: #222 !important;
                     font-family: Arial, sans-serif !important;
                     font-size: 14px !important;
                     text-align: center !important;
-                    background: #ffffff !important;
+                    background: #fff !important;
                     border: 2px solid #12cfff !important;
                     border-radius: 15px !important;
                     outline: none !important;
                     box-shadow:
-                        0 0 7px rgba(0, 207, 255, .85),
-                        0 0 14px rgba(0, 112, 255, .45) !important;
+                        0 0 7px rgba(0,207,255,.85),
+                        0 0 14px rgba(0,112,255,.45) !important;
                 }
 
-                #custom-login-register-mobile input::placeholder {
-                    color: #777777 !important;
-                    opacity: 1 !important;
-                }
-
-                #custom-login-register-mobile .login-password-eye {
+                #${BOX_ID} .custom-password-eye {
                     position: absolute !important;
                     top: 50% !important;
                     right: 12px !important;
                     transform: translateY(-50%) !important;
-                    width: 25px !important;
-                    height: 25px !important;
+                    width: 26px !important;
+                    height: 26px !important;
                     padding: 0 !important;
-                    color: #555555 !important;
-                    font-size: 17px !important;
-                    line-height: 25px !important;
+                    color: #555 !important;
+                    font-size: 16px !important;
                     background: transparent !important;
-                    border: none !important;
+                    border: 0 !important;
+                    box-shadow: none !important;
                     cursor: pointer !important;
                 }
 
-                #custom-login-register-mobile .login-mobile-button {
+                #${BOX_ID} .custom-login-submit {
                     display: block !important;
                     width: 100% !important;
                     height: 42px !important;
                     margin: 3px 0 0 !important;
                     padding: 0 !important;
-                    color: #ffffff !important;
+                    color: #fff !important;
                     font-family: Arial, sans-serif !important;
                     font-size: 17px !important;
                     font-weight: 800 !important;
-                    background:
-                        linear-gradient(
-                            180deg,
-                            #25dcff 0%,
-                            #0089db 45%,
-                            #003c81 100%
-                        ) !important;
+                    background: linear-gradient(
+                        180deg,
+                        #25dcff 0%,
+                        #0089db 45%,
+                        #003c81 100%
+                    ) !important;
                     border: 1px solid #57eaff !important;
                     border-radius: 23px !important;
                     box-shadow:
-                        0 0 10px rgba(0, 205, 255, .8),
-                        inset 0 1px 0 rgba(255, 255, 255, .6) !important;
+                        0 0 10px rgba(0,205,255,.8),
+                        inset 0 1px 0 rgba(255,255,255,.6) !important;
                     cursor: pointer !important;
                 }
 
-                #custom-login-register-mobile .login-mobile-separator {
-                    margin: 21px 0 0 !important;
-                    color: #ffffff !important;
+                #${BOX_ID} .custom-register-separator {
+                    margin-top: 21px !important;
+                    color: #fff !important;
                     font-family: Arial, sans-serif !important;
                     font-size: 15px !important;
                     font-weight: 800 !important;
@@ -1593,18 +1576,18 @@ closeBtn.addEventListener('click', function() {
         document.head.appendChild(style);
     }
 
-    function cariJudulDaftar() {
-        const semuaElemen = document.querySelectorAll(
+    function findRegisterTitle() {
+        const elements = document.querySelectorAll(
             'h1, h2, h3, h4, h5, strong, b, span, div, p'
         );
 
-        for (const el of semuaElemen) {
-            const teks = (el.textContent || '')
+        for (const el of elements) {
+            const text = (el.textContent || '')
                 .replace(/\s+/g, ' ')
                 .trim()
                 .toUpperCase();
 
-            if (teks === 'DAFTAR AKUN') {
+            if (text === 'DAFTAR AKUN') {
                 return el;
             }
         }
@@ -1612,14 +1595,9 @@ closeBtn.addEventListener('click', function() {
         return null;
     }
 
-    function pasangLoginRegister() {
-        if (window.innerWidth > 768) {
-            hapusLoginTambahan();
-            return;
-        }
-
-        if (!sedangDiHalamanRegister()) {
-            hapusLoginTambahan();
+    function installRegisterLogin() {
+        if (!isMobile() || !isRegisterPage()) {
+            removeCustomLogin();
             return;
         }
 
@@ -1628,74 +1606,64 @@ closeBtn.addEventListener('click', function() {
         const registerUsername =
             document.querySelector(
                 'input[placeholder*="masukan username" i]'
-            ) ||
-            document.querySelector(
-                'input[name*="username" i]'
             );
 
         if (!registerUsername) return;
 
-        pasangCSS();
+        injectStyle();
 
         const box = document.createElement('div');
         box.id = BOX_ID;
 
         box.innerHTML = `
-            <div class="login-mobile-title">
+            <div class="custom-login-title">
                 Silakan login untuk mulai bermain
             </div>
 
-            <div class="login-mobile-field">
+            <div class="custom-login-field">
                 <input
-                    id="custom-login-username"
                     type="text"
+                    id="custom-login-username"
                     placeholder="Username"
                     autocomplete="username"
                 >
             </div>
 
-            <div class="login-mobile-field">
+            <div class="custom-login-field">
                 <input
-                    id="custom-login-password"
                     type="password"
+                    id="custom-login-password"
                     placeholder="Password"
                     autocomplete="current-password"
                 >
 
                 <button
                     type="button"
-                    class="login-password-eye"
-                    aria-label="Tampilkan password"
+                    class="custom-password-eye"
                 >◉</button>
             </div>
 
             <button
                 type="button"
-                class="login-mobile-button"
+                class="custom-login-submit"
             >
                 LOGIN
             </button>
 
-            <div class="login-mobile-separator">
+            <div class="custom-register-separator">
                 ATAU DAFTAR AKUN BARU
             </div>
         `;
 
-        const judulDaftar = cariJudulDaftar();
+        const title = findRegisterTitle();
 
-        if (judulDaftar) {
-            judulDaftar.insertAdjacentElement(
-                'beforebegin',
-                box
-            );
+        if (title) {
+            title.insertAdjacentElement('beforebegin', box);
         } else {
-            const registerForm = registerUsername.closest('form');
+            const form = registerUsername.closest('form');
 
-            if (registerForm) {
-                registerForm.insertAdjacentElement(
-                    'beforebegin',
-                    box
-                );
+            if (form) {
+                form.insertAdjacentElement('beforebegin', box);
             } else {
                 registerUsername.parentElement.insertAdjacentElement(
                     'beforebegin',
@@ -1704,37 +1672,178 @@ closeBtn.addEventListener('click', function() {
             }
         }
 
-        const password = box.querySelector(
+        const usernameInput = box.querySelector(
+            '#custom-login-username'
+        );
+
+        const passwordInput = box.querySelector(
             '#custom-login-password'
         );
 
         box
-            .querySelector('.login-password-eye')
+            .querySelector('.custom-password-eye')
             .addEventListener('click', function () {
-                password.type =
-                    password.type === 'password'
+                passwordInput.type =
+                    passwordInput.type === 'password'
                         ? 'text'
                         : 'password';
             });
 
         box
-            .querySelector('.login-mobile-button')
+            .querySelector('.custom-login-submit')
             .addEventListener('click', function () {
-                window.location.href = '/login';
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value;
+
+                if (!username || !password) {
+                    alert('Username dan password wajib diisi.');
+                    return;
+                }
+
+                sessionStorage.setItem(
+                    STORAGE_KEY,
+                    JSON.stringify({
+                        username: username,
+                        password: password
+                    })
+                );
+
+                /*
+                 * Login asli website berada di homepage,
+                 * bukan di /login.
+                 */
+                window.location.href = '/';
             });
     }
 
-    function cekHalaman() {
-        if (!sedangDiHalamanRegister()) {
-            hapusLoginTambahan();
+    function setNativeInputValue(input, value) {
+        const setter = Object.getOwnPropertyDescriptor(
+            window.HTMLInputElement.prototype,
+            'value'
+        ).set;
+
+        setter.call(input, value);
+
+        input.dispatchEvent(
+            new Event('input', {
+                bubbles: true
+            })
+        );
+
+        input.dispatchEvent(
+            new Event('change', {
+                bubbles: true
+            })
+        );
+    }
+
+    function submitNativeLogin() {
+        if (isRegisterPage()) return;
+
+        const saved = sessionStorage.getItem(STORAGE_KEY);
+        if (!saved) return;
+
+        let loginData;
+
+        try {
+            loginData = JSON.parse(saved);
+        } catch (error) {
+            sessionStorage.removeItem(STORAGE_KEY);
             return;
         }
 
-        pasangLoginRegister();
+        const loginArea =
+            document.querySelector('.home-page__login') ||
+            document.querySelector(
+                '[class*="home-page__login"]'
+            );
+
+        if (!loginArea) return;
+
+        const usernameInput =
+            loginArea.querySelector(
+                'input[placeholder*="username" i]'
+            ) ||
+            loginArea.querySelector(
+                'input[type="text"]'
+            );
+
+        const passwordInput =
+            loginArea.querySelector(
+                'input[placeholder*="password" i]'
+            ) ||
+            loginArea.querySelector(
+                'input[type="password"]'
+            );
+
+        if (!usernameInput || !passwordInput) return;
+
+        setNativeInputValue(
+            usernameInput,
+            loginData.username
+        );
+
+        setNativeInputValue(
+            passwordInput,
+            loginData.password
+        );
+
+        const buttons = Array.from(
+            loginArea.querySelectorAll(
+                'button, input[type="submit"], a'
+            )
+        );
+
+        const loginButton = buttons.find(function (element) {
+            const text = (
+                element.innerText ||
+                element.textContent ||
+                element.value ||
+                ''
+            )
+                .trim()
+                .toUpperCase();
+
+            return text === 'LOGIN';
+        });
+
+        sessionStorage.removeItem(STORAGE_KEY);
+
+        if (loginButton) {
+            setTimeout(function () {
+                loginButton.click();
+            }, 300);
+
+            return;
+        }
+
+        const form = usernameInput.closest('form');
+
+        if (form) {
+            if (typeof form.requestSubmit === 'function') {
+                form.requestSubmit();
+            } else {
+                form.dispatchEvent(
+                    new Event('submit', {
+                        bubbles: true,
+                        cancelable: true
+                    })
+                );
+            }
+        }
+    }
+
+    function run() {
+        if (isRegisterPage()) {
+            installRegisterLogin();
+        } else {
+            removeCustomLogin();
+            submitNativeLogin();
+        }
     }
 
     const observer = new MutationObserver(function () {
-        cekHalaman();
+        run();
     });
 
     observer.observe(document.documentElement, {
@@ -1742,33 +1851,8 @@ closeBtn.addEventListener('click', function() {
         subtree: true
     });
 
-    const pushStateAsli = history.pushState;
-
-    history.pushState = function () {
-        pushStateAsli.apply(this, arguments);
-
-        setTimeout(cekHalaman, 100);
-        setTimeout(cekHalaman, 500);
-    };
-
-    const replaceStateAsli = history.replaceState;
-
-    history.replaceState = function () {
-        replaceStateAsli.apply(this, arguments);
-
-        setTimeout(cekHalaman, 100);
-        setTimeout(cekHalaman, 500);
-    };
-
-    window.addEventListener('popstate', function () {
-        setTimeout(cekHalaman, 100);
-        setTimeout(cekHalaman, 500);
-    });
-
-    cekHalaman();
-    setTimeout(cekHalaman, 500);
-    setTimeout(cekHalaman, 1500);
-    setTimeout(cekHalaman, 3000);
-
-    setInterval(cekHalaman, 1000);
+    run();
+    setTimeout(run, 500);
+    setTimeout(run, 1500);
+    setTimeout(run, 3000);
 })();
