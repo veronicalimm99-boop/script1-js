@@ -1453,6 +1453,8 @@ closeBtn.addEventListener('click', function() {
     const STYLE_ID = 'desktop-total-winner-dptoto-css';
 
     let warnaIndex = 0;
+    let totalMenangBerjalan = 1624864247;
+    let sedangBermainBerjalan = 21248;
 
     const warnaGlow = [
         {
@@ -1626,7 +1628,9 @@ closeBtn.addEventListener('click', function() {
                     </div>
 
                     <div class="stats-value">
-                        Rp1.624.864.247
+                <span id="desktop-total-menang-value">
+                    Rp1.624.864.247
+                        </span>
                     </div>
                 </div>
 
@@ -1635,9 +1639,10 @@ closeBtn.addEventListener('click', function() {
                         Sedang Bermain
                     </div>
 
-                    <div class="stats-value">
-                        <span class="playing-dot"></span>
-                        <span>21.248</span>
+                    <span class="playing-dot"></span>
+                <span id="desktop-sedang-bermain-value">
+                    21.248
+                </span>
                     </div>
                 </div>
             </div>
@@ -1718,6 +1723,15 @@ closeBtn.addEventListener('click', function() {
         600
     );
 
+    if (window.__totalWinnerNumberInterval) {
+    clearInterval(window.__totalWinnerNumberInterval);
+    }
+
+    window.__totalWinnerNumberInterval = setInterval(
+    ubahAngkaStatistik,
+    900
+    );
+
     const observer = new MutationObserver(function() {
         pasangBoxDesktop();
     });
@@ -1742,3 +1756,48 @@ closeBtn.addEventListener('click', function() {
         }
     });
 })();
+
+function formatAngkaIndonesia(angka) {
+    return Math.floor(angka).toLocaleString('id-ID');
+}
+
+function ubahAngkaStatistik() {
+    const totalEl = document.getElementById(
+        'desktop-total-menang-value'
+    );
+
+    const bermainEl = document.getElementById(
+        'desktop-sedang-bermain-value'
+    );
+
+    if (!totalEl || !bermainEl) return;
+
+    /*
+     * Total dimenangkan terus bertambah.
+     */
+    const tambahanTotal =
+        Math.floor(Math.random() * 850000) + 150000;
+
+    totalMenangBerjalan += tambahanTotal;
+
+    /*
+     * Sedang bermain naik atau turun secara acak.
+     */
+    const perubahanPemain =
+        Math.floor(Math.random() * 19) - 7;
+
+    sedangBermainBerjalan += perubahanPemain;
+
+    /*
+     * Supaya jumlah pemain tidak turun terlalu jauh.
+     */
+    if (sedangBermainBerjalan < 21000) {
+        sedangBermainBerjalan = 21000;
+    }
+
+    totalEl.textContent =
+        'Rp' + formatAngkaIndonesia(totalMenangBerjalan);
+
+    bermainEl.textContent =
+        formatAngkaIndonesia(sedangBermainBerjalan);
+}
