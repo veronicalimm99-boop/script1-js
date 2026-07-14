@@ -1629,34 +1629,34 @@ closeBtn.addEventListener('click', function() {
         const box = document.createElement('div');
         box.id = BOX_ID;
 
-        box.innerHTML = `
-            <div class="silver-bar">
-                <span class="silver-sweep"></span>
+box.innerHTML = `
+    <span class="bg-shine"></span>
+
+    <div class="silver-bar"></div>
+
+    <div class="stats-wrap">
+        <div class="stats-col left">
+            <div class="stats-label">
+                Total Dimenangkan
             </div>
 
-            <div class="stats-wrap">
-                <div class="stats-col left">
-                    <div class="stats-label">
-                        Total Dimenangkan
-                    </div>
-
-                    <div class="stats-value">
-                        Rp1.624.864.247
-                    </div>
-                </div>
-
-                <div class="stats-col right">
-                    <div class="stats-label">
-                        Sedang Bermain
-                    </div>
-
-                    <div class="stats-value">
-                        <span class="playing-dot"></span>
-                        <span>21.248</span>
-                    </div>
-                </div>
+            <div class="stats-value">
+                Rp1.624.864.247
             </div>
-        `;
+        </div>
+
+        <div class="stats-col right">
+            <div class="stats-label">
+                Sedang Bermain
+            </div>
+
+            <div class="stats-value">
+                <span class="playing-dot"></span>
+                <span>21.248</span>
+            </div>
+        </div>
+    </div>
+`;
 
         return box;
     }
@@ -1720,12 +1720,12 @@ closeBtn.addEventListener('click', function() {
     });
 })();
 
-/* ===== PAKSA KILAU SILVER BERGERAK ===== */
+/* ===== PAKSA KILAU BERJALAN DI BACKGROUND BOX ===== */
 (function () {
     let shineFrame = null;
     let shineStart = null;
 
-    function jalankanKilauSilver() {
+    function jalankanKilauBackground() {
         if (window.innerWidth <= 768) return;
 
         const box = document.getElementById(
@@ -1734,55 +1734,67 @@ closeBtn.addEventListener('click', function() {
 
         if (!box) return;
 
-        let bar = box.querySelector('.silver-bar');
+        let bgShine = box.querySelector('.bg-shine');
 
-        if (!bar) {
-            bar = document.createElement('div');
-            bar.className = 'silver-bar';
-            box.insertAdjacentElement('afterbegin', bar);
+        if (!bgShine) {
+            bgShine = document.createElement('span');
+            bgShine.className = 'bg-shine';
+            box.insertAdjacentElement('afterbegin', bgShine);
         }
 
-        let kilau = bar.querySelector('.silver-sweep');
+        /* BOX */
+        box.style.setProperty('position', 'relative', 'important');
+        box.style.setProperty('overflow', 'hidden', 'important');
 
-        if (!kilau) {
-            kilau = document.createElement('span');
-            kilau.className = 'silver-sweep';
-            bar.appendChild(kilau);
+        /* SILVER BAR TETAP DIAM */
+        const silverBar = box.querySelector('.silver-bar');
+        if (silverBar) {
+            silverBar.style.setProperty('position', 'relative', 'important');
+            silverBar.style.setProperty('z-index', '3', 'important');
+            silverBar.style.setProperty('display', 'block', 'important');
+            silverBar.style.setProperty('width', '100%', 'important');
+            silverBar.style.setProperty('height', '9px', 'important');
+            silverBar.style.setProperty(
+                'background',
+                'linear-gradient(180deg,#f7f9fc 0%,#bec8d5 35%,#778496 65%,#dce3ec 100%)',
+                'important'
+            );
+            silverBar.style.setProperty(
+                'box-shadow',
+                '0 0 7px rgba(235,242,252,.85),0 0 14px rgba(175,195,220,.65)',
+                'important'
+            );
         }
 
-        /* Paksa bentuk garis silver */
-        bar.style.setProperty('position', 'relative', 'important');
-        bar.style.setProperty('display', 'block', 'important');
-        bar.style.setProperty('width', '100%', 'important');
-        bar.style.setProperty('height', '9px', 'important');
-        bar.style.setProperty('overflow', 'hidden', 'important');
-        bar.style.setProperty(
-            'background',
-            'linear-gradient(180deg,#f8fbff 0%,#c3cedb 38%,#778496 68%,#e5ebf2 100%)',
-            'important'
-        );
+        /* KONTEN HARUS DI ATAS KILAU */
+        const statsWrap = box.querySelector('.stats-wrap');
+        if (statsWrap) {
+            statsWrap.style.setProperty('position', 'relative', 'important');
+            statsWrap.style.setProperty('z-index', '3', 'important');
+        }
 
-        /* Paksa bentuk cahaya kilau */
-        kilau.style.setProperty('position', 'absolute', 'important');
-        kilau.style.setProperty('top', '-4px', 'important');
-        kilau.style.setProperty('left', '0', 'important');
-        kilau.style.setProperty('display', 'block', 'important');
-        kilau.style.setProperty('width', '38%', 'important');
-        kilau.style.setProperty('height', '17px', 'important');
-        kilau.style.setProperty(
+        /* KILAU BACKGROUND */
+        bgShine.style.setProperty('position', 'absolute', 'important');
+        bgShine.style.setProperty('top', '10px', 'important');
+        bgShine.style.setProperty('left', '0', 'important');
+        bgShine.style.setProperty('width', '48%', 'important');
+        bgShine.style.setProperty('height', 'calc(100% - 10px)', 'important');
+        bgShine.style.setProperty('display', 'block', 'important');
+        bgShine.style.setProperty(
             'background',
-            'linear-gradient(90deg,transparent 0%,rgba(255,255,255,.15) 20%,#ffffff 50%,rgba(255,255,255,.15) 80%,transparent 100%)',
+            'linear-gradient(100deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.04) 18%, rgba(255,255,255,.12) 32%, rgba(255,255,255,.26) 50%, rgba(255,255,255,.12) 68%, rgba(255,255,255,.04) 82%, rgba(255,255,255,0) 100%)',
             'important'
         );
-        kilau.style.setProperty('filter', 'blur(1px)', 'important');
-        kilau.style.setProperty(
+        bgShine.style.setProperty('filter', 'blur(2px)', 'important');
+        bgShine.style.setProperty(
             'box-shadow',
-            '0 0 10px #ffffff,0 0 20px rgba(210,230,255,.95)',
+            '0 0 18px rgba(255,255,255,.18)',
             'important'
         );
-        kilau.style.setProperty('z-index', '999', 'important');
-        kilau.style.setProperty('pointer-events', 'none', 'important');
-        kilau.style.setProperty('animation', 'none', 'important');
+        bgShine.style.setProperty('pointer-events', 'none', 'important');
+        bgShine.style.setProperty('z-index', '1', 'important');
+        bgShine.style.setProperty('opacity', '.95', 'important');
+        bgShine.style.setProperty('transform', 'translate3d(-170%,0,0)', 'important');
 
         if (shineFrame) {
             cancelAnimationFrame(shineFrame);
@@ -1791,35 +1803,31 @@ closeBtn.addEventListener('click', function() {
         shineStart = null;
 
         function gerakkanKilau(waktu) {
-            if (!document.body.contains(kilau)) {
+            if (!document.body.contains(box) || !document.body.contains(bgShine)) {
                 shineFrame = null;
                 return;
             }
 
             if (!shineStart) shineStart = waktu;
 
-            /*
-             * 1,7 detik bergerak.
-             * 0,6 detik jeda.
-             */
-            const durasiGerak = 1700;
-            const durasiJeda = 600;
+            const durasiGerak = 1900;
+            const durasiJeda = 700;
             const totalDurasi = durasiGerak + durasiJeda;
             const berjalan = (waktu - shineStart) % totalDurasi;
 
             if (berjalan <= durasiGerak) {
                 const progress = berjalan / durasiGerak;
-                const posisi = -45 + (progress * 190);
+                const posisi = -170 + (progress * 330);
 
-                kilau.style.setProperty(
+                bgShine.style.setProperty(
                     'transform',
                     'translate3d(' + posisi + '%,0,0)',
                     'important'
                 );
 
-                kilau.style.setProperty('opacity', '1', 'important');
+                bgShine.style.setProperty('opacity', '.95', 'important');
             } else {
-                kilau.style.setProperty('opacity', '0', 'important');
+                bgShine.style.setProperty('opacity', '0', 'important');
             }
 
             shineFrame = requestAnimationFrame(gerakkanKilau);
@@ -1828,24 +1836,22 @@ closeBtn.addEventListener('click', function() {
         shineFrame = requestAnimationFrame(gerakkanKilau);
     }
 
-    jalankanKilauSilver();
+    jalankanKilauBackground();
 
-    setTimeout(jalankanKilauSilver, 500);
-    setTimeout(jalankanKilauSilver, 1500);
-    setTimeout(jalankanKilauSilver, 3000);
+    setTimeout(jalankanKilauBackground, 500);
+    setTimeout(jalankanKilauBackground, 1500);
+    setTimeout(jalankanKilauBackground, 3000);
 
-    const observerKilau = new MutationObserver(function () {
+    const observerKilauBg = new MutationObserver(function () {
         if (
-            document.getElementById(
-                'desktop-total-winner-dptoto'
-            ) &&
+            document.getElementById('desktop-total-winner-dptoto') &&
             !shineFrame
         ) {
-            jalankanKilauSilver();
+            jalankanKilauBackground();
         }
     });
 
-    observerKilau.observe(document.documentElement, {
+    observerKilauBg.observe(document.documentElement, {
         childList: true,
         subtree: true
     });
