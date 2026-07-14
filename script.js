@@ -1718,57 +1718,74 @@ closeBtn.addEventListener('click', function() {
             });
 
         box
-            .querySelector('.login-mobile-button')
-            .addEventListener('click', function () {
-                window.location.href = '/login';
-            });
-    }
+    .querySelector('.login-mobile-button')
+    .addEventListener('click', function () {
+        const username = document
+            .getElementById('custom-login-username')
+            .value
+            .trim();
 
-    function cekHalaman() {
-        if (!sedangDiHalamanRegister()) {
-            hapusLoginTambahan();
+        const password = document
+            .getElementById('custom-login-password')
+            .value;
+
+        const loginUsername =
+            document.querySelector(
+                '.home-page__login input[type="text"]'
+            ) ||
+            document.querySelector(
+                'input[placeholder="Masukan username"]'
+            );
+
+        const loginPassword =
+            document.querySelector(
+                '.home-page__login input[type="password"]'
+            ) ||
+            document.querySelector(
+                'input[placeholder="Masukan password"]'
+            );
+
+        if (!username || !password) {
+            alert('Username dan password wajib diisi.');
             return;
         }
 
-        pasangLoginRegister();
-    }
+        if (!loginUsername || !loginPassword) {
+            alert('Form login asli belum ditemukan.');
+            return;
+        }
 
-    const observer = new MutationObserver(function () {
-        cekHalaman();
+        loginUsername.value = username;
+        loginPassword.value = password;
+
+        loginUsername.dispatchEvent(
+            new Event('input', { bubbles: true })
+        );
+
+        loginPassword.dispatchEvent(
+            new Event('input', { bubbles: true })
+        );
+
+        const tombolLoginAsli =
+            document.querySelector(
+                '.home-page__login button[type="submit"]'
+            ) ||
+            document.querySelector(
+                '.home-page__login input[type="submit"]'
+            ) ||
+            Array.from(
+                document.querySelectorAll('button')
+            ).find(function (btn) {
+                return (
+                    (btn.innerText || btn.textContent || '')
+                        .trim()
+                        .toUpperCase() === 'LOGIN'
+                );
+            });
+
+        if (tombolLoginAsli) {
+            tombolLoginAsli.click();
+        } else {
+            alert('Tombol login asli belum ditemukan.');
+        }
     });
-
-    observer.observe(document.documentElement, {
-        childList: true,
-        subtree: true
-    });
-
-    const pushStateAsli = history.pushState;
-
-    history.pushState = function () {
-        pushStateAsli.apply(this, arguments);
-
-        setTimeout(cekHalaman, 100);
-        setTimeout(cekHalaman, 500);
-    };
-
-    const replaceStateAsli = history.replaceState;
-
-    history.replaceState = function () {
-        replaceStateAsli.apply(this, arguments);
-
-        setTimeout(cekHalaman, 100);
-        setTimeout(cekHalaman, 500);
-    };
-
-    window.addEventListener('popstate', function () {
-        setTimeout(cekHalaman, 100);
-        setTimeout(cekHalaman, 500);
-    });
-
-    cekHalaman();
-    setTimeout(cekHalaman, 500);
-    setTimeout(cekHalaman, 1500);
-    setTimeout(cekHalaman, 3000);
-
-    setInterval(cekHalaman, 1000);
-})();
