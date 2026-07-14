@@ -1777,24 +1777,25 @@ box.innerHTML = `
         bgShine.style.setProperty('position', 'absolute', 'important');
         bgShine.style.setProperty('top', '10px', 'important');
         bgShine.style.setProperty('left', '0', 'important');
-        bgShine.style.setProperty('width', '48%', 'important');
-        bgShine.style.setProperty('height', 'calc(100% - 10px)', 'important');
+        bgShine.style.setProperty('width', '62%', 'important');
+        bgShine.style.setProperty('height', 'calc(100% - 8px)', 'important');
         bgShine.style.setProperty('display', 'block', 'important');
         bgShine.style.setProperty(
-            'background',
-            'linear-gradient(100deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.04) 18%, rgba(255,255,255,.12) 32%, rgba(255,255,255,.26) 50%, rgba(255,255,255,.12) 68%, rgba(255,255,255,.04) 82%, rgba(255,255,255,0) 100%)',
-            'important'
+        'background',
+        'linear-gradient(100deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.10) 14%, rgba(255,255,255,.28) 28%, rgba(255,255,255,.62) 42%, rgba(255,255,255,.98) 50%, rgba(255,255,255,.62) 58%, rgba(255,255,255,.28) 72%, rgba(255,255,255,.10) 86%, rgba(255,255,255,0) 100%)',
+        'important'
         );
-        bgShine.style.setProperty('filter', 'blur(2px)', 'important');
+        bgShine.style.setProperty('filter', 'blur(1.2px)', 'important');
         bgShine.style.setProperty(
-            'box-shadow',
-            '0 0 18px rgba(255,255,255,.18)',
-            'important'
+        'box-shadow',
+        '0 0 26px rgba(255,255,255,.42), 0 0 44px rgba(210,230,255,.28), inset 0 0 12px rgba(255,255,255,.18)',
+        'important'
         );
         bgShine.style.setProperty('pointer-events', 'none', 'important');
         bgShine.style.setProperty('z-index', '1', 'important');
-        bgShine.style.setProperty('opacity', '.95', 'important');
-        bgShine.style.setProperty('transform', 'translate3d(-170%,0,0)', 'important');
+        bgShine.style.setProperty('opacity', '1', 'important');
+        bgShine.style.setProperty('mix-blend-mode', 'screen', 'important');
+        bgShine.style.setProperty('transform', 'translate3d(-180%,0,0)', 'important');
 
         if (shineFrame) {
             cancelAnimationFrame(shineFrame);
