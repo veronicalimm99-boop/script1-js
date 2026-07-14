@@ -1453,8 +1453,8 @@ closeBtn.addEventListener('click', function() {
     const STYLE_ID = 'desktop-total-winner-dptoto-css';
 
     let warnaIndex = 0;
-    let totalMenang = 1624864247;
-    let pemainAktif = 21248;
+    let totalMenang = 783421607;
+    let pemainAktif = 18437;
 
     const warnaGlow = [
         {
@@ -1678,59 +1678,107 @@ closeBtn.addEventListener('click', function() {
         warnaIndex++;
     }
 
-    function ubahAngka() {
-        const totalEl = document.getElementById(
-            'desktop-total-menang-value'
+function angkaAcak(min, max) {
+    return Math.floor(
+        Math.random() * (max - min + 1)
+    ) + min;
+}
+
+function ubahAngka() {
+    const totalEl = document.getElementById(
+        'desktop-total-menang-value'
+    );
+
+    const pemainEl = document.getElementById(
+        'desktop-sedang-bermain-value'
+    );
+
+    if (!totalEl || !pemainEl) return;
+
+    /*
+     * Total dimenangkan:
+     * acak dari Rp700.000.000 sampai Rp900.000.000.
+     */
+    let totalBaru;
+
+    do {
+        totalBaru = angkaAcak(
+            700000000,
+            900000000
         );
+    } while (totalBaru === totalMenang);
 
-        const pemainEl = document.getElementById(
-            'desktop-sedang-bermain-value'
+    /*
+     * Sedang bermain:
+     * acak dari 16.000 sampai 22.000.
+     */
+    let pemainBaru;
+
+    do {
+        pemainBaru = angkaAcak(
+            16000,
+            22000
         );
+    } while (pemainBaru === pemainAktif);
 
-        if (!totalEl || !pemainEl) return;
+    totalMenang = totalBaru;
+    pemainAktif = pemainBaru;
 
-        totalMenang +=
-            Math.floor(Math.random() * 750000) + 250000;
+    totalEl.textContent =
+        'Rp' + formatID(totalMenang);
 
-        pemainAktif +=
-            Math.floor(Math.random() * 25) - 10;
+    pemainEl.textContent =
+        formatID(pemainAktif);
 
-        if (pemainAktif < 21000) {
-            pemainAktif = 21000;
-        }
+    /*
+     * Efek kecil saat angka berubah.
+     */
+    totalEl.style.setProperty(
+        'transform',
+        'scale(1.06)',
+        'important'
+    );
 
-        totalEl.textContent =
-            'Rp' + formatID(totalMenang);
+    pemainEl.style.setProperty(
+        'transform',
+        'scale(1.06)',
+        'important'
+    );
 
-        pemainEl.textContent =
-            formatID(pemainAktif);
+    totalEl.style.setProperty(
+        'text-shadow',
+        '0 0 8px rgba(255,255,255,.75)',
+        'important'
+    );
 
+    pemainEl.style.setProperty(
+        'text-shadow',
+        '0 0 8px rgba(255,255,255,.75)',
+        'important'
+    );
+
+    setTimeout(function() {
         totalEl.style.setProperty(
             'transform',
-            'scale(1.06)',
+            'scale(1)',
             'important'
         );
 
         pemainEl.style.setProperty(
             'transform',
-            'scale(1.06)',
+            'scale(1)',
             'important'
         );
 
-        setTimeout(function() {
-            totalEl.style.setProperty(
-                'transform',
-                'scale(1)',
-                'important'
-            );
+        totalEl.style.removeProperty(
+            'text-shadow'
+        );
 
-            pemainEl.style.setProperty(
-                'transform',
-                'scale(1)',
-                'important'
-            );
-        }, 180);
-    }
+        pemainEl.style.removeProperty(
+            'text-shadow'
+        );
+    }, 220);
+}
 
     function pasangBoxDesktop() {
         if (window.innerWidth <= 768) {
@@ -1785,7 +1833,7 @@ closeBtn.addEventListener('click', function() {
     }
 
     window.__totalWinnerNumberInterval =
-        setInterval(ubahAngka, 1000);
+    setInterval(ubahAngka, 2500);
 
     const observer =
         new MutationObserver(pasangBoxDesktop);
