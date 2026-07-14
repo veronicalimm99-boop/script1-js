@@ -1515,31 +1515,26 @@ closeBtn.addEventListener('click', function() {
 
         style.textContent = `
             #${BOX_ID} {
-                display: none !important;
-            }
-
-            @media screen and (min-width: 769px) {
-                #${BOX_ID} {
-                    display: block !important;
-                    position: relative !important;
-                    width: 100% !important;
-                    max-width: 345px !important;
-                    margin: 14px 0 0 !important;
-                    padding: 0 !important;
-                    box-sizing: border-box !important;
-                    overflow: hidden !important;
-                    background: #05143d !important;
-                    border: 3px solid #00ffff !important;
-                    border-radius: 16px !important;
-                    box-shadow:
-                        0 0 8px rgba(0,255,255,.95),
-                        0 0 17px rgba(0,170,255,.70),
-                        0 0 25px rgba(0,255,255,.45),
-                        inset 0 0 8px rgba(255,255,255,.06) !important;
-                    font-family: Arial, sans-serif !important;
-                    transition:
-                        border-color .3s ease,
-                        box-shadow .3s ease !important;
+                display: block !important;
+                position: relative !important;
+                width: 100% !important;
+                max-width: 345px !important;
+                margin: 14px 0 0 !important;
+                padding: 0 !important;
+                box-sizing: border-box !important;
+                overflow: hidden !important;
+                background: #05143d !important;
+                border: 3px solid #00ffff !important;
+                border-radius: 16px !important;
+                box-shadow:
+                0 0 8px rgba(0,255,255,.95),
+                0 0 17px rgba(0,170,255,.70),
+                0 0 25px rgba(0,255,255,.45),
+                inset 0 0 8px rgba(255,255,255,.06) !important;
+                font-family: Arial, sans-serif !important;
+                transition:
+                border-color .3s ease,
+                box-shadow .3s ease !important;
                 }
 
                 #${BOX_ID} .silver-bar {
@@ -1648,12 +1643,48 @@ closeBtn.addEventListener('click', function() {
                 }
             }
 
-            @media screen and (max-width: 768px) {
-                #${BOX_ID} {
-                    display: none !important;
-                }
-            }
-        `;
+                    @media screen and (max-width: 768px) {
+                    #${BOX_ID} {
+                    display: block !important;
+                    width: calc(100% - 24px) !important;
+                    max-width: none !important;
+                    margin: 10px auto 14px !important;
+                    border-radius: 16px !important;
+                    }
+
+                    #${BOX_ID} .stats-wrap {
+                    grid-template-columns:
+                    minmax(0, 1.15fr)
+                    minmax(0, .85fr) !important;
+                    column-gap: 7px !important;
+                    row-gap: 7px !important;
+                    padding: 10px 10px 11px !important;
+                    }
+
+                    #${BOX_ID} .stats-label {
+                    font-size: 9px !important;
+                    }
+
+                    #${BOX_ID} .stats-label-winner {
+                    font-size: 8.5px !important;
+                    letter-spacing: -.2px !important;
+                    }
+
+                    #${BOX_ID} .stats-value {
+                    font-size: 12px !important;
+                    }
+
+                    #${BOX_ID} .stats-second-row .stats-value {
+                    font-size: 11px !important;
+                    }
+
+                    #${BOX_ID} .playing-dot {
+                    width: 10px !important;
+                    height: 10px !important;
+                    flex-basis: 10px !important;
+                     }
+                    }
+                    `;
 
         document.head.appendChild(style);
     }
@@ -1899,42 +1930,69 @@ function ubahAngka() {
     }, 220);
 }
 
-    function pasangBoxDesktop() {
-        if (window.innerWidth <= 768) {
-            hapusBox();
-            return;
-        }
+ function pasangBoxSemuaDevice() {
+    const path = location.pathname.toLowerCase();
 
-        const path = location.pathname.toLowerCase();
-
-        if (
-            path.includes('/register') ||
-            path.includes('/login')
-        ) {
-            hapusBox();
-            return;
-        }
-
-        if (document.getElementById(BOX_ID)) return;
-
-        const hasilTerakhir = document.querySelector(
-            '.resulthistory__wrapper'
-        );
-
-        if (!hasilTerakhir) return;
-
-        pasangStyle();
-
-        const box = buatBox();
-
-        hasilTerakhir.insertAdjacentElement(
-            'afterend',
-            box
-        );
-
-        ubahWarnaGlow();
-        ubahAngka();
+    if (
+        path.includes('/register') ||
+        path.includes('/login')
+    ) {
+        hapusBox();
+        return;
     }
+
+    const hasilTerakhir = document.querySelector(
+        '.resulthistory__wrapper'
+    );
+
+    if (!hasilTerakhir) return;
+
+    pasangStyle();
+
+    let box = document.getElementById(BOX_ID);
+
+    if (!box) {
+        box = buatBox();
+    }
+
+    if (window.innerWidth <= 768) {
+        /*
+         * MOBILE:
+         * taruh sebagai elemen terpisah tepat
+         * di atas Hasil Terakhir.
+         *
+         * Tidak dimasukkan ke dalam wrapper,
+         * jadi daftar pasaran tidak rusak.
+         */
+        const parent = hasilTerakhir.parentElement;
+
+        if (!parent) return;
+
+        if (box.nextElementSibling !== hasilTerakhir) {
+            parent.insertBefore(
+                box,
+                hasilTerakhir
+            );
+        }
+    } else {
+        /*
+         * DESKTOP:
+         * tetap di bawah Hasil Terakhir
+         * seperti posisi kamu sekarang.
+         */
+        if (
+            hasilTerakhir.nextElementSibling !== box
+        ) {
+            hasilTerakhir.insertAdjacentElement(
+                'afterend',
+                box
+            );
+        }
+    }
+
+    ubahWarnaGlow();
+    ubahAngka();
+}
 
     if (window.__totalWinnerGlowInterval) {
         clearInterval(
@@ -1954,26 +2012,23 @@ function ubahAngka() {
     window.__totalWinnerNumberInterval =
     setInterval(ubahAngka, 2500);
 
-    const observer =
-        new MutationObserver(pasangBoxDesktop);
+const observer =
+    new MutationObserver(pasangBoxSemuaDevice);
 
-    observer.observe(document.documentElement, {
-        childList: true,
-        subtree: true
-    });
+observer.observe(document.documentElement, {
+    childList: true,
+    subtree: true
+});
 
-    pasangBoxDesktop();
+pasangBoxSemuaDevice();
 
-    setTimeout(pasangBoxDesktop, 500);
-    setTimeout(pasangBoxDesktop, 1500);
-    setTimeout(pasangBoxDesktop, 3000);
-    setTimeout(pasangBoxDesktop, 5000);
+setTimeout(pasangBoxSemuaDevice, 500);
+setTimeout(pasangBoxSemuaDevice, 1500);
+setTimeout(pasangBoxSemuaDevice, 3000);
+setTimeout(pasangBoxSemuaDevice, 5000);
 
-    window.addEventListener('resize', function() {
-        if (window.innerWidth <= 768) {
-            hapusBox();
-        } else {
-            pasangBoxDesktop();
-        }
-    });
+    window.addEventListener(
+    'resize',
+    pasangBoxSemuaDevice
+);
 })();
