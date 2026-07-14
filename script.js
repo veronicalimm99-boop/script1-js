@@ -1447,10 +1447,40 @@ closeBtn.addEventListener('click', function() {
 })();
 
 
-/* ===== TOTAL DIMENANGKAN DESKTOP + BORDER WARNA BERJALAN ===== */
+/* ===== TOTAL DIMENANGKAN DESKTOP + GLOW KEDAP-KEDIP ===== */
 (function() {
     const BOX_ID = 'desktop-total-winner-dptoto';
     const STYLE_ID = 'desktop-total-winner-dptoto-css';
+
+    let warnaIndex = 0;
+
+    const warnaGlow = [
+        {
+            border: '#ffe628',
+            glow1: 'rgba(255,230,40,.95)',
+            glow2: 'rgba(255,180,0,.65)'
+        },
+        {
+            border: '#00ffff',
+            glow1: 'rgba(0,255,255,.95)',
+            glow2: 'rgba(0,170,255,.70)'
+        },
+        {
+            border: '#2378ff',
+            glow1: 'rgba(35,120,255,.95)',
+            glow2: 'rgba(0,220,255,.60)'
+        },
+        {
+            border: '#be50ff',
+            glow1: 'rgba(190,80,255,.95)',
+            glow2: 'rgba(120,80,255,.70)'
+        },
+        {
+            border: '#00ffaa',
+            glow1: 'rgba(0,255,170,.95)',
+            glow2: 'rgba(0,220,150,.65)'
+        }
+    ];
 
     function hapusBox() {
         const box = document.getElementById(BOX_ID);
@@ -1482,56 +1512,21 @@ closeBtn.addEventListener('click', function() {
                     width: 100% !important;
                     max-width: 345px !important;
                     margin: 14px 0 0 !important;
-                    padding: 3px !important;
+                    padding: 0 !important;
                     box-sizing: border-box !important;
                     overflow: hidden !important;
-                    background: transparent !important;
+                    background: #05143d !important;
+                    border: 3px solid #00ffff !important;
                     border-radius: 16px !important;
                     box-shadow:
-                        0 4px 13px rgba(0,0,0,.38),
-                        0 0 8px rgba(0,234,255,.20) !important;
+                        0 0 8px rgba(0,255,255,.95),
+                        0 0 17px rgba(0,170,255,.70),
+                        0 0 25px rgba(0,255,255,.45),
+                        inset 0 0 8px rgba(255,255,255,.06) !important;
                     font-family: Arial, sans-serif !important;
-                    isolation: isolate !important;
-                }
-
-                #${BOX_ID} .running-border {
-                    position: absolute !important;
-                    top: 50% !important;
-                    left: 50% !important;
-                    width: 160% !important;
-                    aspect-ratio: 1 / 1 !important;
-                    display: block !important;
-                    background:
-                        conic-gradient(
-                            from 0deg,
-                            #ffe600 0deg,
-                            #00eaff 65deg,
-                            #2380ff 130deg,
-                            #bd4dff 205deg,
-                            #00ffaa 280deg,
-                            #ffe600 360deg
-                        ) !important;
-                    transform:
-                        translate(-50%, -50%)
-                        rotate(0deg) !important;
-                    animation:
-                        dptotoBorderRotate 2.8s linear infinite !important;
-                    pointer-events: none !important;
-                    z-index: 1 !important;
-                    filter:
-                        brightness(1.25)
-                        saturate(1.25) !important;
-                }
-
-                #${BOX_ID} .box-inner {
-                    position: relative !important;
-                    z-index: 2 !important;
-                    width: 100% !important;
-                    background: #05143d !important;
-                    border-radius: 13px !important;
-                    overflow: hidden !important;
-                    box-shadow:
-                        inset 0 1px 0 rgba(255,255,255,.06) !important;
+                    transition:
+                        border-color .3s ease,
+                        box-shadow .3s ease !important;
                 }
 
                 #${BOX_ID} .silver-bar {
@@ -1607,20 +1602,6 @@ closeBtn.addEventListener('click', function() {
                 }
             }
 
-            @keyframes dptotoBorderRotate {
-                0% {
-                    transform:
-                        translate(-50%, -50%)
-                        rotate(0deg);
-                }
-
-                100% {
-                    transform:
-                        translate(-50%, -50%)
-                        rotate(360deg);
-                }
-            }
-
             @media screen and (max-width: 768px) {
                 #${BOX_ID} {
                     display: none !important;
@@ -1636,37 +1617,60 @@ closeBtn.addEventListener('click', function() {
         box.id = BOX_ID;
 
         box.innerHTML = `
-            <span class="running-border"></span>
+            <div class="silver-bar"></div>
 
-            <div class="box-inner">
-                <div class="silver-bar"></div>
-
-                <div class="stats-wrap">
-                    <div class="stats-col left">
-                        <div class="stats-label">
-                            Total Dimenangkan
-                        </div>
-
-                        <div class="stats-value">
-                            Rp1.624.864.247
-                        </div>
+            <div class="stats-wrap">
+                <div class="stats-col left">
+                    <div class="stats-label">
+                        Total Dimenangkan
                     </div>
 
-                    <div class="stats-col right">
-                        <div class="stats-label">
-                            Sedang Bermain
-                        </div>
+                    <div class="stats-value">
+                        Rp1.624.864.247
+                    </div>
+                </div>
 
-                        <div class="stats-value">
-                            <span class="playing-dot"></span>
-                            <span>21.248</span>
-                        </div>
+                <div class="stats-col right">
+                    <div class="stats-label">
+                        Sedang Bermain
+                    </div>
+
+                    <div class="stats-value">
+                        <span class="playing-dot"></span>
+                        <span>21.248</span>
                     </div>
                 </div>
             </div>
         `;
 
         return box;
+    }
+
+    function ubahWarnaGlow() {
+        const box = document.getElementById(BOX_ID);
+
+        if (!box) return;
+
+        const warna = warnaGlow[
+            warnaIndex % warnaGlow.length
+        ];
+
+        box.style.setProperty(
+            'border',
+            '3px solid ' + warna.border,
+            'important'
+        );
+
+        box.style.setProperty(
+            'box-shadow',
+            '0 0 8px ' + warna.glow1 + ', ' +
+            '0 0 17px ' + warna.glow2 + ', ' +
+            '0 0 26px ' + warna.glow1 + ', ' +
+            'inset 0 0 8px rgba(255,255,255,.06)',
+            'important'
+        );
+
+        warnaIndex++;
     }
 
     function pasangBoxDesktop() {
@@ -1701,7 +1705,18 @@ closeBtn.addEventListener('click', function() {
             'afterend',
             box
         );
+
+        ubahWarnaGlow();
     }
+
+    if (window.__totalWinnerGlowInterval) {
+        clearInterval(window.__totalWinnerGlowInterval);
+    }
+
+    window.__totalWinnerGlowInterval = setInterval(
+        ubahWarnaGlow,
+        600
+    );
 
     const observer = new MutationObserver(function() {
         pasangBoxDesktop();
