@@ -1446,3 +1446,221 @@ closeBtn.addEventListener('click', function() {
     setTimeout(fixPromosiMobile, 3000);
 })();
 
+
+/* ===== INFO TOTAL DIMENANGKAN KHUSUS DESKTOP ===== */
+(function() {
+    const BOX_ID = 'desktop-total-winner-dptoto';
+    const STYLE_ID = 'desktop-total-winner-dptoto-css';
+
+    function hapusBox() {
+        const box = document.getElementById(BOX_ID);
+
+        if (box) {
+            box.remove();
+        }
+    }
+
+    function injectStyle() {
+        if (document.getElementById(STYLE_ID)) return;
+
+        const style = document.createElement('style');
+        style.id = STYLE_ID;
+
+        style.textContent = `
+            #${BOX_ID} {
+                display: none !important;
+            }
+
+            @media screen and (min-width: 769px) {
+                #${BOX_ID} {
+                    display: flex !important;
+                    width: 100% !important;
+                    min-height: 74px !important;
+                    margin: 16px 0 0 !important;
+                    padding: 13px 18px !important;
+                    box-sizing: border-box !important;
+                    align-items: center !important;
+                    justify-content: space-between !important;
+                    gap: 20px !important;
+                    background: #252a2d !important;
+                    border-radius: 14px !important;
+                    box-shadow:
+                        0 4px 13px rgba(0,0,0,.28),
+                        inset 0 1px 0 rgba(255,255,255,.04) !important;
+                    font-family: Arial, sans-serif !important;
+                    position: relative !important;
+                    overflow: hidden !important;
+                }
+
+                #${BOX_ID}::before {
+                    content: "" !important;
+                    position: absolute !important;
+                    top: 0 !important;
+                    left: 0 !important;
+                    width: 100% !important;
+                    height: 7px !important;
+                    background:
+                        repeating-linear-gradient(
+                            45deg,
+                            #a90000 0,
+                            #a90000 7px,
+                            #c00d0d 7px,
+                            #c00d0d 14px
+                        ) !important;
+                }
+
+                #${BOX_ID} .winner-column {
+                    flex: 1 1 50% !important;
+                    min-width: 0 !important;
+                    padding-top: 3px !important;
+                }
+
+                #${BOX_ID} .winner-column:last-child {
+                    text-align: right !important;
+                }
+
+                #${BOX_ID} .winner-label {
+                    margin: 0 0 5px !important;
+                    color: rgba(255,255,255,.65) !important;
+                    font-size: 14px !important;
+                    font-weight: 600 !important;
+                    line-height: 1.2 !important;
+                    white-space: nowrap !important;
+                }
+
+                #${BOX_ID} .winner-value {
+                    margin: 0 !important;
+                    color: #ffffff !important;
+                    font-size: 20px !important;
+                    font-weight: 800 !important;
+                    line-height: 1.2 !important;
+                    white-space: nowrap !important;
+                }
+
+                #${BOX_ID} .playing-value {
+                    display: inline-flex !important;
+                    align-items: center !important;
+                    justify-content: flex-end !important;
+                    gap: 7px !important;
+                }
+
+                #${BOX_ID} .playing-dot {
+                    display: inline-block !important;
+                    width: 12px !important;
+                    height: 12px !important;
+                    flex: 0 0 12px !important;
+                    background: #ffb000 !important;
+                    border-radius: 50% !important;
+                    box-shadow:
+                        0 0 6px rgba(255,176,0,.75) !important;
+                }
+            }
+
+            @media screen and (max-width: 768px) {
+                #${BOX_ID} {
+                    display: none !important;
+                }
+            }
+        `;
+
+        document.head.appendChild(style);
+    }
+
+    function buatBox() {
+        const box = document.createElement('div');
+        box.id = BOX_ID;
+
+        box.innerHTML = `
+            <div class="winner-column">
+                <div class="winner-label">
+                    Total Dimenangkan
+                </div>
+
+                <div class="winner-value">
+                    Rp1.514.852.628
+                </div>
+            </div>
+
+            <div class="winner-column">
+                <div class="winner-label">
+                    Sedang Bermain
+                </div>
+
+                <div class="winner-value playing-value">
+                    <span class="playing-dot"></span>
+                    <span>21,241</span>
+                </div>
+            </div>
+        `;
+
+        return box;
+    }
+
+    function pasangBoxDesktop() {
+        /*
+         * Khusus desktop.
+         * Di mobile box akan dihapus.
+         */
+        if (window.innerWidth <= 768) {
+            hapusBox();
+            return;
+        }
+
+        /*
+         * Jangan muncul di register.
+         */
+        if (
+            location.pathname
+                .toLowerCase()
+                .includes('/register')
+        ) {
+            hapusBox();
+            return;
+        }
+
+        if (document.getElementById(BOX_ID)) return;
+
+        /*
+         * Target utama adalah box Hasil Terakhir.
+         * Pada script kamu elemen ini memakai:
+         * .resulthistory__wrapper
+         */
+        const hasilTerakhir = document.querySelector(
+            '.resulthistory__wrapper'
+        );
+
+        if (!hasilTerakhir) return;
+
+        injectStyle();
+
+        const box = buatBox();
+
+        /*
+         * Pasang tepat DI BAWAH Hasil Terakhir,
+         * sesuai tempat yang kamu tandai.
+         */
+        hasilTerakhir.insertAdjacentElement(
+            'afterend',
+            box
+        );
+    }
+
+    const observer = new MutationObserver(function() {
+        pasangBoxDesktop();
+    });
+
+    observer.observe(document.documentElement, {
+        childList: true,
+        subtree: true
+    });
+
+    pasangBoxDesktop();
+    setTimeout(pasangBoxDesktop, 500);
+    setTimeout(pasangBoxDesktop, 1500);
+    setTimeout(pasangBoxDesktop, 3000);
+    setTimeout(pasangBoxDesktop, 5000);
+
+    window.addEventListener('resize', function() {
+        pasangBoxDesktop();
+    });
+})();
