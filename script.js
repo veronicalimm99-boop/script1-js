@@ -2160,36 +2160,54 @@ pasangStyleMobile();
 const box = buatBoxMobile();
 
 /*
- * Taruh box tepat di atas Hasil Terakhir.
+ * Cari elemen judul Hasil Terakhir.
  */
-hasilWrapper.insertAdjacentElement(
-    'beforebegin',
-    box
+let judulHasil = null;
+
+const semuaElemen = hasilWrapper.querySelectorAll(
+    'h1, h2, h3, h4, h5, strong, b, div, span, p'
 );
+
+for (const el of semuaElemen) {
+    const teks = (el.textContent || '')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .toLowerCase();
+
+    if (teks === 'hasil terakhir') {
+        judulHasil = el;
+        break;
+    }
+}
+
+/*
+ * Taruh box tepat sebelum pembungkus judul Hasil Terakhir.
+ */
+if (judulHasil) {
+    const headerHasil =
+        judulHasil.closest(
+            '.resulthistory__header, ' +
+            '.resulthistory__head, ' +
+            '[class*="resulthistory"][class*="head"]'
+        ) ||
+        judulHasil.parentElement;
+
+    headerHasil.insertAdjacentElement(
+        'beforebegin',
+        box
+    );
+} else {
+    /*
+     * Fallback: taruh paling awal di dalam wrapper.
+     */
+    hasilWrapper.insertAdjacentElement(
+        'afterbegin',
+        box
+    );
+}
 
 jalankanKilauMobile();
 
-        /*
-         * Cari kolom "Cari pasaran..." buatan script kamu.
-         * Box dimasukkan tepat sebelum kolom pencarian.
-         */
-        const customGrid =
-            hasilWrapper.querySelector('#rh-custom') ||
-            document.getElementById('rh-custom');
-
-        if (customGrid) {
-            customGrid.insertAdjacentElement(
-                'beforebegin',
-                box
-            );
-        } else {
-            /*
-             * Fallback: masuk ke bagian bawah judul Hasil Terakhir.
-             */
-            hasilWrapper.appendChild(box);
-        }
-
-        jalankanKilauMobile();
     }
 
     const observerMobileStats = new MutationObserver(function () {
