@@ -1474,7 +1474,7 @@ closeBtn.addEventListener('click', function() {
                     width: 100% !important;
                     max-width: 345px !important;
                     margin: 14px 0 0 !important;
-                    background: #252a2d !important;
+                    background: #05143d !important;
                     border-radius: 14px !important;
                     overflow: hidden !important;
                     box-shadow:
@@ -1485,18 +1485,21 @@ closeBtn.addEventListener('click', function() {
                 }
 
                 #${BOX_ID}::before {
-                    content: "" !important;
-                    display: block !important;
-                    width: 100% !important;
-                    height: 8px !important;
-                    background:
-                        repeating-linear-gradient(
-                            45deg,
-                            #a40000 0px,
-                            #a40000 8px,
-                            #b90d0d 8px,
-                            #b90d0d 16px
-                        ) !important;
+                content: "" !important;
+                display: block !important;
+                width: 100% !important;
+                height: 8px !important;
+                background:
+                linear-gradient(
+                90deg,
+                rgba(190, 200, 215, .25) 0%,
+                rgba(245, 248, 255, .85) 50%,
+                rgba(190, 200, 215, .25) 100%
+                ) !important;
+                box-shadow:
+                0 0 6px rgba(220, 230, 245, .75),
+                0 0 14px rgba(175, 195, 220, .55) !important;
+                filter: blur(.3px) !important;
                 }
 
                 #${BOX_ID} .stats-wrap {
