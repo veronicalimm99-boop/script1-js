@@ -2149,15 +2149,25 @@ box.innerHTML = `
         /*
          * Wrapper Hasil Terakhir di mobile.
          */
-        const hasilWrapper = document.querySelector(
-            '.resulthistory__wrapper'
-        );
+const hasilWrapper = document.querySelector(
+    '.resulthistory__wrapper'
+);
 
-        if (!hasilWrapper) return;
+if (!hasilWrapper) return;
 
-        pasangStyleMobile();
+pasangStyleMobile();
 
-        const box = buatBoxMobile();
+const box = buatBoxMobile();
+
+/*
+ * Taruh box tepat di atas Hasil Terakhir.
+ */
+hasilWrapper.insertAdjacentElement(
+    'beforebegin',
+    box
+);
+
+jalankanKilauMobile();
 
         /*
          * Cari kolom "Cari pasaran..." buatan script kamu.
