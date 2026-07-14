@@ -1484,68 +1484,58 @@ closeBtn.addEventListener('click', function() {
                     position: relative !important;
                 }
 
-#${BOX_ID}::before {
-    content: "" !important;
+#${BOX_ID} .silver-bar {
+    position: relative !important;
     display: block !important;
     width: 100% !important;
     height: 8px !important;
+    overflow: hidden !important;
     background:
         linear-gradient(
             90deg,
-            #7f8b9c 0%,
-            #d9e2ed 35%,
-            #aeb9c8 65%,
+            #788596 0%,
+            #dce4ed 35%,
+            #9faaba 65%,
             #eef3f8 100%
         ) !important;
     box-shadow:
-        0 0 6px rgba(225,235,248,.65),
-        0 0 12px rgba(170,190,215,.45) !important;
-    position: relative !important;
-    overflow: hidden !important;
+        0 0 6px rgba(225,235,248,.75),
+        0 0 13px rgba(170,190,215,.55) !important;
 }
 
-#${BOX_ID}::after {
-    content: "" !important;
+#${BOX_ID} .silver-sweep {
     position: absolute !important;
     top: 0 !important;
-    left: -55% !important;
-    width: 45% !important;
-    height: 8px !important;
+    left: 0 !important;
+    display: block !important;
+    width: 38% !important;
+    height: 100% !important;
     background:
         linear-gradient(
             90deg,
-            rgba(255,255,255,0) 0%,
-            rgba(255,255,255,.25) 20%,
+            transparent 0%,
+            rgba(255,255,255,.20) 20%,
             rgba(255,255,255,1) 50%,
-            rgba(255,255,255,.25) 80%,
-            rgba(255,255,255,0) 100%
+            rgba(255,255,255,.20) 80%,
+            transparent 100%
         ) !important;
-    filter: blur(1px) !important;
+    filter: blur(.5px) !important;
     box-shadow:
-        0 0 8px rgba(255,255,255,.95),
-        0 0 16px rgba(210,225,245,.80) !important;
-    animation: dptotoSilverSweep 2.4s ease-in-out infinite !important;
+        0 0 8px rgba(255,255,255,1),
+        0 0 16px rgba(215,230,250,.9) !important;
+    transform: translateX(-150%) !important;
+    animation: dptotoSilverMove 2.2s linear infinite !important;
+    will-change: transform !important;
     pointer-events: none !important;
-    z-index: 3 !important;
 }
 
-@keyframes dptotoSilverSweep {
+@keyframes dptotoSilverMove {
     0% {
-        left: -55%;
-        opacity: 0;
-    }
-
-    12% {
-        opacity: 1;
-    }
-
-    70% {
-        opacity: 1;
+        transform: translateX(-150%);
     }
 
     100% {
-        left: 115%;
-        opacity: 0;
+        transform: translateX(420%);
     }
 }
 
@@ -1617,7 +1607,11 @@ closeBtn.addEventListener('click', function() {
         box.id = BOX_ID;
 
         box.innerHTML = `
-            <div class="stats-wrap">
+        <div class="silver-bar">
+        <span class="silver-sweep"></span>
+        </div>
+
+        <div class="stats-wrap">
                 <div class="stats-col left">
                     <div class="stats-label">Total Dimenangkan</div>
                     <div class="stats-value">Rp1.624.864.247</div>
