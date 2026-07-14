@@ -3999,9 +3999,15 @@ function ubahAngka() {
     ];
 
     function isMobile() {
-        return window.matchMedia(
-            '(max-width: 768px)'
-        ).matches;
+    return (
+        window.innerWidth <= 768 ||
+        document.querySelector(
+            '.mobile-before-layout__container'
+        ) !== null ||
+        document.querySelector(
+            '.mobile-before-layout__content'
+        ) !== null
+        );
     }
 
     function formatID(angka) {
@@ -4142,12 +4148,6 @@ function ubahAngka() {
 
                 #${BOX_ID} .mobile-stat-second .mobile-stat-value {
                     font-size: 11px !important;
-                }
-            }
-
-            @media screen and (min-width: 769px) {
-                #${BOX_ID} {
-                    display: none !important;
                 }
             }
         `;
@@ -4371,5 +4371,18 @@ function ubahAngka() {
         }, 700);
     }
 
+    const observerMobilePlayerStats =
+    new MutationObserver(function() {
+        pasangBox();
+    });
+
+    observerMobilePlayerStats.observe(
+    document.documentElement,
+    {
+        childList: true,
+        subtree: true
+      }
+    );
+
     mulai();
-})();
+    })();
