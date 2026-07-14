@@ -1612,6 +1612,12 @@ closeBtn.addEventListener('click', function() {
                     white-space: nowrap !important;
                 }
 
+                #${BOX_ID} .stats-label-winner {
+                font-size: 10px !important;
+                letter-spacing: -.1px !important;
+                white-space: nowrap !important;
+                }
+
                 #${BOX_ID} .stats-value {
                     margin: 0 !important;
                     color: #ffffff !important;
@@ -1661,8 +1667,8 @@ box.innerHTML = `
 
     <div class="stats-wrap">
         <div class="stats-col left">
-            <div class="stats-label">
-                Total Dimenangkan
+            <div class="stats-label stats-label-winner">
+                Total Dimenangkan Player
             </div>
 
             <div
