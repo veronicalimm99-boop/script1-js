@@ -1447,50 +1447,49 @@ closeBtn.addEventListener('click', function() {
 })();
 
 
-/* ===== LOGIN MOBILE DI ATAS DAFTAR AKUN ===== */
+/* ===== LOGIN MOBILE KHUSUS HALAMAN REGISTER ===== */
 (function () {
-    function pasangLoginRegister() {
-        /* Hanya halaman register dan ukuran mobile */
-        if (!location.pathname.toLowerCase().includes('register')) return;
-        if (window.innerWidth > 768) return;
-        if (document.getElementById('custom-login-register-mobile')) return;
+    const BOX_ID = 'custom-login-register-mobile';
+    const CSS_ID = 'custom-login-register-mobile-css';
 
-        /*
-         * Cari input username milik form register.
-         * Website kamu menggunakan placeholder "Masukan username".
-         */
-        const registerUsername =
-            document.querySelector('input[placeholder*="Masukan username" i]') ||
-            document.querySelector('input[name*="username" i]');
+    function sedangDiHalamanRegister() {
+        const pathRegister = location.pathname
+            .toLowerCase()
+            .includes('/register');
 
-        if (!registerUsername) return;
+        const adaKonfirmasiPassword =
+            document.querySelector(
+                'input[placeholder*="konfirmasi password" i]'
+            ) ||
+            document.querySelector(
+                'input[placeholder*="ulangi password" i]'
+            );
 
-        /* Cari judul DAFTAR AKUN */
-        let judulDaftar = null;
+        return pathRegister && !!adaKonfirmasiPassword;
+    }
 
-        const semuaElemen = document.querySelectorAll(
-            'h1, h2, h3, h4, h5, strong, b, span, div, p'
-        );
+    function hapusLoginTambahan() {
+        const box = document.getElementById(BOX_ID);
 
-        for (const el of semuaElemen) {
-            const teks = (el.textContent || '')
-                .replace(/\s+/g, ' ')
-                .trim()
-                .toUpperCase();
-
-            if (teks === 'DAFTAR AKUN') {
-                judulDaftar = el;
-                break;
-            }
+        if (box) {
+            box.remove();
         }
+    }
 
-        /* CSS */
-        if (!document.getElementById('custom-login-register-mobile-css')) {
-            const style = document.createElement('style');
-            style.id = 'custom-login-register-mobile-css';
+    function pasangCSS() {
+        if (document.getElementById(CSS_ID)) return;
 
-            style.textContent = `
+        const style = document.createElement('style');
+        style.id = CSS_ID;
+
+        style.textContent = `
+            #custom-login-register-mobile {
+                display: none !important;
+            }
+
+            @media (max-width: 768px) {
                 #custom-login-register-mobile {
+                    display: block !important;
                     width: calc(100% - 28px) !important;
                     margin: 14px auto 22px !important;
                     padding: 18px 14px !important;
@@ -1588,20 +1587,58 @@ closeBtn.addEventListener('click', function() {
                     font-weight: 800 !important;
                     text-align: center !important;
                 }
+            }
+        `;
 
-                @media (min-width: 769px) {
-                    #custom-login-register-mobile {
-                        display: none !important;
-                    }
-                }
-            `;
+        document.head.appendChild(style);
+    }
 
-            document.head.appendChild(style);
+    function cariJudulDaftar() {
+        const semuaElemen = document.querySelectorAll(
+            'h1, h2, h3, h4, h5, strong, b, span, div, p'
+        );
+
+        for (const el of semuaElemen) {
+            const teks = (el.textContent || '')
+                .replace(/\s+/g, ' ')
+                .trim()
+                .toUpperCase();
+
+            if (teks === 'DAFTAR AKUN') {
+                return el;
+            }
         }
 
-        /* Kotak login */
+        return null;
+    }
+
+    function pasangLoginRegister() {
+        if (window.innerWidth > 768) {
+            hapusLoginTambahan();
+            return;
+        }
+
+        if (!sedangDiHalamanRegister()) {
+            hapusLoginTambahan();
+            return;
+        }
+
+        if (document.getElementById(BOX_ID)) return;
+
+        const registerUsername =
+            document.querySelector(
+                'input[placeholder*="masukan username" i]'
+            ) ||
+            document.querySelector(
+                'input[name*="username" i]'
+            );
+
+        if (!registerUsername) return;
+
+        pasangCSS();
+
         const box = document.createElement('div');
-        box.id = 'custom-login-register-mobile';
+        box.id = BOX_ID;
 
         box.innerHTML = `
             <div class="login-mobile-title">
@@ -1644,17 +1681,21 @@ closeBtn.addEventListener('click', function() {
             </div>
         `;
 
-        /*
-         * Prioritas pertama: taruh tepat sebelum DAFTAR AKUN.
-         * Fallback: taruh sebelum form register.
-         */
+        const judulDaftar = cariJudulDaftar();
+
         if (judulDaftar) {
-            judulDaftar.insertAdjacentElement('beforebegin', box);
+            judulDaftar.insertAdjacentElement(
+                'beforebegin',
+                box
+            );
         } else {
             const registerForm = registerUsername.closest('form');
 
             if (registerForm) {
-                registerForm.insertAdjacentElement('beforebegin', box);
+                registerForm.insertAdjacentElement(
+                    'beforebegin',
+                    box
+                );
             } else {
                 registerUsername.parentElement.insertAdjacentElement(
                     'beforebegin',
@@ -1663,18 +1704,19 @@ closeBtn.addEventListener('click', function() {
             }
         }
 
-        /* Mata password */
-        const password = box.querySelector('#custom-login-password');
-        const eye = box.querySelector('.login-password-eye');
+        const password = box.querySelector(
+            '#custom-login-password'
+        );
 
-        eye.addEventListener('click', function () {
-            password.type =
-                password.type === 'password' ? 'text' : 'password';
-        });
+        box
+            .querySelector('.login-password-eye')
+            .addEventListener('click', function () {
+                password.type =
+                    password.type === 'password'
+                        ? 'text'
+                        : 'password';
+            });
 
-        /*
-         * Tombol LOGIN menuju halaman login asli.
-         */
         box
             .querySelector('.login-mobile-button')
             .addEventListener('click', function () {
@@ -1682,8 +1724,17 @@ closeBtn.addEventListener('click', function() {
             });
     }
 
-    const observer = new MutationObserver(function () {
+    function cekHalaman() {
+        if (!sedangDiHalamanRegister()) {
+            hapusLoginTambahan();
+            return;
+        }
+
         pasangLoginRegister();
+    }
+
+    const observer = new MutationObserver(function () {
+        cekHalaman();
     });
 
     observer.observe(document.documentElement, {
@@ -1691,10 +1742,33 @@ closeBtn.addEventListener('click', function() {
         subtree: true
     });
 
-    pasangLoginRegister();
-    setTimeout(pasangLoginRegister, 500);
-    setTimeout(pasangLoginRegister, 1500);
-    setTimeout(pasangLoginRegister, 3000);
-    setTimeout(pasangLoginRegister, 5000);
-    setTimeout(pasangLoginRegister, 8000);
+    const pushStateAsli = history.pushState;
+
+    history.pushState = function () {
+        pushStateAsli.apply(this, arguments);
+
+        setTimeout(cekHalaman, 100);
+        setTimeout(cekHalaman, 500);
+    };
+
+    const replaceStateAsli = history.replaceState;
+
+    history.replaceState = function () {
+        replaceStateAsli.apply(this, arguments);
+
+        setTimeout(cekHalaman, 100);
+        setTimeout(cekHalaman, 500);
+    };
+
+    window.addEventListener('popstate', function () {
+        setTimeout(cekHalaman, 100);
+        setTimeout(cekHalaman, 500);
+    });
+
+    cekHalaman();
+    setTimeout(cekHalaman, 500);
+    setTimeout(cekHalaman, 1500);
+    setTimeout(cekHalaman, 3000);
+
+    setInterval(cekHalaman, 1000);
 })();
