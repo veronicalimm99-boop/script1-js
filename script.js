@@ -2284,25 +2284,24 @@ function ubahAngka() {
             return;
         }
 
-        const hasilTerakhir = document.querySelector(
-            '.resulthistory__wrapper'
-        );
+        const jackpot = document.getElementById(
+    'jackpot-counter'
+);
 
-        if (!hasilTerakhir) return;
+if (!jackpot) return;
 
-        pasangStyle();
+pasangStyle();
 
-        const box = buatBox();
+const box = buatBox();
 
-        /*
-         * Taruh tepat di atas Hasil Terakhir.
-         * Tidak mengubah isi wrapper.
-         */
-        hasilTerakhir.insertAdjacentElement(
-            'beforebegin',
-            box
-        );
-    }
+/*
+ * Taruh box tepat setelah Progressive Jackpot.
+ * Tidak menyentuh Hasil Terakhir, grid, gambar, bank, atau artikel.
+ */
+jackpot.insertAdjacentElement(
+    'afterend',
+    box
+);
 
     function ubahGlow() {
         const box = document.getElementById(BOX_ID);
