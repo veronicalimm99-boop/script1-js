@@ -2222,18 +2222,27 @@ function angkaUnik(min, max) {
     const box = document.getElementById(BOX_ID);
     if (!box) return;
 
-    dataStats.menang -= angkaUnik(180000, 950000);
-
     dataStats.bermain = angkaUnik(17000, 21000);
     dataStats.deposit = angkaUnik(500000000, 700000000);
     dataStats.withdraw = angkaUnik(750000000, 1100000000);
+
+    dataStats.menang = dataStats.deposit - dataStats.withdraw;
 
     const menangEl = box.querySelector('[data-stat="menang"]');
     const bermainEl = box.querySelector('[data-stat="bermain"]');
     const depositEl = box.querySelector('[data-stat="deposit"]');
     const withdrawEl = box.querySelector('[data-stat="withdraw"]');
 
-    if (menangEl) menangEl.textContent = '-' + formatRupiah(Math.abs(dataStats.menang));
+    if (menangEl) {
+        if (dataStats.menang < 0) {
+            menangEl.textContent = '-' + formatRupiah(Math.abs(dataStats.menang));
+            menangEl.classList.add('red');
+        } else {
+            menangEl.textContent = formatRupiah(dataStats.menang);
+            menangEl.classList.remove('red');
+        }
+    }
+
     if (bermainEl) bermainEl.textContent = formatAngka(dataStats.bermain);
     if (depositEl) depositEl.textContent = formatRupiah(dataStats.deposit);
     if (withdrawEl) withdrawEl.textContent = formatRupiah(dataStats.withdraw);
