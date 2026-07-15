@@ -2359,12 +2359,15 @@ function angkaUnik(min, max) {
     });
 })();
 
+setTimeout(mulaiGlowMobile, 800);
+setTimeout(mulaiGlowMobile, 1800);
+setTimeout(mulaiGlowMobile, 3500);
+
 function ubahWarnaGlowMobile() {
     const box = document.getElementById(BOX_ID);
     if (!box) return;
 
-    const warna =
-        warnaGlowMobile[warnaIndexMobile % warnaGlowMobile.length];
+    const warna = warnaGlowMobile[warnaIndexMobile % warnaGlowMobile.length];
 
     box.style.setProperty(
         'border',
@@ -2385,7 +2388,10 @@ function ubahWarnaGlowMobile() {
 }
 
 function mulaiGlowMobile() {
-    if (window.__mobileWinnerGlowInterval) return;
+    if (window.__mobileWinnerGlowInterval) {
+        clearInterval(window.__mobileWinnerGlowInterval);
+        window.__mobileWinnerGlowInterval = null;
+    }
 
     ubahWarnaGlowMobile();
 
