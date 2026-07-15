@@ -2052,11 +2052,6 @@ function angkaUnik(min, max) {
             clearInterval(updateTimer);
             updateTimer = null;
         }
-
-            if (glowTimer) {
-        clearInterval(glowTimer);
-            glowTimer = null;
-        }
     }
 
     function pasangStyleMobile() {
@@ -2390,11 +2385,11 @@ function ubahWarnaGlowMobile() {
 }
 
 function mulaiGlowMobile() {
-    if (glowTimer) return;
+    if (window.__mobileWinnerGlowInterval) return;
 
     ubahWarnaGlowMobile();
 
-    glowTimer = setInterval(function () {
+    window.__mobileWinnerGlowInterval = setInterval(function () {
         ubahWarnaGlowMobile();
     }, 600);
 }
