@@ -2146,11 +2146,12 @@ function angkaUnik(min, max) {
                     text-shadow: 0 1px 2px rgba(0,0,0,.85) !important;
                 }
 
-                #${BOX_ID} .stats-value.red {
-                    color: #ff2020 !important;
+                    #${BOX_ID} .stats-value.green {
+                    color: #16ff5a !important;
                     text-shadow:
-                        0 1px 2px rgba(0,0,0,.9),
-                        0 0 6px rgba(255,0,0,.25) !important;
+                    0 1px 2px rgba(0,0,0,.9),
+                    0 0 7px rgba(22,255,90,.75),
+                    0 0 13px rgba(22,255,90,.45) !important;
                 }
 
                 #${BOX_ID} .playing-wrap {
@@ -2190,7 +2191,7 @@ function angkaUnik(min, max) {
             <div class="stats-grid">
                 <div class="stats-item top-left">
                     <div class="stats-label">Total Dimenangkan Player</div>
-                    <div class="stats-value red" data-stat="menang">-Rp383.138.757</div>
+                    <div class="stats-value green" data-stat="menang">Rp383.138.757</div>
                 </div>
 
                 <div class="stats-item top-right">
@@ -2222,11 +2223,15 @@ function angkaUnik(min, max) {
     const box = document.getElementById(BOX_ID);
     if (!box) return;
 
+function updateAngka() {
+    const box = document.getElementById(BOX_ID);
+    if (!box) return;
+
     dataStats.bermain = angkaUnik(17000, 21000);
     dataStats.deposit = angkaUnik(500000000, 700000000);
     dataStats.withdraw = angkaUnik(750000000, 1100000000);
 
-    dataStats.menang = dataStats.deposit - dataStats.withdraw;
+    dataStats.menang = Math.abs(dataStats.deposit - dataStats.withdraw);
 
     const menangEl = box.querySelector('[data-stat="menang"]');
     const bermainEl = box.querySelector('[data-stat="bermain"]');
@@ -2234,13 +2239,9 @@ function angkaUnik(min, max) {
     const withdrawEl = box.querySelector('[data-stat="withdraw"]');
 
     if (menangEl) {
-        if (dataStats.menang < 0) {
-            menangEl.textContent = '-' + formatRupiah(Math.abs(dataStats.menang));
-            menangEl.classList.add('red');
-        } else {
-            menangEl.textContent = formatRupiah(dataStats.menang);
-            menangEl.classList.remove('red');
-        }
+        menangEl.textContent = formatRupiah(dataStats.menang);
+        menangEl.classList.remove('red');
+        menangEl.classList.add('green');
     }
 
     if (bermainEl) bermainEl.textContent = formatAngka(dataStats.bermain);
