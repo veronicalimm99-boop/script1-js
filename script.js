@@ -1977,3 +1977,354 @@ function ubahAngka() {
         }
     });
 })();
+
+
+
+/* ===== TOTAL DIMENANGKAN MOBILE + KILAU BACKGROUND ===== */
+(function () {
+    const BOX_ID = 'mobile-total-winner-dptoto';
+    const STYLE_ID = 'mobile-total-winner-dptoto-css';
+
+    let shineFrame = null;
+    let shineStart = null;
+
+    function isMobile() {
+        return (
+            window.innerWidth <= 768 ||
+            document.querySelector('.mobile-before-layout__container') ||
+            document.querySelector('.mobile-before-layout__content')
+        );
+    }
+
+    function hapusBoxMobile() {
+        const box = document.getElementById(BOX_ID);
+
+        if (box) {
+            box.remove();
+        }
+
+        if (shineFrame) {
+            cancelAnimationFrame(shineFrame);
+            shineFrame = null;
+        }
+    }
+
+    function pasangStyleMobile() {
+        if (document.getElementById(STYLE_ID)) return;
+
+        const style = document.createElement('style');
+        style.id = STYLE_ID;
+
+        style.textContent = `
+            #${BOX_ID} {
+                display: none !important;
+            }
+
+            @media screen and (max-width: 768px) {
+                #${BOX_ID} {
+                    display: block !important;
+                    position: relative !important;
+                    width: calc(100% - 16px) !important;
+                    margin: 10px auto 12px !important;
+                    padding: 0 !important;
+                    box-sizing: border-box !important;
+                    overflow: hidden !important;
+                    background: #05143d !important;
+                    border-radius: 13px !important;
+                    box-shadow:
+                        0 4px 12px rgba(0,0,0,.35),
+                        inset 0 0 18px rgba(0,85,190,.12) !important;
+                    font-family: Arial, sans-serif !important;
+                }
+
+                #${BOX_ID} .mobile-silver-bar {
+                    position: relative !important;
+                    z-index: 4 !important;
+                    display: block !important;
+                    width: 100% !important;
+                    height: 8px !important;
+                    background:
+                        linear-gradient(
+                            180deg,
+                            #ffffff 0%,
+                            #d9e1eb 32%,
+                            #7d899a 68%,
+                            #edf2f7 100%
+                        ) !important;
+                    box-shadow:
+                        0 0 7px rgba(255,255,255,.85),
+                        0 0 14px rgba(190,210,235,.65) !important;
+                }
+
+                #${BOX_ID} .mobile-bg-shine {
+                    position: absolute !important;
+                    top: 8px !important;
+                    left: 0 !important;
+                    z-index: 1 !important;
+                    display: block !important;
+                    width: 65% !important;
+                    height: calc(100% - 8px) !important;
+                    background:
+                        linear-gradient(
+                            105deg,
+                            rgba(255,255,255,0) 0%,
+                            rgba(255,255,255,.10) 16%,
+                            rgba(255,255,255,.28) 30%,
+                            rgba(255,255,255,.68) 44%,
+                            rgba(255,255,255,1) 50%,
+                            rgba(255,255,255,.68) 56%,
+                            rgba(255,255,255,.28) 70%,
+                            rgba(255,255,255,.10) 84%,
+                            rgba(255,255,255,0) 100%
+                        ) !important;
+                    filter: blur(1.2px) !important;
+                    mix-blend-mode: screen !important;
+                    box-shadow:
+                        0 0 24px rgba(255,255,255,.45),
+                        0 0 40px rgba(205,225,250,.30) !important;
+                    pointer-events: none !important;
+                    will-change: transform !important;
+                }
+
+                #${BOX_ID} .mobile-stats-wrap {
+                    position: relative !important;
+                    z-index: 3 !important;
+                    display: grid !important;
+                    grid-template-columns:
+                        minmax(0, 1fr)
+                        minmax(0, 1fr) !important;
+                    align-items: start !important;
+                    gap: 8px !important;
+                    padding: 10px 12px 11px !important;
+                    box-sizing: border-box !important;
+                }
+
+                #${BOX_ID} .mobile-stats-col {
+                    min-width: 0 !important;
+                }
+
+                #${BOX_ID} .mobile-stats-col.right {
+                    text-align: right !important;
+                }
+
+                #${BOX_ID} .mobile-stats-label {
+                    margin: 0 0 4px !important;
+                    color: rgba(255,255,255,.72) !important;
+                    font-size: 10px !important;
+                    font-weight: 600 !important;
+                    line-height: 1.15 !important;
+                    white-space: nowrap !important;
+                }
+
+                #${BOX_ID} .mobile-stats-value {
+                    margin: 0 !important;
+                    color: #ffffff !important;
+                    font-size: 13px !important;
+                    font-weight: 800 !important;
+                    line-height: 1.15 !important;
+                    white-space: nowrap !important;
+                    text-shadow:
+                        0 1px 2px rgba(0,0,0,.75) !important;
+                }
+
+                #${BOX_ID} .right .mobile-stats-value {
+                    display: inline-flex !important;
+                    align-items: center !important;
+                    justify-content: flex-end !important;
+                    gap: 5px !important;
+                }
+
+                #${BOX_ID} .mobile-playing-dot {
+                    display: inline-block !important;
+                    width: 10px !important;
+                    height: 10px !important;
+                    flex: 0 0 10px !important;
+                    background: #12c832 !important;
+                    border-radius: 50% !important;
+                    box-shadow:
+                        0 0 6px rgba(30,255,75,.90),
+                        0 0 11px rgba(30,255,75,.55) !important;
+                }
+            }
+
+            @media screen and (min-width: 769px) {
+                #${BOX_ID} {
+                    display: none !important;
+                }
+            }
+        `;
+
+        document.head.appendChild(style);
+    }
+
+    function buatBoxMobile() {
+        const box = document.createElement('div');
+        box.id = BOX_ID;
+
+        box.innerHTML = `
+            <div class="mobile-silver-bar"></div>
+
+            <span class="mobile-bg-shine"></span>
+
+            <div class="mobile-stats-wrap">
+                <div class="mobile-stats-col left">
+                    <div class="mobile-stats-label">
+                        Total Dimenangkan
+                    </div>
+
+                    <div class="mobile-stats-value">
+                        Rp1.624.864.247
+                    </div>
+                </div>
+
+                <div class="mobile-stats-col right">
+                    <div class="mobile-stats-label">
+                        Sedang Bermain
+                    </div>
+
+                    <div class="mobile-stats-value">
+                        <span class="mobile-playing-dot"></span>
+                        <span>21.248</span>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        return box;
+    }
+
+    function jalankanKilauMobile() {
+        const box = document.getElementById(BOX_ID);
+        if (!box) return;
+
+        const shine = box.querySelector('.mobile-bg-shine');
+        if (!shine) return;
+
+        if (shineFrame) {
+            cancelAnimationFrame(shineFrame);
+        }
+
+        shineStart = null;
+
+        function gerak(waktu) {
+            if (!document.body.contains(shine)) {
+                shineFrame = null;
+                return;
+            }
+
+            if (!shineStart) {
+                shineStart = waktu;
+            }
+
+            const durasiGerak = 1450;
+            const durasiJeda = 450;
+            const totalDurasi = durasiGerak + durasiJeda;
+            const berjalan = (waktu - shineStart) % totalDurasi;
+
+            if (berjalan <= durasiGerak) {
+                const progress = berjalan / durasiGerak;
+                const posisi = -185 + (progress * 365);
+
+                shine.style.setProperty(
+                    'transform',
+                    'translate3d(' + posisi + '%,0,0)',
+                    'important'
+                );
+
+                shine.style.setProperty(
+                    'opacity',
+                    '1',
+                    'important'
+                );
+            } else {
+                shine.style.setProperty(
+                    'opacity',
+                    '0',
+                    'important'
+                );
+            }
+
+            shineFrame = requestAnimationFrame(gerak);
+        }
+
+        shineFrame = requestAnimationFrame(gerak);
+    }
+
+    function pasangBoxMobile() {
+        if (!isMobile()) {
+            hapusBoxMobile();
+            return;
+        }
+
+        const path = location.pathname.toLowerCase();
+
+        if (
+            path.includes('/register') ||
+            path.includes('/login')
+        ) {
+            hapusBoxMobile();
+            return;
+        }
+
+        if (document.getElementById(BOX_ID)) return;
+
+        /*
+         * Wrapper Hasil Terakhir di mobile.
+         */
+        const hasilWrapper = document.querySelector(
+            '.resulthistory__wrapper'
+        );
+
+        if (!hasilWrapper) return;
+
+        pasangStyleMobile();
+
+        const box = buatBoxMobile();
+
+        /*
+         * Cari kolom "Cari pasaran..." buatan script kamu.
+         * Box dimasukkan tepat sebelum kolom pencarian.
+         */
+        const customGrid =
+            hasilWrapper.querySelector('#rh-custom') ||
+            document.getElementById('rh-custom');
+
+        if (customGrid) {
+            customGrid.insertAdjacentElement(
+                'beforebegin',
+                box
+            );
+        } else {
+            /*
+             * Fallback: masuk ke bagian bawah judul Hasil Terakhir.
+             */
+            hasilWrapper.appendChild(box);
+        }
+
+        jalankanKilauMobile();
+    }
+
+    const observerMobileStats = new MutationObserver(function () {
+        pasangBoxMobile();
+    });
+
+    observerMobileStats.observe(document.documentElement, {
+        childList: true,
+        subtree: true
+    });
+
+    pasangBoxMobile();
+
+    setTimeout(pasangBoxMobile, 500);
+    setTimeout(pasangBoxMobile, 1500);
+    setTimeout(pasangBoxMobile, 3000);
+    setTimeout(pasangBoxMobile, 5000);
+
+    window.addEventListener('resize', function () {
+        if (!isMobile()) {
+            hapusBoxMobile();
+        } else {
+            pasangBoxMobile();
+        }
+    });
+})();
