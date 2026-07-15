@@ -1987,12 +1987,16 @@ function ubahAngka() {
 
     let updateTimer = null;
 
-    let dataStats = {
-        menang: -383138757,
-        bermain: 17574,
-        deposit: 542296019,
-        withdraw: 925434776
-    };
+let dataStats = {
+    menang: -383138757,
+    bermain: angkaUnik(17000, 21000),
+    deposit: angkaUnik(500000000, 700000000),
+    withdraw: angkaUnik(750000000, 1100000000)
+};
+
+function angkaUnik(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
     function isMobile() {
         return (
@@ -2215,27 +2219,25 @@ function ubahAngka() {
     }
 
     function updateAngka() {
-        const box = document.getElementById(BOX_ID);
-        if (!box) return;
+    const box = document.getElementById(BOX_ID);
+    if (!box) return;
 
-        dataStats.menang -= Math.floor(Math.random() * 950000) + 180000;
-        dataStats.bermain += Math.floor(Math.random() * 41) - 15;
-        dataStats.deposit += Math.floor(Math.random() * 1250000) + 250000;
-        dataStats.withdraw += Math.floor(Math.random() * 1450000) + 350000;
+    dataStats.menang -= angkaUnik(180000, 950000);
 
-        if (dataStats.bermain < 12000) dataStats.bermain = 12000;
-        if (dataStats.bermain > 26000) dataStats.bermain = 26000;
+    dataStats.bermain = angkaUnik(17000, 21000);
+    dataStats.deposit = angkaUnik(500000000, 700000000);
+    dataStats.withdraw = angkaUnik(750000000, 1100000000);
 
-        const menangEl = box.querySelector('[data-stat="menang"]');
-        const bermainEl = box.querySelector('[data-stat="bermain"]');
-        const depositEl = box.querySelector('[data-stat="deposit"]');
-        const withdrawEl = box.querySelector('[data-stat="withdraw"]');
+    const menangEl = box.querySelector('[data-stat="menang"]');
+    const bermainEl = box.querySelector('[data-stat="bermain"]');
+    const depositEl = box.querySelector('[data-stat="deposit"]');
+    const withdrawEl = box.querySelector('[data-stat="withdraw"]');
 
-        if (menangEl) menangEl.textContent = '-' + formatRupiah(Math.abs(dataStats.menang));
-        if (bermainEl) bermainEl.textContent = formatAngka(dataStats.bermain);
-        if (depositEl) depositEl.textContent = formatRupiah(dataStats.deposit);
-        if (withdrawEl) withdrawEl.textContent = formatRupiah(dataStats.withdraw);
-    }
+    if (menangEl) menangEl.textContent = '-' + formatRupiah(Math.abs(dataStats.menang));
+    if (bermainEl) bermainEl.textContent = formatAngka(dataStats.bermain);
+    if (depositEl) depositEl.textContent = formatRupiah(dataStats.deposit);
+    if (withdrawEl) withdrawEl.textContent = formatRupiah(dataStats.withdraw);
+}
 
     function mulaiUpdateAngka() {
         if (updateTimer) return;
