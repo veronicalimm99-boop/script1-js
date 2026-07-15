@@ -1977,3 +1977,517 @@ function ubahAngka() {
         }
     });
 })();
+
+
+/* ===== TOTAL DIMENANGKAN KHUSUS MOBILE - TERPISAH DAN AMAN ===== */
+(function () {
+    const BOX_ID = 'mobile-total-player-dptoto';
+    const STYLE_ID = 'mobile-total-player-dptoto-css';
+
+    let warnaIndexMobile = 0;
+
+    let totalDepositMobile = 583726419;
+    let totalWithdrawMobile = 914305782;
+    let pemainAktifMobile = 18437;
+
+    const MIN_DEPOSIT_MOBILE = 500000000;
+    const MAX_DEPOSIT_MOBILE = 700000000;
+
+    const MIN_WITHDRAW_MOBILE = 750000000;
+    const MAX_WITHDRAW_MOBILE = 1000000000;
+
+    const MIN_PLAYER_MOBILE = 16000;
+    const MAX_PLAYER_MOBILE = 22000;
+
+    const warnaGlowMobile = [
+        {
+            border: '#ffe628',
+            glow1: 'rgba(255,230,40,.95)',
+            glow2: 'rgba(255,180,0,.65)'
+        },
+        {
+            border: '#00ffff',
+            glow1: 'rgba(0,255,255,.95)',
+            glow2: 'rgba(0,170,255,.70)'
+        },
+        {
+            border: '#2378ff',
+            glow1: 'rgba(35,120,255,.95)',
+            glow2: 'rgba(0,220,255,.60)'
+        },
+        {
+            border: '#be50ff',
+            glow1: 'rgba(190,80,255,.95)',
+            glow2: 'rgba(120,80,255,.70)'
+        },
+        {
+            border: '#00ffaa',
+            glow1: 'rgba(0,255,170,.95)',
+            glow2: 'rgba(0,220,150,.65)'
+        }
+    ];
+
+    function isMobileDptoto() {
+        return (
+            window.innerWidth <= 768 ||
+            document.querySelector(
+                '.mobile-before-layout__container'
+            ) !== null ||
+            document.querySelector(
+                '.mobile-before-layout__content'
+            ) !== null
+        );
+    }
+
+    function formatAngkaMobile(angka) {
+        return Math.floor(angka).toLocaleString('id-ID');
+    }
+
+    function angkaAcakMobile(min, max) {
+        return Math.floor(
+            Math.random() * (max - min + 1)
+        ) + min;
+    }
+
+    function hapusBoxMobile() {
+        const box = document.getElementById(BOX_ID);
+
+        if (box) {
+            box.remove();
+        }
+    }
+
+    function pasangStyleMobile() {
+        if (document.getElementById(STYLE_ID)) {
+            return;
+        }
+
+        const style = document.createElement('style');
+        style.id = STYLE_ID;
+
+        style.textContent = `
+            #${BOX_ID} {
+                display: block !important;
+                position: relative !important;
+                width: calc(100% - 24px) !important;
+                max-width: none !important;
+                margin: 10px auto 14px !important;
+                padding: 0 !important;
+                box-sizing: border-box !important;
+                overflow: hidden !important;
+                background: #05143d !important;
+                border: 3px solid #00ffff !important;
+                border-radius: 16px !important;
+                box-shadow:
+                    0 0 8px rgba(0,255,255,.95),
+                    0 0 17px rgba(0,170,255,.70),
+                    0 0 25px rgba(0,255,255,.45),
+                    inset 0 0 8px rgba(255,255,255,.06)
+                    !important;
+                font-family: Arial, sans-serif !important;
+                transition:
+                    border-color .3s ease,
+                    box-shadow .3s ease !important;
+                clear: both !important;
+                z-index: 3 !important;
+            }
+
+            #${BOX_ID} .dptm-silver-bar {
+                display: block !important;
+                width: 100% !important;
+                height: 7px !important;
+                background:
+                    linear-gradient(
+                        180deg,
+                        #f7f9fc 0%,
+                        #bec8d5 35%,
+                        #778496 65%,
+                        #dce3ec 100%
+                    ) !important;
+                box-shadow:
+                    0 0 6px rgba(235,242,252,.70)
+                    !important;
+            }
+
+            #${BOX_ID} .dptm-stats-wrap {
+                display: grid !important;
+                grid-template-columns:
+                    minmax(0, 1.15fr)
+                    minmax(0, .85fr) !important;
+                align-items: start !important;
+                column-gap: 7px !important;
+                row-gap: 7px !important;
+                padding: 10px 10px 11px !important;
+                box-sizing: border-box !important;
+            }
+
+            #${BOX_ID} .dptm-col {
+                min-width: 0 !important;
+            }
+
+            #${BOX_ID} .dptm-right {
+                text-align: right !important;
+            }
+
+            #${BOX_ID} .dptm-label {
+                margin: 0 0 4px !important;
+                color: rgba(255,255,255,.70) !important;
+                font-size: 9px !important;
+                font-weight: 600 !important;
+                line-height: 1.15 !important;
+                white-space: nowrap !important;
+            }
+
+            #${BOX_ID} .dptm-label-winner {
+                font-size: 8.5px !important;
+                letter-spacing: -.15px !important;
+            }
+
+            #${BOX_ID} .dptm-value {
+                display: block !important;
+                margin: 0 !important;
+                color: #ffffff !important;
+                font-size: 12px !important;
+                font-weight: 800 !important;
+                line-height: 1.15 !important;
+                white-space: nowrap !important;
+                transition:
+                    transform .18s ease,
+                    text-shadow .18s ease !important;
+            }
+
+            #${BOX_ID} .dptm-active-value {
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: flex-end !important;
+                gap: 5px !important;
+            }
+
+            #${BOX_ID} .dptm-dot {
+                display: inline-block !important;
+                width: 10px !important;
+                height: 10px !important;
+                flex: 0 0 10px !important;
+                background: #08c82d !important;
+                border-radius: 50% !important;
+                box-shadow:
+                    0 0 6px rgba(40,255,80,.85),
+                    0 0 11px rgba(40,255,80,.45)
+                    !important;
+            }
+
+            #${BOX_ID} .dptm-second-row {
+                align-self: stretch !important;
+                margin-top: 3px !important;
+                padding-top: 8px !important;
+                border-top:
+                    1px solid rgba(255,255,255,.14)
+                    !important;
+            }
+
+            #${BOX_ID} .dptm-second-row .dptm-value {
+                font-size: 11px !important;
+            }
+
+            #${BOX_ID} .dptm-negative {
+                color: #ff3030 !important;
+                text-shadow:
+                    0 0 7px rgba(255,48,48,.75)
+                    !important;
+            }
+        `;
+
+        document.head.appendChild(style);
+    }
+
+    function buatBoxMobile() {
+        const box = document.createElement('div');
+        box.id = BOX_ID;
+
+        box.innerHTML = `
+            <div class="dptm-silver-bar"></div>
+
+            <div class="dptm-stats-wrap">
+                <div class="dptm-col">
+                    <div class="dptm-label dptm-label-winner">
+                        Total Dimenangkan Player
+                    </div>
+
+                    <div
+                        class="dptm-value dptm-negative"
+                        id="dptm-total-winner"
+                    >
+                        -Rp330.579.363
+                    </div>
+                </div>
+
+                <div class="dptm-col dptm-right">
+                    <div class="dptm-label">
+                        Sedang Bermain
+                    </div>
+
+                    <div class="dptm-value dptm-active-value">
+                        <span class="dptm-dot"></span>
+
+                        <span id="dptm-player-active">
+                            18.437
+                        </span>
+                    </div>
+                </div>
+
+                <div class="dptm-col dptm-second-row">
+                    <div class="dptm-label">
+                        Total Deposit
+                    </div>
+
+                    <div
+                        class="dptm-value"
+                        id="dptm-total-deposit"
+                    >
+                        Rp583.726.419
+                    </div>
+                </div>
+
+                <div
+                    class="dptm-col dptm-right dptm-second-row"
+                >
+                    <div class="dptm-label">
+                        Total Withdraw
+                    </div>
+
+                    <div
+                        class="dptm-value"
+                        id="dptm-total-withdraw"
+                    >
+                        Rp914.305.782
+                    </div>
+                </div>
+            </div>
+        `;
+
+        return box;
+    }
+
+    function ubahGlowMobile() {
+        const box = document.getElementById(BOX_ID);
+
+        if (!box) {
+            return;
+        }
+
+        const warna =
+            warnaGlowMobile[
+                warnaIndexMobile % warnaGlowMobile.length
+            ];
+
+        box.style.setProperty(
+            'border',
+            '3px solid ' + warna.border,
+            'important'
+        );
+
+        box.style.setProperty(
+            'box-shadow',
+            '0 0 8px ' + warna.glow1 + ', ' +
+            '0 0 17px ' + warna.glow2 + ', ' +
+            '0 0 26px ' + warna.glow1 + ', ' +
+            'inset 0 0 8px rgba(255,255,255,.06)',
+            'important'
+        );
+
+        warnaIndexMobile++;
+    }
+
+    function ubahAngkaMobile() {
+        const winnerEl = document.getElementById(
+            'dptm-total-winner'
+        );
+
+        const pemainEl = document.getElementById(
+            'dptm-player-active'
+        );
+
+        const depositEl = document.getElementById(
+            'dptm-total-deposit'
+        );
+
+        const withdrawEl = document.getElementById(
+            'dptm-total-withdraw'
+        );
+
+        if (
+            !winnerEl ||
+            !pemainEl ||
+            !depositEl ||
+            !withdrawEl
+        ) {
+            return;
+        }
+
+        totalDepositMobile = angkaAcakMobile(
+            MIN_DEPOSIT_MOBILE,
+            MAX_DEPOSIT_MOBILE
+        );
+
+        totalWithdrawMobile = angkaAcakMobile(
+            MIN_WITHDRAW_MOBILE,
+            MAX_WITHDRAW_MOBILE
+        );
+
+        pemainAktifMobile = angkaAcakMobile(
+            MIN_PLAYER_MOBILE,
+            MAX_PLAYER_MOBILE
+        );
+
+        const totalMenangMobile =
+            totalDepositMobile - totalWithdrawMobile;
+
+        if (totalMenangMobile < 0) {
+            winnerEl.textContent =
+                '-Rp' +
+                formatAngkaMobile(
+                    Math.abs(totalMenangMobile)
+                );
+
+            winnerEl.classList.add('dptm-negative');
+        } else {
+            winnerEl.textContent =
+                'Rp' + formatAngkaMobile(totalMenangMobile);
+
+            winnerEl.classList.remove('dptm-negative');
+        }
+
+        pemainEl.textContent =
+            formatAngkaMobile(pemainAktifMobile);
+
+        depositEl.textContent =
+            'Rp' + formatAngkaMobile(totalDepositMobile);
+
+        withdrawEl.textContent =
+            'Rp' + formatAngkaMobile(totalWithdrawMobile);
+
+        const semuaAngka = [
+            winnerEl,
+            pemainEl,
+            depositEl,
+            withdrawEl
+        ];
+
+        semuaAngka.forEach(function (el) {
+            el.style.setProperty(
+                'transform',
+                'scale(1.04)',
+                'important'
+            );
+        });
+
+        setTimeout(function () {
+            semuaAngka.forEach(function (el) {
+                el.style.setProperty(
+                    'transform',
+                    'scale(1)',
+                    'important'
+                );
+            });
+        }, 220);
+    }
+
+    function pasangBoxMobile() {
+        if (!isMobileDptoto()) {
+            hapusBoxMobile();
+            return;
+        }
+
+        const path = location.pathname.toLowerCase();
+
+        if (
+            path.includes('/register') ||
+            path.includes('/login')
+        ) {
+            hapusBoxMobile();
+            return;
+        }
+
+        const hasilWrapper = document.querySelector(
+            '.resulthistory__wrapper'
+        );
+
+        if (!hasilWrapper) {
+            return;
+        }
+
+        pasangStyleMobile();
+
+        let box = document.getElementById(BOX_ID);
+
+        if (!box) {
+            box = buatBoxMobile();
+        }
+
+        const parent = hasilWrapper.parentNode;
+
+        if (!parent) {
+            return;
+        }
+
+        /*
+         * Posisi mobile:
+         * tepat sebelum bagian Hasil Terakhir.
+         *
+         * Box tidak dimasukkan ke dalam hasilWrapper,
+         * sehingga isi pasaran tidak berubah.
+         */
+        if (box.nextElementSibling !== hasilWrapper) {
+            parent.insertBefore(
+                box,
+                hasilWrapper
+            );
+        }
+
+        ubahGlowMobile();
+        ubahAngkaMobile();
+    }
+
+    if (window.__dptmGlowMobileInterval) {
+        clearInterval(
+            window.__dptmGlowMobileInterval
+        );
+    }
+
+    window.__dptmGlowMobileInterval =
+        setInterval(ubahGlowMobile, 600);
+
+    if (window.__dptmNumberMobileInterval) {
+        clearInterval(
+            window.__dptmNumberMobileInterval
+        );
+    }
+
+    window.__dptmNumberMobileInterval =
+        setInterval(ubahAngkaMobile, 2500);
+
+    const observerMobileDptoto =
+        new MutationObserver(function () {
+            pasangBoxMobile();
+        });
+
+    observerMobileDptoto.observe(
+        document.documentElement,
+        {
+            childList: true,
+            subtree: true
+        }
+    );
+
+    pasangBoxMobile();
+
+    setTimeout(pasangBoxMobile, 500);
+    setTimeout(pasangBoxMobile, 1500);
+    setTimeout(pasangBoxMobile, 3000);
+    setTimeout(pasangBoxMobile, 5000);
+
+    window.addEventListener(
+        'resize',
+        pasangBoxMobile
+    );
+})();
