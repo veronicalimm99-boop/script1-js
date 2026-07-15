@@ -1828,21 +1828,31 @@ function ubahAngka() {
     */
     totalMenang = totalDeposit - totalWd;
 
-totalEl.textContent =
-    'Rp' + formatID(Math.abs(totalMenang));
+    if (totalMenang < 0) {
+    totalEl.textContent =
+        '-Rp' + formatID(Math.abs(totalMenang));
 
-totalEl.style.setProperty(
-    'color',
-    '#16e935',
-    'important'
-);
+    totalEl.style.setProperty(
+        'color',
+        '#ff3030',
+        'important'
+    );
 
-totalEl.style.setProperty(
-    'text-shadow',
-    '0 0 6px rgba(35,255,75,.85), ' +
-    '0 0 12px rgba(35,255,75,.50)',
-    'important'
-);
+    totalEl.style.setProperty(
+        'text-shadow',
+        '0 0 7px rgba(255,48,48,.75)',
+        'important'
+    );
+    } else {
+    totalEl.textContent =
+        'Rp' + formatID(totalMenang);
+
+    totalEl.style.setProperty(
+        'color',
+        '#ffffff',
+        'important'
+        );
+     }
 
     pemainEl.textContent =
         formatID(pemainAktif);
@@ -1874,32 +1884,20 @@ totalEl.style.setProperty(
         );
     });
 
-setTimeout(function() {
-    semuaAngka.forEach(function(el) {
-        el.style.setProperty(
-            'transform',
-            'scale(1)',
-            'important'
-        );
+    setTimeout(function() {
+        semuaAngka.forEach(function(el) {
+            el.style.setProperty(
+                'transform',
+                'scale(1)',
+                'important'
+            );
 
-        if (el !== totalEl) {
-            el.style.removeProperty('text-shadow');
-        }
-    });
-
-    totalEl.style.setProperty(
-        'color',
-        '#16e935',
-        'important'
-    );
-
-    totalEl.style.setProperty(
-        'text-shadow',
-        '0 0 6px rgba(35,255,75,.85), ' +
-        '0 0 12px rgba(35,255,75,.50)',
-        'important'
-    );
-}, 220);
+            el.style.removeProperty(
+                'text-shadow'
+            );
+        });
+    }, 220);
+}
 
     function pasangBoxDesktop() {
         if (window.innerWidth <= 768) {
