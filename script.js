@@ -1985,6 +1985,8 @@ function ubahAngka() {
     const BOX_ID = 'mobile-total-winner-dptoto';
     const STYLE_ID = 'mobile-total-winner-dptoto-css';
 
+    let updateTimer = null;
+
 let dataStats = {
     menang: -383138757,
     bermain: angkaUnik(17000, 21000),
@@ -2045,14 +2047,14 @@ function angkaUnik(min, max) {
                     background:
                         radial-gradient(circle at top left, rgba(95,45,255,.35), transparent 34%),
                         linear-gradient(180deg, #101a46 0%, #12193b 48%, #171234 100%) !important;
-                    border: 3px solid #00ffff !important;
+                    border: 3px solid #b44cff !important;
+                    border-radius: 12px !important;
                     box-shadow:
-                    0 0 8px rgba(0,255,255,.95),
-                    0 0 17px rgba(0,170,255,.70),
-                    0 0 25px rgba(0,255,255,.45),
-                    inset 0 0 8px rgba(255,255,255,.06) !important;
+                        0 0 8px rgba(193,86,255,.95),
+                        0 0 16px rgba(130,45,255,.75),
+                        inset 0 0 14px rgba(255,255,255,.06) !important;
                     font-family: Arial, sans-serif !important;
-                    animation: mobileWinnerBorderBlink .6s linear infinite !important;
+                }
 
                 #${BOX_ID}::before {
                     content: "" !important;
@@ -2175,53 +2177,6 @@ function angkaUnik(min, max) {
                     display: none !important;
                 }
             }
-
-            @keyframes mobileWinnerBorderBlink {
-    0% {
-        border-color: #ffe628;
-        box-shadow:
-            0 0 8px rgba(255,230,40,.95),
-            0 0 17px rgba(255,180,0,.65),
-            0 0 26px rgba(255,230,40,.95),
-            inset 0 0 8px rgba(255,255,255,.06);
-    }
-
-    25% {
-        border-color: #00ffff;
-        box-shadow:
-            0 0 8px rgba(0,255,255,.95),
-            0 0 17px rgba(0,170,255,.70),
-            0 0 26px rgba(0,255,255,.95),
-            inset 0 0 8px rgba(255,255,255,.06);
-    }
-
-    50% {
-        border-color: #2378ff;
-        box-shadow:
-            0 0 8px rgba(35,120,255,.95),
-            0 0 17px rgba(0,220,255,.60),
-            0 0 26px rgba(35,120,255,.95),
-            inset 0 0 8px rgba(255,255,255,.06);
-    }
-
-    75% {
-        border-color: #be50ff;
-        box-shadow:
-            0 0 8px rgba(190,80,255,.95),
-            0 0 17px rgba(120,80,255,.70),
-            0 0 26px rgba(190,80,255,.95),
-            inset 0 0 8px rgba(255,255,255,.06);
-    }
-
-    100% {
-        border-color: #00ffaa;
-        box-shadow:
-            0 0 8px rgba(0,255,170,.95),
-            0 0 17px rgba(0,220,150,.65),
-            0 0 26px rgba(0,255,170,.95),
-            inset 0 0 8px rgba(255,255,255,.06);
-    }
-}
         `;
 
         document.head.appendChild(style);
@@ -2321,7 +2276,6 @@ function angkaUnik(min, max) {
 
         if (document.getElementById(BOX_ID)) {
             mulaiUpdateAngka();
-            mulaiGlowMobile();
             return;
         }
 
@@ -2343,7 +2297,6 @@ function angkaUnik(min, max) {
         }
 
         mulaiUpdateAngka();
-        mulaiGlowMobile();
     }
 
     const observerMobileStats = new MutationObserver(function () {
