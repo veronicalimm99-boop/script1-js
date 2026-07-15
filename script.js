@@ -1988,7 +1988,7 @@ function ubahAngka() {
     let updateTimer = null;
 
 let dataStats = {
-    menang: -383138757,
+    menang: 383138757,
     bermain: angkaUnik(17000, 21000),
     deposit: angkaUnik(500000000, 700000000),
     withdraw: angkaUnik(750000000, 1100000000)
@@ -2146,11 +2146,12 @@ function angkaUnik(min, max) {
                     text-shadow: 0 1px 2px rgba(0,0,0,.85) !important;
                 }
 
-                #${BOX_ID} .stats-value.red {
-                    color: #ff2020 !important;
+                #${BOX_ID} .stats-value.green {
+                    color: #16e935 !important;
                     text-shadow:
-                        0 1px 2px rgba(0,0,0,.9),
-                        0 0 6px rgba(255,0,0,.25) !important;
+                    0 1px 2px rgba(0,0,0,.9),
+                    0 0 6px rgba(35,255,75,.75),
+                    0 0 12px rgba(35,255,75,.45) !important;
                 }
 
                 #${BOX_ID} .playing-wrap {
@@ -2190,7 +2191,7 @@ function angkaUnik(min, max) {
             <div class="stats-grid">
                 <div class="stats-item top-left">
                     <div class="stats-label">Total Dimenangkan Player</div>
-                    <div class="stats-value red" data-stat="menang">-Rp383.138.757</div>
+                    <div class="stats-value red" data-stat="menang">Rp383.138.757</div>
                 </div>
 
                 <div class="stats-item top-right">
@@ -2233,20 +2234,16 @@ function angkaUnik(min, max) {
     const depositEl = box.querySelector('[data-stat="deposit"]');
     const withdrawEl = box.querySelector('[data-stat="withdraw"]');
 
-    if (menangEl) {
-        if (dataStats.menang < 0) {
-            menangEl.textContent = '-' + formatRupiah(Math.abs(dataStats.menang));
-            menangEl.classList.add('red');
-        } else {
-            menangEl.textContent = formatRupiah(dataStats.menang);
-            menangEl.classList.remove('red');
-        }
+        if (menangEl) {
+        menangEl.textContent = formatRupiah(Math.abs(dataStats.menang));
+        menangEl.classList.remove('red');
+        menangEl.classList.add('green');
     }
 
-    if (bermainEl) bermainEl.textContent = formatAngka(dataStats.bermain);
-    if (depositEl) depositEl.textContent = formatRupiah(dataStats.deposit);
-    if (withdrawEl) withdrawEl.textContent = formatRupiah(dataStats.withdraw);
-}
+        if (bermainEl) bermainEl.textContent = formatAngka(dataStats.bermain);
+        if (depositEl) depositEl.textContent = formatRupiah(dataStats.deposit);
+        if (withdrawEl) withdrawEl.textContent = formatRupiah(dataStats.withdraw);
+    }
 
     function mulaiUpdateAngka() {
         if (updateTimer) return;
