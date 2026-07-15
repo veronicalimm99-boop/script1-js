@@ -2191,7 +2191,7 @@ function angkaUnik(min, max) {
             <div class="stats-grid">
                 <div class="stats-item top-left">
                     <div class="stats-label">Total Dimenangkan Player</div>
-                    <div class="stats-value red" data-stat="menang">Rp383.138.757</div>
+                    <div class="stats-value green" data-stat="menang">Rp383.138.757</div>
                 </div>
 
                 <div class="stats-item top-right">
