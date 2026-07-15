@@ -1952,7 +1952,7 @@ function ubahAngka() {
     }
 
     window.__totalWinnerNumberInterval =
-    setInterval(ubahAngka, 5000);
+    setInterval(ubahAngka, 30000);
 
     const observer =
         new MutationObserver(pasangBoxDesktop);
@@ -2255,7 +2255,7 @@ function angkaUnik(min, max) {
 
         updateTimer = setInterval(function () {
             updateAngka();
-        }, 5000);
+        }, 30000);
     }
 
     function pasangBoxMobile() {
