@@ -1828,31 +1828,37 @@ function ubahAngka() {
     */
     totalMenang = totalDeposit - totalWd;
 
-    if (totalMenang < 0) {
+if (totalMenang < 0) {
     totalEl.textContent =
-        '-Rp' + formatID(Math.abs(totalMenang));
+        'Rp' + formatID(Math.abs(totalMenang));
 
     totalEl.style.setProperty(
         'color',
-        '#ff3030',
+        '#08e83a',
         'important'
     );
 
     totalEl.style.setProperty(
         'text-shadow',
-        '0 0 7px rgba(255,48,48,.75)',
+        '0 0 7px rgba(8,232,58,.85)',
         'important'
     );
-    } else {
+} else {
     totalEl.textContent =
         'Rp' + formatID(totalMenang);
 
     totalEl.style.setProperty(
         'color',
-        '#ffffff',
+        '#08e83a',
         'important'
-        );
-     }
+    );
+
+    totalEl.style.setProperty(
+        'text-shadow',
+        '0 0 7px rgba(8,232,58,.85)',
+        'important'
+    );
+}
 
     pemainEl.textContent =
         formatID(pemainAktif);
