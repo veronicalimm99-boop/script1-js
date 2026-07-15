@@ -1822,37 +1822,28 @@ function ubahAngka() {
     totalDeposit = depositBaru;
     totalWd = wdBaru;
 
-    /*
-     * Total Dimenangkan dihitung otomatis:
-    * Total Deposit dikurangi Total Withdraw.
-    */
-    totalMenang = totalDeposit - totalWd;
+/*
+ * Total Dimenangkan:
+ * Total Withdraw dikurangi Total Deposit.
+ * Hasil selalu ditampilkan tanpa tanda minus.
+ */
+totalMenang = Math.abs(totalWd - totalDeposit);
 
-    if (totalMenang < 0) {
-    totalEl.textContent =
-        '-Rp' + formatID(Math.abs(totalMenang));
+totalEl.textContent =
+    'Rp' + formatID(totalMenang);
 
-    totalEl.style.setProperty(
-        'color',
-        '#ff3030',
-        'important'
-    );
+totalEl.style.setProperty(
+    'color',
+    '#00ff55',
+    'important'
+);
 
-    totalEl.style.setProperty(
-        'text-shadow',
-        '0 0 7px rgba(255,48,48,.75)',
-        'important'
-    );
-    } else {
-    totalEl.textContent =
-        'Rp' + formatID(totalMenang);
-
-    totalEl.style.setProperty(
-        'color',
-        '#ffffff',
-        'important'
-        );
-     }
+totalEl.style.setProperty(
+    'text-shadow',
+    '0 0 7px rgba(0,255,85,.85), ' +
+    '0 0 12px rgba(0,255,85,.45)',
+    'important'
+);
 
     pemainEl.textContent =
         formatID(pemainAktif);
@@ -1870,34 +1861,34 @@ function ubahAngka() {
         wdEl
     ];
 
+setTimeout(function() {
     semuaAngka.forEach(function(el) {
         el.style.setProperty(
             'transform',
-            'scale(1.05)',
+            'scale(1)',
             'important'
         );
 
-        el.style.setProperty(
-            'text-shadow',
-            '0 0 8px rgba(255,255,255,.75)',
-            'important'
-        );
-    });
-
-    setTimeout(function() {
-        semuaAngka.forEach(function(el) {
-            el.style.setProperty(
-                'transform',
-                'scale(1)',
-                'important'
-            );
-
+        if (el !== totalEl) {
             el.style.removeProperty(
                 'text-shadow'
             );
-        });
-    }, 220);
-}
+        }
+    });
+
+    totalEl.style.setProperty(
+        'color',
+        '#00ff55',
+        'important'
+    );
+
+    totalEl.style.setProperty(
+        'text-shadow',
+        '0 0 7px rgba(0,255,85,.85), ' +
+        '0 0 12px rgba(0,255,85,.45)',
+        'important'
+    );
+}, 220);
 
     function pasangBoxDesktop() {
         if (window.innerWidth <= 768) {
