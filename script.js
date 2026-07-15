@@ -1985,38 +1985,6 @@ function ubahAngka() {
     const BOX_ID = 'mobile-total-winner-dptoto';
     const STYLE_ID = 'mobile-total-winner-dptoto-css';
 
-    let updateTimer = null;
-let glowTimer = null;
-let warnaIndexMobile = 0;
-
-const warnaGlowMobile = [
-    {
-        border: '#ffe628',
-        glow1: 'rgba(255,230,40,.95)',
-        glow2: 'rgba(255,180,0,.65)'
-    },
-    {
-        border: '#00ffff',
-        glow1: 'rgba(0,255,255,.95)',
-        glow2: 'rgba(0,170,255,.70)'
-    },
-    {
-        border: '#2378ff',
-        glow1: 'rgba(35,120,255,.95)',
-        glow2: 'rgba(0,220,255,.60)'
-    },
-    {
-        border: '#be50ff',
-        glow1: 'rgba(190,80,255,.95)',
-        glow2: 'rgba(120,80,255,.70)'
-    },
-    {
-        border: '#00ffaa',
-        glow1: 'rgba(0,255,170,.95)',
-        glow2: 'rgba(0,220,150,.65)'
-    }
-];
-
 let dataStats = {
     menang: -383138757,
     bermain: angkaUnik(17000, 21000),
@@ -2084,10 +2052,7 @@ function angkaUnik(min, max) {
                     0 0 25px rgba(0,255,255,.45),
                     inset 0 0 8px rgba(255,255,255,.06) !important;
                     font-family: Arial, sans-serif !important;
-                    transition:
-                    border-color .3s ease,
-                    box-shadow .3s ease !important;
-                }
+                    animation: mobileWinnerBorderBlink .6s linear infinite !important;
 
                 #${BOX_ID}::before {
                     content: "" !important;
@@ -2210,6 +2175,53 @@ function angkaUnik(min, max) {
                     display: none !important;
                 }
             }
+
+            @keyframes mobileWinnerBorderBlink {
+    0% {
+        border-color: #ffe628;
+        box-shadow:
+            0 0 8px rgba(255,230,40,.95),
+            0 0 17px rgba(255,180,0,.65),
+            0 0 26px rgba(255,230,40,.95),
+            inset 0 0 8px rgba(255,255,255,.06);
+    }
+
+    25% {
+        border-color: #00ffff;
+        box-shadow:
+            0 0 8px rgba(0,255,255,.95),
+            0 0 17px rgba(0,170,255,.70),
+            0 0 26px rgba(0,255,255,.95),
+            inset 0 0 8px rgba(255,255,255,.06);
+    }
+
+    50% {
+        border-color: #2378ff;
+        box-shadow:
+            0 0 8px rgba(35,120,255,.95),
+            0 0 17px rgba(0,220,255,.60),
+            0 0 26px rgba(35,120,255,.95),
+            inset 0 0 8px rgba(255,255,255,.06);
+    }
+
+    75% {
+        border-color: #be50ff;
+        box-shadow:
+            0 0 8px rgba(190,80,255,.95),
+            0 0 17px rgba(120,80,255,.70),
+            0 0 26px rgba(190,80,255,.95),
+            inset 0 0 8px rgba(255,255,255,.06);
+    }
+
+    100% {
+        border-color: #00ffaa;
+        box-shadow:
+            0 0 8px rgba(0,255,170,.95),
+            0 0 17px rgba(0,220,150,.65),
+            0 0 26px rgba(0,255,170,.95),
+            inset 0 0 8px rgba(255,255,255,.06);
+    }
+}
         `;
 
         document.head.appendChild(style);
@@ -2358,44 +2370,3 @@ function angkaUnik(min, max) {
         }
     });
 })();
-
-setTimeout(mulaiGlowMobile, 800);
-setTimeout(mulaiGlowMobile, 1800);
-setTimeout(mulaiGlowMobile, 3500);
-
-function ubahWarnaGlowMobile() {
-    const box = document.getElementById(BOX_ID);
-    if (!box) return;
-
-    const warna = warnaGlowMobile[warnaIndexMobile % warnaGlowMobile.length];
-
-    box.style.setProperty(
-        'border',
-        '3px solid ' + warna.border,
-        'important'
-    );
-
-    box.style.setProperty(
-        'box-shadow',
-        '0 0 8px ' + warna.glow1 + ', ' +
-        '0 0 17px ' + warna.glow2 + ', ' +
-        '0 0 26px ' + warna.glow1 + ', ' +
-        'inset 0 0 8px rgba(255,255,255,.06)',
-        'important'
-    );
-
-    warnaIndexMobile++;
-}
-
-function mulaiGlowMobile() {
-    if (window.__mobileWinnerGlowInterval) {
-        clearInterval(window.__mobileWinnerGlowInterval);
-        window.__mobileWinnerGlowInterval = null;
-    }
-
-    ubahWarnaGlowMobile();
-
-    window.__mobileWinnerGlowInterval = setInterval(function () {
-        ubahWarnaGlowMobile();
-    }, 600);
-}
