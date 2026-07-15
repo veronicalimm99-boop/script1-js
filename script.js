@@ -1979,27 +1979,18 @@ function ubahAngka() {
 })();
 
 
-/* ===== TOTAL DIMENANGKAN KHUSUS MOBILE - TERPISAH DAN AMAN ===== */
+/* ===== TOTAL PLAYER KHUSUS MOBILE - TANPA OBSERVER LOOP ===== */
 (function () {
     const BOX_ID = 'mobile-total-player-dptoto';
     const STYLE_ID = 'mobile-total-player-dptoto-css';
 
-    let warnaIndexMobile = 0;
+    let warnaIndex = 0;
 
-    let totalDepositMobile = 583726419;
-    let totalWithdrawMobile = 914305782;
-    let pemainAktifMobile = 18437;
+    let totalDeposit = 583726419;
+    let totalWithdraw = 914305782;
+    let pemainAktif = 18437;
 
-    const MIN_DEPOSIT_MOBILE = 500000000;
-    const MAX_DEPOSIT_MOBILE = 700000000;
-
-    const MIN_WITHDRAW_MOBILE = 750000000;
-    const MAX_WITHDRAW_MOBILE = 1000000000;
-
-    const MIN_PLAYER_MOBILE = 16000;
-    const MAX_PLAYER_MOBILE = 22000;
-
-    const warnaGlowMobile = [
+    const warnaGlow = [
         {
             border: '#ffe628',
             glow1: 'rgba(255,230,40,.95)',
@@ -2027,7 +2018,7 @@ function ubahAngka() {
         }
     ];
 
-    function isMobileDptoto() {
+    function isMobile() {
         return (
             window.innerWidth <= 768 ||
             document.querySelector(
@@ -2039,28 +2030,18 @@ function ubahAngka() {
         );
     }
 
-    function formatAngkaMobile(angka) {
+    function formatID(angka) {
         return Math.floor(angka).toLocaleString('id-ID');
     }
 
-    function angkaAcakMobile(min, max) {
+    function angkaAcak(min, max) {
         return Math.floor(
             Math.random() * (max - min + 1)
         ) + min;
     }
 
-    function hapusBoxMobile() {
-        const box = document.getElementById(BOX_ID);
-
-        if (box) {
-            box.remove();
-        }
-    }
-
-    function pasangStyleMobile() {
-        if (document.getElementById(STYLE_ID)) {
-            return;
-        }
+    function pasangStyle() {
+        if (document.getElementById(STYLE_ID)) return;
 
         const style = document.createElement('style');
         style.id = STYLE_ID;
@@ -2070,32 +2051,35 @@ function ubahAngka() {
                 display: block !important;
                 position: relative !important;
                 width: calc(100% - 24px) !important;
-                max-width: none !important;
-                margin: 10px auto 14px !important;
+                margin: 12px auto 14px !important;
                 padding: 0 !important;
                 box-sizing: border-box !important;
                 overflow: hidden !important;
+                clear: both !important;
+
                 background: #05143d !important;
                 border: 3px solid #00ffff !important;
                 border-radius: 16px !important;
+
                 box-shadow:
                     0 0 8px rgba(0,255,255,.95),
                     0 0 17px rgba(0,170,255,.70),
                     0 0 25px rgba(0,255,255,.45),
                     inset 0 0 8px rgba(255,255,255,.06)
                     !important;
+
                 font-family: Arial, sans-serif !important;
+
                 transition:
                     border-color .3s ease,
                     box-shadow .3s ease !important;
-                clear: both !important;
-                z-index: 3 !important;
             }
 
-            #${BOX_ID} .dptm-silver-bar {
+            #${BOX_ID} .mobile-silver-bar {
                 display: block !important;
                 width: 100% !important;
                 height: 7px !important;
+
                 background:
                     linear-gradient(
                         180deg,
@@ -2104,32 +2088,32 @@ function ubahAngka() {
                         #778496 65%,
                         #dce3ec 100%
                     ) !important;
-                box-shadow:
-                    0 0 6px rgba(235,242,252,.70)
-                    !important;
             }
 
-            #${BOX_ID} .dptm-stats-wrap {
+            #${BOX_ID} .mobile-stats-wrap {
                 display: grid !important;
+
                 grid-template-columns:
                     minmax(0, 1.15fr)
                     minmax(0, .85fr) !important;
+
                 align-items: start !important;
-                column-gap: 7px !important;
-                row-gap: 7px !important;
-                padding: 10px 10px 11px !important;
+                column-gap: 8px !important;
+                row-gap: 8px !important;
+
+                padding: 10px 11px 11px !important;
                 box-sizing: border-box !important;
             }
 
-            #${BOX_ID} .dptm-col {
+            #${BOX_ID} .mobile-stats-col {
                 min-width: 0 !important;
             }
 
-            #${BOX_ID} .dptm-right {
+            #${BOX_ID} .mobile-right {
                 text-align: right !important;
             }
 
-            #${BOX_ID} .dptm-label {
+            #${BOX_ID} .mobile-stats-label {
                 margin: 0 0 4px !important;
                 color: rgba(255,255,255,.70) !important;
                 font-size: 9px !important;
@@ -2138,12 +2122,12 @@ function ubahAngka() {
                 white-space: nowrap !important;
             }
 
-            #${BOX_ID} .dptm-label-winner {
+            #${BOX_ID} .mobile-winner-label {
                 font-size: 8.5px !important;
                 letter-spacing: -.15px !important;
             }
 
-            #${BOX_ID} .dptm-value {
+            #${BOX_ID} .mobile-stats-value {
                 display: block !important;
                 margin: 0 !important;
                 color: #ffffff !important;
@@ -2151,113 +2135,129 @@ function ubahAngka() {
                 font-weight: 800 !important;
                 line-height: 1.15 !important;
                 white-space: nowrap !important;
+
                 transition:
-                    transform .18s ease,
-                    text-shadow .18s ease !important;
+                    transform .18s ease !important;
             }
 
-            #${BOX_ID} .dptm-active-value {
+            #${BOX_ID} .mobile-negative {
+                color: #ff3030 !important;
+
+                text-shadow:
+                    0 0 7px rgba(255,48,48,.75)
+                    !important;
+            }
+
+            #${BOX_ID} .mobile-active-value {
                 display: inline-flex !important;
                 align-items: center !important;
                 justify-content: flex-end !important;
                 gap: 5px !important;
             }
 
-            #${BOX_ID} .dptm-dot {
+            #${BOX_ID} .mobile-playing-dot {
                 display: inline-block !important;
                 width: 10px !important;
                 height: 10px !important;
                 flex: 0 0 10px !important;
+
                 background: #08c82d !important;
                 border-radius: 50% !important;
+
                 box-shadow:
                     0 0 6px rgba(40,255,80,.85),
                     0 0 11px rgba(40,255,80,.45)
                     !important;
             }
 
-            #${BOX_ID} .dptm-second-row {
+            #${BOX_ID} .mobile-second-row {
                 align-self: stretch !important;
                 margin-top: 3px !important;
                 padding-top: 8px !important;
+
                 border-top:
                     1px solid rgba(255,255,255,.14)
                     !important;
             }
 
-            #${BOX_ID} .dptm-second-row .dptm-value {
+            #${BOX_ID} .mobile-second-row .mobile-stats-value {
                 font-size: 11px !important;
             }
 
-            #${BOX_ID} .dptm-negative {
-                color: #ff3030 !important;
-                text-shadow:
-                    0 0 7px rgba(255,48,48,.75)
-                    !important;
+            @media screen and (min-width: 769px) {
+                #${BOX_ID} {
+                    display: none !important;
+                }
             }
         `;
 
         document.head.appendChild(style);
     }
 
-    function buatBoxMobile() {
+    function buatBox() {
         const box = document.createElement('div');
         box.id = BOX_ID;
 
         box.innerHTML = `
-            <div class="dptm-silver-bar"></div>
+            <div class="mobile-silver-bar"></div>
 
-            <div class="dptm-stats-wrap">
-                <div class="dptm-col">
-                    <div class="dptm-label dptm-label-winner">
+            <div class="mobile-stats-wrap">
+                <div class="mobile-stats-col">
+                    <div
+                        class="mobile-stats-label mobile-winner-label"
+                    >
                         Total Dimenangkan Player
                     </div>
 
                     <div
-                        class="dptm-value dptm-negative"
-                        id="dptm-total-winner"
+                        class="mobile-stats-value mobile-negative"
+                        id="mobile-total-menang-player"
                     >
                         -Rp330.579.363
                     </div>
                 </div>
 
-                <div class="dptm-col dptm-right">
-                    <div class="dptm-label">
+                <div class="mobile-stats-col mobile-right">
+                    <div class="mobile-stats-label">
                         Sedang Bermain
                     </div>
 
-                    <div class="dptm-value dptm-active-value">
-                        <span class="dptm-dot"></span>
+                    <div
+                        class="mobile-stats-value mobile-active-value"
+                    >
+                        <span class="mobile-playing-dot"></span>
 
-                        <span id="dptm-player-active">
+                        <span id="mobile-pemain-aktif">
                             18.437
                         </span>
                     </div>
                 </div>
 
-                <div class="dptm-col dptm-second-row">
-                    <div class="dptm-label">
+                <div
+                    class="mobile-stats-col mobile-second-row"
+                >
+                    <div class="mobile-stats-label">
                         Total Deposit
                     </div>
 
                     <div
-                        class="dptm-value"
-                        id="dptm-total-deposit"
+                        class="mobile-stats-value"
+                        id="mobile-total-deposit"
                     >
                         Rp583.726.419
                     </div>
                 </div>
 
                 <div
-                    class="dptm-col dptm-right dptm-second-row"
+                    class="mobile-stats-col mobile-right mobile-second-row"
                 >
-                    <div class="dptm-label">
+                    <div class="mobile-stats-label">
                         Total Withdraw
                     </div>
 
                     <div
-                        class="dptm-value"
-                        id="dptm-total-withdraw"
+                        class="mobile-stats-value"
+                        id="mobile-total-withdraw"
                     >
                         Rp914.305.782
                     </div>
@@ -2268,17 +2268,48 @@ function ubahAngka() {
         return box;
     }
 
-    function ubahGlowMobile() {
-        const box = document.getElementById(BOX_ID);
+    function pasangBox() {
+        if (!isMobile()) return;
 
-        if (!box) {
+        const path = location.pathname.toLowerCase();
+
+        if (
+            path.includes('/register') ||
+            path.includes('/login')
+        ) {
             return;
         }
 
+        if (document.getElementById(BOX_ID)) {
+            return;
+        }
+
+        const hasilTerakhir = document.querySelector(
+            '.resulthistory__wrapper'
+        );
+
+        if (!hasilTerakhir) return;
+
+        pasangStyle();
+
+        const box = buatBox();
+
+        /*
+         * Taruh tepat di atas Hasil Terakhir.
+         * Tidak mengubah isi wrapper.
+         */
+        hasilTerakhir.insertAdjacentElement(
+            'beforebegin',
+            box
+        );
+    }
+
+    function ubahGlow() {
+        const box = document.getElementById(BOX_ID);
+        if (!box) return;
+
         const warna =
-            warnaGlowMobile[
-                warnaIndexMobile % warnaGlowMobile.length
-            ];
+            warnaGlow[warnaIndex % warnaGlow.length];
 
         box.style.setProperty(
             'border',
@@ -2295,28 +2326,28 @@ function ubahAngka() {
             'important'
         );
 
-        warnaIndexMobile++;
+        warnaIndex++;
     }
 
-    function ubahAngkaMobile() {
-        const winnerEl = document.getElementById(
-            'dptm-total-winner'
+    function ubahAngka() {
+        const totalEl = document.getElementById(
+            'mobile-total-menang-player'
         );
 
         const pemainEl = document.getElementById(
-            'dptm-player-active'
+            'mobile-pemain-aktif'
         );
 
         const depositEl = document.getElementById(
-            'dptm-total-deposit'
+            'mobile-total-deposit'
         );
 
         const withdrawEl = document.getElementById(
-            'dptm-total-withdraw'
+            'mobile-total-withdraw'
         );
 
         if (
-            !winnerEl ||
+            !totalEl ||
             !pemainEl ||
             !depositEl ||
             !withdrawEl
@@ -2324,56 +2355,53 @@ function ubahAngka() {
             return;
         }
 
-        totalDepositMobile = angkaAcakMobile(
-            MIN_DEPOSIT_MOBILE,
-            MAX_DEPOSIT_MOBILE
+        totalDeposit = angkaAcak(
+            500000000,
+            700000000
         );
 
-        totalWithdrawMobile = angkaAcakMobile(
-            MIN_WITHDRAW_MOBILE,
-            MAX_WITHDRAW_MOBILE
+        totalWithdraw = angkaAcak(
+            750000000,
+            1000000000
         );
 
-        pemainAktifMobile = angkaAcakMobile(
-            MIN_PLAYER_MOBILE,
-            MAX_PLAYER_MOBILE
+        pemainAktif = angkaAcak(
+            16000,
+            22000
         );
 
-        const totalMenangMobile =
-            totalDepositMobile - totalWithdrawMobile;
+        const totalMenang =
+            totalDeposit - totalWithdraw;
 
-        if (totalMenangMobile < 0) {
-            winnerEl.textContent =
-                '-Rp' +
-                formatAngkaMobile(
-                    Math.abs(totalMenangMobile)
-                );
+        if (totalMenang < 0) {
+            totalEl.textContent =
+                '-Rp' + formatID(Math.abs(totalMenang));
 
-            winnerEl.classList.add('dptm-negative');
+            totalEl.classList.add('mobile-negative');
         } else {
-            winnerEl.textContent =
-                'Rp' + formatAngkaMobile(totalMenangMobile);
+            totalEl.textContent =
+                'Rp' + formatID(totalMenang);
 
-            winnerEl.classList.remove('dptm-negative');
+            totalEl.classList.remove('mobile-negative');
         }
 
         pemainEl.textContent =
-            formatAngkaMobile(pemainAktifMobile);
+            formatID(pemainAktif);
 
         depositEl.textContent =
-            'Rp' + formatAngkaMobile(totalDepositMobile);
+            'Rp' + formatID(totalDeposit);
 
         withdrawEl.textContent =
-            'Rp' + formatAngkaMobile(totalWithdrawMobile);
+            'Rp' + formatID(totalWithdraw);
 
-        const semuaAngka = [
-            winnerEl,
+        const angkaElements = [
+            totalEl,
             pemainEl,
             depositEl,
             withdrawEl
         ];
 
-        semuaAngka.forEach(function (el) {
+        angkaElements.forEach(function (el) {
             el.style.setProperty(
                 'transform',
                 'scale(1.04)',
@@ -2382,7 +2410,7 @@ function ubahAngka() {
         });
 
         setTimeout(function () {
-            semuaAngka.forEach(function (el) {
+            angkaElements.forEach(function (el) {
                 el.style.setProperty(
                     'transform',
                     'scale(1)',
@@ -2392,102 +2420,50 @@ function ubahAngka() {
         }, 220);
     }
 
-    function pasangBoxMobile() {
-        if (!isMobileDptoto()) {
-            hapusBoxMobile();
-            return;
-        }
+    /*
+     * Tidak memakai MutationObserver.
+     * Hanya mencoba pemasangan beberapa kali.
+     */
+    pasangBox();
 
-        const path = location.pathname.toLowerCase();
+    setTimeout(pasangBox, 500);
+    setTimeout(pasangBox, 1500);
+    setTimeout(pasangBox, 3000);
+    setTimeout(pasangBox, 5000);
 
-        if (
-            path.includes('/register') ||
-            path.includes('/login')
-        ) {
-            hapusBoxMobile();
-            return;
-        }
-
-        const hasilWrapper = document.querySelector(
-            '.resulthistory__wrapper'
-        );
-
-        if (!hasilWrapper) {
-            return;
-        }
-
-        pasangStyleMobile();
-
-        let box = document.getElementById(BOX_ID);
-
-        if (!box) {
-            box = buatBoxMobile();
-        }
-
-        const parent = hasilWrapper.parentNode;
-
-        if (!parent) {
-            return;
-        }
-
-        /*
-         * Posisi mobile:
-         * tepat sebelum bagian Hasil Terakhir.
-         *
-         * Box tidak dimasukkan ke dalam hasilWrapper,
-         * sehingga isi pasaran tidak berubah.
-         */
-        if (box.nextElementSibling !== hasilWrapper) {
-            parent.insertBefore(
-                box,
-                hasilWrapper
-            );
-        }
-
-        ubahGlowMobile();
-        ubahAngkaMobile();
-    }
-
-    if (window.__dptmGlowMobileInterval) {
+    if (window.__mobilePlayerMountInterval) {
         clearInterval(
-            window.__dptmGlowMobileInterval
+            window.__mobilePlayerMountInterval
         );
     }
 
-    window.__dptmGlowMobileInterval =
-        setInterval(ubahGlowMobile, 600);
+    /*
+     * Cek ringan setiap 2 detik.
+     * Tidak mengubah DOM kalau box sudah ada.
+     */
+    window.__mobilePlayerMountInterval =
+        setInterval(pasangBox, 2000);
 
-    if (window.__dptmNumberMobileInterval) {
+    if (window.__mobilePlayerGlowInterval) {
         clearInterval(
-            window.__dptmNumberMobileInterval
+            window.__mobilePlayerGlowInterval
         );
     }
 
-    window.__dptmNumberMobileInterval =
-        setInterval(ubahAngkaMobile, 2500);
+    window.__mobilePlayerGlowInterval =
+        setInterval(ubahGlow, 600);
 
-    const observerMobileDptoto =
-        new MutationObserver(function () {
-            pasangBoxMobile();
-        });
+    if (window.__mobilePlayerNumberInterval) {
+        clearInterval(
+            window.__mobilePlayerNumberInterval
+        );
+    }
 
-    observerMobileDptoto.observe(
-        document.documentElement,
-        {
-            childList: true,
-            subtree: true
-        }
-    );
+    window.__mobilePlayerNumberInterval =
+        setInterval(ubahAngka, 2500);
 
-    pasangBoxMobile();
-
-    setTimeout(pasangBoxMobile, 500);
-    setTimeout(pasangBoxMobile, 1500);
-    setTimeout(pasangBoxMobile, 3000);
-    setTimeout(pasangBoxMobile, 5000);
-
-    window.addEventListener(
-        'resize',
-        pasangBoxMobile
-    );
+    setTimeout(function () {
+        ubahGlow();
+        ubahAngka();
+    }, 1000);
 })();
