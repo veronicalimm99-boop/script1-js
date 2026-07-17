@@ -2328,110 +2328,215 @@ function angkaUnik(min, max) {
 })();
 
 
-/* ===== KUNCI INPUT REFERRAL CODE ===== */
+/* ===== KUNCI REFERRAL CODE REGISTER DPTOTO ===== */
 (function () {
-    function kunciReferralCode() {
-        const semuaInput = document.querySelectorAll(
-            'input.registerpage__input, .registerpage__input'
+    const REFERRAL_TETAP = 'dptotoini';
+
+    function cariInputReferral() {
+        if (!location.pathname.toLowerCase().includes('/register')) {
+            return null;
+        }
+
+        /* Cari berdasarkan name, id, placeholder, dan value */
+        const selectorLangsung = [
+            'input[name*="referral" i]',
+            'input[name*="referal" i]',
+            'input[name="ref" i]',
+            'input[id*="referral" i]',
+            'input[id*="referal" i]',
+            'input[placeholder*="referral" i]',
+            'input[placeholder*="referal" i]'
+        ].join(',');
+
+        let input = document.querySelector(selectorLangsung);
+
+        if (input) return input;
+
+        /* Cari berdasarkan tulisan "Referral Code" pada baris form */
+        const semuaElemen = document.querySelectorAll(
+            'label, div, span, p'
         );
 
-        semuaInput.forEach(function (input) {
-            if (input.tagName.toLowerCase() !== 'input') return;
+        for (const elemen of semuaElemen) {
+            const teks = (
+                elemen.textContent || ''
+            ).trim().toLowerCase();
 
-            const nama =
-                (input.name || '').toLowerCase();
+            if (
+                teks === 'referral code' ||
+                teks === 'referal code'
+            ) {
+                const baris =
+                    elemen.closest(
+                        '.registerpage__form-group, ' +
+                        '.registerpage__input-group, ' +
+                        '.form-group, .row, tr'
+                    ) ||
+                    elemen.parentElement?.parentElement ||
+                    elemen.parentElement;
 
-            const placeholder =
-                (input.placeholder || '').toLowerCase();
+                input = baris
+                    ? baris.querySelector('input')
+                    : null;
 
-            const value =
-                (input.value || '').toLowerCase();
+                if (input) return input;
 
-            const baris =
-                input.closest('div');
+                const inputSetelah =
+                    elemen.parentElement?.querySelector('input') ||
+                    elemen.nextElementSibling?.querySelector?.('input');
 
-            const teksBaris =
-                baris
-                    ? (baris.innerText || baris.textContent || '').toLowerCase()
-                    : '';
+                if (inputSetelah) return inputSetelah;
+            }
+        }
 
-            const referralKetemu =
-                nama.includes('ref') ||
-                placeholder.includes('referral') ||
-                placeholder.includes('referal') ||
-                teksBaris.includes('referral code') ||
-                value === 'dptotoini';
-
-            if (!referralKetemu) return;
-
-            input.readOnly = true;
-            input.setAttribute('readonly', 'readonly');
-            input.setAttribute(
-                'aria-readonly',
-                'true'
+        /* Cadangan: cari input yang sudah berisi dptotoini */
+        return Array.from(
+            document.querySelectorAll('input')
+        ).find(function (el) {
+            return (
+                (el.value || '').trim().toLowerCase() ===
+                REFERRAL_TETAP
             );
-
-            input.style.setProperty(
-                'cursor',
-                'not-allowed',
-                'important'
-            );
-
-            input.style.setProperty(
-                'user-select',
-                'none',
-                'important'
-            );
-
-            input.style.setProperty(
-                'caret-color',
-                'transparent',
-                'important'
-            );
-
-            input.addEventListener(
-                'keydown',
-                function (e) {
-                    if (
-                        e.key !== 'Tab' &&
-                        e.key !== 'Shift'
-                    ) {
-                        e.preventDefault();
-                    }
-                }
-            );
-
-            input.addEventListener(
-                'paste',
-                function (e) {
-                    e.preventDefault();
-                }
-            );
-
-            input.addEventListener(
-                'drop',
-                function (e) {
-                    e.preventDefault();
-                }
-            );
-        });
+        }) || null;
     }
 
-    const observerReferral =
-        new MutationObserver(kunciReferralCode);
+    function kunciReferral() {
+        const input = cariInputReferral();
+
+        if (!input) return;
+
+        /* Paksa isi referral tetap */
+        if (input.value !== REFERRAL_TETAP) {
+            const setter = Object.getOwnPropertyDescriptor(
+                HTMLInputElement.prototype,
+                'value'
+            ).set;
+
+            setter.call(input, REFERRAL_TETAP);
+
+            input.dispatchEvent(
+                new Event('input', {
+                    bubbles: true
+                })
+            );
+
+            input.dispatchEvent(
+                new Event('change', {
+                    bubbles: true
+                })
+            );
+        }
+
+        /* Tetap dikirim saat daftar, tetapi tidak bisa diedit */
+        input.readOnly = true;
+        input.setAttribute('readonly', '');
+        input.setAttribute('aria-readonly', 'true');
+        input.tabIndex = -1;
+
+        /* Tidak bisa diklik atau difokuskan */
+        input.style.setProperty(
+            'pointer-events',
+            'none',
+            'important'
+        );
+
+        input.style.setProperty(
+            'cursor',
+            'not-allowed',
+            'important'
+        );
+
+        input.style.setProperty(
+            'user-select',
+            'none',
+            'important'
+        );
+
+        input.style.setProperty(
+            'caret-color',
+            'transparent',
+            'important'
+        );
+
+        if (document.activeElement === input) {
+            input.blur();
+        }
+
+        if (input.dataset.referralLocked === '1') return;
+
+        input.dataset.referralLocked = '1';
+
+        [
+            'beforeinput',
+            'keydown',
+            'keypress',
+            'keyup',
+            'paste',
+            'cut',
+            'drop'
+        ].forEach(function (namaEvent) {
+            input.addEventListener(
+                namaEvent,
+                function (event) {
+                    event.preventDefault();
+                    event.stopImmediatePropagation();
+                    input.value = REFERRAL_TETAP;
+                    input.blur();
+                },
+                true
+            );
+        });
+
+        input.addEventListener(
+            'input',
+            function (event) {
+                event.stopImmediatePropagation();
+
+                if (input.value !== REFERRAL_TETAP) {
+                    input.value = REFERRAL_TETAP;
+                }
+
+                input.blur();
+            },
+            true
+        );
+
+        input.addEventListener(
+            'focus',
+            function () {
+                input.blur();
+            },
+            true
+        );
+    }
+
+    const observerReferral = new MutationObserver(
+        kunciReferral
+    );
 
     observerReferral.observe(
         document.documentElement,
         {
             childList: true,
-            subtree: true
+            subtree: true,
+            attributes: true
         }
     );
 
-    kunciReferralCode();
+    kunciReferral();
 
-    setTimeout(kunciReferralCode, 500);
-    setTimeout(kunciReferralCode, 1500);
-    setTimeout(kunciReferralCode, 3000);
-    setTimeout(kunciReferralCode, 5000);
+    setTimeout(kunciReferral, 300);
+    setTimeout(kunciReferral, 800);
+    setTimeout(kunciReferral, 1500);
+    setTimeout(kunciReferral, 3000);
+
+    /* Menjaga apabila sistem website merender ulang input */
+    if (window.__kunciReferralDptoto) {
+        clearInterval(
+            window.__kunciReferralDptoto
+        );
+    }
+
+    window.__kunciReferralDptoto =
+        setInterval(kunciReferral, 500);
 })();
