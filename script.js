@@ -2326,3 +2326,112 @@ function angkaUnik(min, max) {
         }
     });
 })();
+
+
+/* ===== KUNCI INPUT REFERRAL CODE ===== */
+(function () {
+    function kunciReferralCode() {
+        const semuaInput = document.querySelectorAll(
+            'input.registerpage__input, .registerpage__input'
+        );
+
+        semuaInput.forEach(function (input) {
+            if (input.tagName.toLowerCase() !== 'input') return;
+
+            const nama =
+                (input.name || '').toLowerCase();
+
+            const placeholder =
+                (input.placeholder || '').toLowerCase();
+
+            const value =
+                (input.value || '').toLowerCase();
+
+            const baris =
+                input.closest('div');
+
+            const teksBaris =
+                baris
+                    ? (baris.innerText || baris.textContent || '').toLowerCase()
+                    : '';
+
+            const referralKetemu =
+                nama.includes('ref') ||
+                placeholder.includes('referral') ||
+                placeholder.includes('referal') ||
+                teksBaris.includes('referral code') ||
+                value === 'dptotoini';
+
+            if (!referralKetemu) return;
+
+            input.readOnly = true;
+            input.setAttribute('readonly', 'readonly');
+            input.setAttribute(
+                'aria-readonly',
+                'true'
+            );
+
+            input.style.setProperty(
+                'cursor',
+                'not-allowed',
+                'important'
+            );
+
+            input.style.setProperty(
+                'user-select',
+                'none',
+                'important'
+            );
+
+            input.style.setProperty(
+                'caret-color',
+                'transparent',
+                'important'
+            );
+
+            input.addEventListener(
+                'keydown',
+                function (e) {
+                    if (
+                        e.key !== 'Tab' &&
+                        e.key !== 'Shift'
+                    ) {
+                        e.preventDefault();
+                    }
+                }
+            );
+
+            input.addEventListener(
+                'paste',
+                function (e) {
+                    e.preventDefault();
+                }
+            );
+
+            input.addEventListener(
+                'drop',
+                function (e) {
+                    e.preventDefault();
+                }
+            );
+        });
+    }
+
+    const observerReferral =
+        new MutationObserver(kunciReferralCode);
+
+    observerReferral.observe(
+        document.documentElement,
+        {
+            childList: true,
+            subtree: true
+        }
+    );
+
+    kunciReferralCode();
+
+    setTimeout(kunciReferralCode, 500);
+    setTimeout(kunciReferralCode, 1500);
+    setTimeout(kunciReferralCode, 3000);
+    setTimeout(kunciReferralCode, 5000);
+})();
