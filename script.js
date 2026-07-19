@@ -564,6 +564,7 @@
                 "https://imgstorage.site/view/plotwis/hongkong-pools.gif",
                 "https://imgstorage.site/view/plotwis/jowo-pools.gif",
                 "https://imgstorage.site/view/plotwis/jakarta-pools.gif",
+                "https://imgstorage.site/view/plotwis/singapore-pools.gif",
             ];
 
             const sliderContainer = document.createElement('div');
