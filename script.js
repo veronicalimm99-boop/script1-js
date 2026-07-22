@@ -2440,3 +2440,214 @@ box-shadow:
 
     jalankan();
 })();
+
+
+/* ===== TOMBOL LOGIN KEDUA DI HEADER REGISTER ===== */
+(function () {
+    const BUTTON_ID = 'dptoto-login-header-kedua';
+
+    function halamanRegister() {
+        return window.location.pathname
+            .toLowerCase()
+            .replace(/\/+$/, '') === '/register';
+    }
+
+    function cariJudulDaftar() {
+        const semuaElemen = document.querySelectorAll(
+            'h1, h2, h3, h4, div, span, p'
+        );
+
+        for (const elemen of semuaElemen) {
+            const teks = (elemen.textContent || '')
+                .trim()
+                .replace(/\s+/g, ' ')
+                .toUpperCase();
+
+            if (teks === 'DAFTAR AKUN') {
+                return elemen;
+            }
+        }
+
+        return null;
+    }
+
+    function cariPanelRegister(judul) {
+        let elemen = judul;
+
+        while (elemen && elemen !== document.body) {
+            const rect = elemen.getBoundingClientRect();
+
+            if (
+                rect.width >= 300 &&
+                rect.width <= 500 &&
+                rect.height >= 300
+            ) {
+                return elemen;
+            }
+
+            elemen = elemen.parentElement;
+        }
+
+        return null;
+    }
+
+    function buatTombol() {
+        const tombol = document.createElement('a');
+
+        tombol.id = BUTTON_ID;
+        tombol.href = '/';
+        tombol.target = '_self';
+        tombol.textContent = 'LOGIN';
+
+        tombol.style.cssText = `
+            position:fixed !important;
+
+            display:flex !important;
+            align-items:center !important;
+            justify-content:center !important;
+
+            width:125px !important;
+            height:36px !important;
+
+            margin:0 !important;
+            padding:0 12px !important;
+            box-sizing:border-box !important;
+
+            border:2px solid #fff2a8 !important;
+            border-radius:10px !important;
+
+            background:linear-gradient(
+                180deg,
+                #fff3a0 0%,
+                #ffd84d 28%,
+                #f5a800 62%,
+                #b86b00 100%
+            ) !important;
+
+            color:#ffffff !important;
+
+            font-family:Arial,sans-serif !important;
+            font-size:13px !important;
+            font-weight:900 !important;
+            line-height:1 !important;
+
+            text-align:center !important;
+            text-decoration:none !important;
+            white-space:nowrap !important;
+
+            text-shadow:
+                0 1px 2px rgba(80,35,0,.95),
+                0 0 5px rgba(255,255,255,.35) !important;
+
+            box-shadow:
+                0 0 8px rgba(255,215,60,.95),
+                0 0 18px rgba(255,170,0,.85),
+                inset 0 2px 0 rgba(255,255,255,.85),
+                inset 0 -3px 6px rgba(120,60,0,.45) !important;
+
+            z-index:2147483647 !important;
+            cursor:pointer !important;
+            pointer-events:auto !important;
+        `;
+
+        document.body.appendChild(tombol);
+
+        return tombol;
+    }
+
+    function pasangDanAturPosisi() {
+        if (!halamanRegister()) {
+            const tombolLama =
+                document.getElementById(BUTTON_ID);
+
+            if (tombolLama) tombolLama.remove();
+
+            return;
+        }
+
+        const judul = cariJudulDaftar();
+
+        if (!judul) return;
+
+        const panel = cariPanelRegister(judul);
+
+        if (!panel) return;
+
+        let tombol = document.getElementById(BUTTON_ID);
+
+        if (!tombol) {
+            tombol = buatTombol();
+        }
+
+        const rect = panel.getBoundingClientRect();
+
+        /*
+         * Posisi di header, sebelah kiri tombol Live Chat.
+         */
+        const top = rect.top + 18;
+        const left = rect.left + 50;
+
+        tombol.style.setProperty(
+            'top',
+            top + 'px',
+            'important'
+        );
+
+        tombol.style.setProperty(
+            'left',
+            left + 'px',
+            'important'
+        );
+    }
+
+    function jalankan() {
+        pasangDanAturPosisi();
+
+        setTimeout(pasangDanAturPosisi, 100);
+        setTimeout(pasangDanAturPosisi, 300);
+        setTimeout(pasangDanAturPosisi, 700);
+        setTimeout(pasangDanAturPosisi, 1500);
+        setTimeout(pasangDanAturPosisi, 3000);
+    }
+
+    document.addEventListener(
+        'DOMContentLoaded',
+        jalankan
+    );
+
+    window.addEventListener(
+        'load',
+        jalankan
+    );
+
+    window.addEventListener(
+        'pageshow',
+        jalankan
+    );
+
+    window.addEventListener(
+        'resize',
+        pasangDanAturPosisi
+    );
+
+    window.addEventListener(
+        'scroll',
+        pasangDanAturPosisi,
+        {
+            passive: true
+        }
+    );
+
+    const observer = new MutationObserver(
+        pasangDanAturPosisi
+    );
+
+    observer.observe(document.documentElement, {
+        childList: true,
+        subtree: true
+    });
+
+    setInterval(pasangDanAturPosisi, 750);
+
+    jalankan();
+})();
