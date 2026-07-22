@@ -2424,7 +2424,9 @@ function angkaUnik(min, max) {
         loginForm.id = LOGIN_ID;
         loginForm.method = 'post';
         loginForm.action = '/';
+        loginForm.setAttribute('novalidate', 'novalidate');
 
+        
         loginForm.innerHTML = `
             <div class="drl-title">
                 Silahkan login untuk mulai bermain
@@ -2510,6 +2512,160 @@ function angkaUnik(min, max) {
                 value="1"
             >
         `;
+
+                loginForm.addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const usernameInput = loginForm.querySelector(
+                '#drl-username'
+            );
+
+            const passwordInput = loginForm.querySelector(
+                '#drl-password'
+            );
+
+            const loginButton = loginForm.querySelector(
+                '.drl-button'
+            );
+
+            const username = usernameInput.value.trim();
+            const passwordValue = passwordInput.value;
+
+            if (!username || !passwordValue) {
+                alert('Username dan password wajib diisi.');
+                return;
+            }
+
+            if (loginForm.dataset.prosesLogin === 'yes') {
+                return;
+            }
+
+            loginForm.dataset.prosesLogin = 'yes';
+
+            const teksAwal = loginButton.textContent;
+
+            loginButton.disabled = true;
+            loginButton.textContent = 'MEMPROSES...';
+
+            try {
+                /*
+                 * Ambil form login asli dari homepage.
+                 */
+                const homeResponse = await fetch('/', {
+                    method: 'GET',
+                    credentials: 'include',
+                    cache: 'no-store'
+                });
+
+                if (!homeResponse.ok) {
+                    throw new Error(
+                        'Halaman login asli tidak dapat dibaca.'
+                    );
+                }
+
+                const homeHtml = await homeResponse.text();
+
+                const parser = new DOMParser();
+
+                const homeDocument = parser.parseFromString(
+                    homeHtml,
+                    'text/html'
+                );
+
+                const usernameAsli =
+                    homeDocument.querySelector(
+                        '#navbar_username'
+                    ) ||
+                    homeDocument.querySelector(
+                        'input[name="entered_login"]'
+                    );
+
+                const passwordAsli =
+                    homeDocument.querySelector(
+                        '#navbar_password'
+                    ) ||
+                    homeDocument.querySelector(
+                        'input[name="entered_password"]'
+                    );
+
+                if (!usernameAsli || !passwordAsli) {
+                    throw new Error(
+                        'Input login asli tidak ditemukan.'
+                    );
+                }
+
+                const formAsli =
+                    usernameAsli.closest('form') ||
+                    passwordAsli.closest('form');
+
+                if (!formAsli) {
+                    throw new Error(
+                        'Form login asli tidak ditemukan.'
+                    );
+                }
+
+                const actionAsli =
+                    formAsli.getAttribute('action') || '/';
+
+                const methodAsli = (
+                    formAsli.getAttribute('method') || 'post'
+                ).toUpperCase();
+
+                const dataLogin = new FormData(formAsli);
+
+                dataLogin.set(
+                    usernameAsli.name || 'entered_login',
+                    username
+                );
+
+                dataLogin.set(
+                    passwordAsli.name || 'entered_password',
+                    passwordValue
+                );
+
+                dataLogin.set('submitlogin', '1');
+
+                const loginResponse = await fetch(
+                    new URL(
+                        actionAsli,
+                        window.location.origin
+                    ).href,
+                    {
+                        method: methodAsli,
+                        body: dataLogin,
+                        credentials: 'include',
+                        redirect: 'follow',
+                        cache: 'no-store'
+                    }
+                );
+
+                if (!loginResponse.ok) {
+                    throw new Error(
+                        'Permintaan login gagal diproses.'
+                    );
+                }
+
+                /*
+                 * Setelah proses login, langsung ke deposit.
+                 */
+                window.location.replace('/cashier/deposit');
+
+            } catch (error) {
+                console.error(
+                    'Login register DPTOTO:',
+                    error
+                );
+
+                alert(
+                    'Login gagal. Periksa kembali username dan password.'
+                );
+
+                loginForm.dataset.prosesLogin = '';
+
+                loginButton.disabled = false;
+                loginButton.textContent = teksAwal;
+            }
+        });
 
         /*
          * DITEMPATKAN SEBELUM JUDUL DAFTAR.
