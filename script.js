@@ -2243,30 +2243,42 @@ function angkaUnik(min, max) {
 
         if (path !== '/register') return;
 
-        if (document.getElementById(BUTTON_ID)) return;
+        const tombolLama = document.getElementById(BUTTON_ID);
 
-        const semuaElemen = document.querySelectorAll(
-            'a, button, span, div'
-        );
+        if (tombolLama && document.body.contains(tombolLama)) {
+            return;
+        }
 
-        let liveChat = null;
+        let liveChat =
+            document.querySelector('a[href*="livechat"]') ||
+            document.querySelector('a[href*="live-chat"]') ||
+            document.querySelector('[class*="livechat"]') ||
+            document.querySelector('[class*="live-chat"]') ||
+            document.querySelector('[id*="livechat"]') ||
+            document.querySelector('[id*="live-chat"]');
 
-        for (const elemen of semuaElemen) {
-            const text = (elemen.textContent || '')
-                .trim()
-                .replace(/\s+/g, ' ')
-                .toLowerCase();
+        if (!liveChat) {
+            const semuaElemen = document.querySelectorAll(
+                'a, button, span, div'
+            );
 
-            if (
-                text === 'live chat' ||
-                text === 'livechat'
-            ) {
-                liveChat =
-                    elemen.closest('a') ||
-                    elemen.closest('button') ||
-                    elemen;
+            for (const elemen of semuaElemen) {
+                const text = (elemen.innerText || elemen.textContent || '')
+                    .trim()
+                    .replace(/\s+/g, ' ')
+                    .toLowerCase();
 
-                break;
+                if (
+                    text.includes('live chat') ||
+                    text.includes('livechat')
+                ) {
+                    liveChat =
+                        elemen.closest('a') ||
+                        elemen.closest('button') ||
+                        elemen;
+
+                    break;
+                }
             }
         }
 
@@ -2316,34 +2328,40 @@ function angkaUnik(min, max) {
         );
     }
 
+    function jalankan() {
+        pasangLoginButton();
+
+        setTimeout(pasangLoginButton, 300);
+        setTimeout(pasangLoginButton, 800);
+        setTimeout(pasangLoginButton, 1500);
+        setTimeout(pasangLoginButton, 3000);
+    }
+
     document.addEventListener(
         'DOMContentLoaded',
-        pasangLoginButton
+        jalankan
     );
 
     window.addEventListener(
         'load',
-        pasangLoginButton
+        jalankan
     );
 
     window.addEventListener(
         'pageshow',
-        pasangLoginButton
+        jalankan
     );
 
-    const observer = new MutationObserver(
-        pasangLoginButton
-    );
+    const observer = new MutationObserver(function () {
+        pasangLoginButton();
+    });
 
     observer.observe(document.documentElement, {
         childList: true,
         subtree: true
     });
 
-    setInterval(pasangLoginButton, 700);
+    setInterval(pasangLoginButton, 500);
 
-    pasangLoginButton();
-    setTimeout(pasangLoginButton, 300);
-    setTimeout(pasangLoginButton, 1000);
-    setTimeout(pasangLoginButton, 2500);
+    jalankan();
 })();
