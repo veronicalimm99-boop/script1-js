@@ -2513,7 +2513,7 @@ function angkaUnik(min, max) {
             >
         `;
 
-        loginForm.addEventListener('submit', function (event) {
+loginForm.addEventListener('submit', function (event) {
     event.preventDefault();
 
     const usernameInput = loginForm.querySelector('#drl-username');
@@ -2532,15 +2532,19 @@ function angkaUnik(min, max) {
     loginButton.textContent = 'MEMPROSES...';
 
     sessionStorage.setItem(
-        'dptoto_login_register',
+        'dptoto_data_login',
         JSON.stringify({
             username: username,
             password: password
         })
     );
 
-    sessionStorage.setItem(
-        'dptoto_redirect_setelah_login',
+    /*
+     * Pakai localStorage agar tujuan tidak hilang
+     * ketika halaman login reload.
+     */
+    localStorage.setItem(
+        'dptoto_tujuan_login',
         '/cashier/deposit'
     );
 
@@ -2830,6 +2834,209 @@ function angkaUnik(min, max) {
     setInterval(function () {
         arahkanKeDeposit();
     }, 700);
+
+    setTimeout(jalankanSemua, 300);
+    setTimeout(jalankanSemua, 800);
+    setTimeout(jalankanSemua, 1500);
+    setTimeout(jalankanSemua, 3000);
+})();
+
+
+(function () {
+    let sedangKlikLogin = false;
+    let sedangRedirect = false;
+
+    function setNilaiInput(input, value) {
+        const setter = Object.getOwnPropertyDescriptor(
+            HTMLInputElement.prototype,
+            'value'
+        );
+
+        if (setter && setter.set) {
+            setter.set.call(input, value);
+        } else {
+            input.value = value;
+        }
+
+        ['input', 'change', 'blur'].forEach(function (namaEvent) {
+            input.dispatchEvent(
+                new Event(namaEvent, {
+                    bubbles: true
+                })
+            );
+        });
+    }
+
+    function jalankanLoginAsli() {
+        if (sedangKlikLogin) return;
+
+        const dataMentah = sessionStorage.getItem(
+            'dptoto_data_login'
+        );
+
+        if (!dataMentah) return;
+
+        let data;
+
+        try {
+            data = JSON.parse(dataMentah);
+        } catch (error) {
+            sessionStorage.removeItem('dptoto_data_login');
+            return;
+        }
+
+        const usernameAsli =
+            document.querySelector('#navbar_username') ||
+            document.querySelector(
+                'input[name="entered_login"]'
+            );
+
+        const passwordAsli =
+            document.querySelector('#navbar_password') ||
+            document.querySelector(
+                'input[name="entered_password"]'
+            );
+
+        const tombolLoginAsli =
+            document.querySelector('#loginBtnHeader') ||
+            document.querySelector('.btn-login-header') ||
+            document.querySelector(
+                'button[name="submitlogin"]'
+            );
+
+        if (
+            !usernameAsli ||
+            !passwordAsli ||
+            !tombolLoginAsli
+        ) {
+            return;
+        }
+
+        sedangKlikLogin = true;
+
+        setNilaiInput(usernameAsli, data.username);
+        setNilaiInput(passwordAsli, data.password);
+
+        /*
+         * Data akun dihapus setelah berhasil
+         * dimasukkan ke form asli.
+         */
+        sessionStorage.removeItem('dptoto_data_login');
+
+        setTimeout(function () {
+            tombolLoginAsli.click();
+        }, 700);
+    }
+
+    function masihHalamanLogin() {
+        return Boolean(
+            document.querySelector('#navbar_username') ||
+            document.querySelector('#navbar_password') ||
+            document.querySelector('#loginBtnHeader') ||
+            document.querySelector('.btn-login-header')
+        );
+    }
+
+    function sudahMasukMember() {
+        const bodyText = (
+            document.body?.innerText || ''
+        ).toUpperCase();
+
+        return Boolean(
+            document.querySelector(
+                'a[href*="/cashier/deposit"]'
+            ) ||
+            document.querySelector(
+                'a[href*="/logout"]'
+            ) ||
+            document.querySelector(
+                '[class*="balance"]'
+            ) ||
+            (
+                bodyText.includes('DEPOSIT') &&
+                bodyText.includes('REFRESH')
+            )
+        );
+    }
+
+    function redirectKeDeposit() {
+        if (sedangRedirect) return;
+
+        const tujuan = localStorage.getItem(
+            'dptoto_tujuan_login'
+        );
+
+        if (!tujuan) return;
+
+        const pathSekarang = window.location.pathname
+            .toLowerCase()
+            .replace(/\/+$/, '');
+
+        const pathTujuan = tujuan
+            .toLowerCase()
+            .replace(/\/+$/, '');
+
+        /*
+         * Sudah sampai halaman deposit.
+         */
+        if (pathSekarang === pathTujuan) {
+            localStorage.removeItem(
+                'dptoto_tujuan_login'
+            );
+
+            return;
+        }
+
+        /*
+         * Selama form login masih terlihat,
+         * berarti proses login belum selesai
+         * atau ID/password salah.
+         */
+        if (masihHalamanLogin()) return;
+
+        if (!sudahMasukMember()) return;
+
+        sedangRedirect = true;
+
+        /*
+         * Jangan hapus tujuan sebelum pindah.
+         * Hapus setelah sudah sampai deposit.
+         */
+        window.location.replace(tujuan);
+    }
+
+    function jalankanSemua() {
+        jalankanLoginAsli();
+        redirectKeDeposit();
+    }
+
+    document.addEventListener(
+        'DOMContentLoaded',
+        jalankanSemua
+    );
+
+    window.addEventListener(
+        'load',
+        jalankanSemua
+    );
+
+    window.addEventListener(
+        'pageshow',
+        jalankanSemua
+    );
+
+    const observer = new MutationObserver(
+        jalankanSemua
+    );
+
+    observer.observe(document.documentElement, {
+        childList: true,
+        subtree: true
+    });
+
+    setInterval(function () {
+        redirectKeDeposit();
+    }, 500);
 
     setTimeout(jalankanSemua, 300);
     setTimeout(jalankanSemua, 800);
