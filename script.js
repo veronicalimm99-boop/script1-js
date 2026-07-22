@@ -2240,13 +2240,25 @@ function angkaUnik(min, max) {
     function isRegisterPage() {
         return window.location.pathname
             .toLowerCase()
+            .replace(/\/+$/, '')
             .includes('/register');
+    }
+
+    function hapusButtonJikaBukanRegister() {
+        if (isRegisterPage()) return;
+
+        const button = document.getElementById(BUTTON_ID);
+
+        if (button) {
+            button.remove();
+        }
     }
 
     function pasangStyle() {
         if (document.getElementById(STYLE_ID)) return;
 
         const style = document.createElement('style');
+
         style.id = STYLE_ID;
 
         style.textContent = `
@@ -2291,6 +2303,7 @@ function angkaUnik(min, max) {
                 cursor: pointer !important;
                 position: relative !important;
                 z-index: 999999 !important;
+                flex-shrink: 0 !important;
             }
 
             #${BUTTON_ID}:active {
@@ -2302,24 +2315,41 @@ function angkaUnik(min, max) {
     }
 
     function cariTombolLiveChat() {
-        const semuaElemen = document.querySelectorAll(
+        const selectors = [
+            'a[href*="livechat"]',
+            'a[href*="live-chat"]',
+            '[class*="livechat"]',
+            '[class*="live-chat"]',
+            '[id*="livechat"]',
+            '[id*="live-chat"]'
+        ];
+
+        for (const selector of selectors) {
+            const element = document.querySelector(selector);
+
+            if (element) {
+                return element.closest('a, button') || element;
+            }
+        }
+
+        const elements = document.querySelectorAll(
             'a, button, div, span'
         );
 
-        for (const el of semuaElemen) {
-            const text = (el.textContent || '')
+        for (const element of elements) {
+            const text = (element.textContent || '')
                 .trim()
                 .replace(/\s+/g, ' ')
                 .toLowerCase();
 
             if (
-                text === 'live chat' &&
-                el.children.length === 0
+                text === 'live chat' ||
+                text === 'livechat'
             ) {
                 return (
-                    el.closest('a') ||
-                    el.closest('button') ||
-                    el
+                    element.closest('a') ||
+                    element.closest('button') ||
+                    element
                 );
             }
         }
@@ -2328,14 +2358,41 @@ function angkaUnik(min, max) {
     }
 
     function pasangButtonLogin() {
-        if (!isRegisterPage()) return;
-        if (document.getElementById(BUTTON_ID)) return;
+        if (!isRegisterPage()) {
+            hapusButtonJikaBukanRegister();
+            return;
+        }
+
+        pasangStyle();
 
         const liveChat = cariTombolLiveChat();
 
-        if (!liveChat || !liveChat.parentNode) return;
+        if (!liveChat || !liveChat.parentNode) {
+            return;
+        }
 
-        pasangStyle();
+        const buttonLama = document.getElementById(
+            BUTTON_ID
+        );
+
+        /*
+         * Kalau tombol masih ada dan posisi benar,
+         * tidak perlu dibuat ulang.
+         */
+        if (
+            buttonLama &&
+            buttonLama.parentNode === liveChat.parentNode
+        ) {
+            return;
+        }
+
+        /*
+         * Kalau template mengganti header,
+         * hapus tombol lama lalu pasang ulang.
+         */
+        if (buttonLama) {
+            buttonLama.remove();
+        }
 
         const loginButton = document.createElement('a');
 
@@ -2343,40 +2400,88 @@ function angkaUnik(min, max) {
         loginButton.href = '/';
         loginButton.target = '_self';
         loginButton.textContent = 'LOGIN';
+        loginButton.setAttribute(
+            'aria-label',
+            'Masuk ke halaman login'
+        );
 
-        /*
-         * Dipasang tepat sebelum tombol Live Chat.
-         * Form register tidak diubah.
-         */
         liveChat.parentNode.insertBefore(
             loginButton,
             liveChat
         );
     }
 
+    function jalankanUlang() {
+        pasangButtonLogin();
+
+        setTimeout(pasangButtonLogin, 200);
+        setTimeout(pasangButtonLogin, 600);
+        setTimeout(pasangButtonLogin, 1200);
+        setTimeout(pasangButtonLogin, 2500);
+    }
+
+    /*
+     * Saat halaman pertama kali dibuka atau direfresh.
+     */
     document.addEventListener(
         'DOMContentLoaded',
-        pasangButtonLogin
+        jalankanUlang
     );
 
     window.addEventListener(
         'load',
-        pasangButtonLogin
+        jalankanUlang
     );
 
-    const observer = new MutationObserver(
-        pasangButtonLogin
+    window.addEventListener(
+        'pageshow',
+        jalankanUlang
     );
+
+    /*
+     * Saat struktur header diganti oleh template.
+     */
+    const observer = new MutationObserver(function () {
+        pasangButtonLogin();
+    });
 
     observer.observe(document.documentElement, {
         childList: true,
         subtree: true
     });
 
-    pasangButtonLogin();
+    /*
+     * Saat berpindah halaman tanpa reload.
+     */
+    const pushStateAsli = history.pushState;
+    const replaceStateAsli = history.replaceState;
 
-    setTimeout(pasangButtonLogin, 300);
-    setTimeout(pasangButtonLogin, 800);
-    setTimeout(pasangButtonLogin, 1500);
-    setTimeout(pasangButtonLogin, 3000);
+    history.pushState = function () {
+        pushStateAsli.apply(this, arguments);
+        jalankanUlang();
+    };
+
+    history.replaceState = function () {
+        replaceStateAsli.apply(this, arguments);
+        jalankanUlang();
+    };
+
+    window.addEventListener(
+        'popstate',
+        jalankanUlang
+    );
+
+    /*
+     * Pemeriksaan tambahan agar tombol dipasang ulang
+     * jika template menghapus header.
+     */
+    setInterval(function () {
+        if (isRegisterPage()) {
+            pasangButtonLogin();
+        } else {
+            hapusButtonJikaBukanRegister();
+        }
+    }, 1000);
+
+    jalankanUlang();
 })();
