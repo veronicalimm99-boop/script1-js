@@ -368,46 +368,6 @@
 })();
 
 (function() {
-    let closed = false;
-
-    function run() {
-        if (closed) return;
-        if (document.getElementById('smart_banner_custom')) return;
-        if (!document.querySelector('.mobile-before-layout__container')) return;
-
-        const banner = document.createElement('div');
-        banner.id = 'smart_banner_custom';
-        banner.style.cssText = 'position:relative;width:100%;height:63px;padding:10px;font-family:Verdana,arial,sans-serif;color:#fff;background:linear-gradient(to right,#1b1b1b,#1b1b1b);display:flex;align-items:center;box-sizing:border-box;z-index:400;';
-        banner.innerHTML = `
-            <span class="banner-close" style="cursor:pointer;color:#fff;font-size:18px;margin-right:8px;line-height:1;">x</span>
-            <img src="https://imgstorage.site/view/berlin/favicon-dptoto-hd.png" alt="App Icon" style="width:43px;height:43px;object-fit:contain;border-radius:8px;margin-right:10px;">
-            <div style="flex:1;">
-                <div style="font-size:14px;font-weight:bold;color:#11B5DE;">APLIKASI DPTOTO</div>
-                <div style="font-size:11px;color:#FFF;">Kini telah tersedia Aplikasi Android</div>
-            </div>
-            <a href="#" target="_blank" style="font-size:12px;padding:8px 12px;color:#fff;background:linear-gradient(135deg,#00d0ff 0%,#0072ff 100%);border-radius:8px;border:none;text-decoration:none;white-space:nowrap;font-weight:700;animation:pulse-blue-glow 1.5s infinite ease-in-out;"><strong>DOWNLOAD</strong></a>
-        `;
-
-        banner.querySelector('.banner-close').addEventListener('click', function() {
-            closed = true;
-            banner.remove();
-        });
-
-        document.body.insertAdjacentElement('afterbegin', banner);
-    }
-
-    if (document.body) {
-        run();
-    }
-
-    const obs = new MutationObserver(run);
-    obs.observe(document.documentElement, { childList: true, subtree: false });
-
-    setTimeout(run, 500);
-    setTimeout(run, 2000);
-})();
-
-(function() {
     if (!document.querySelector('.before-layout__main')) {
         var wait = new MutationObserver(function() {
             if (document.querySelector('.before-layout__main')) {
