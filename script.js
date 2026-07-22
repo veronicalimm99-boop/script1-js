@@ -2513,159 +2513,35 @@ function angkaUnik(min, max) {
             >
         `;
 
-                loginForm.addEventListener('submit', async function (event) {
-            event.preventDefault();
+        loginForm.addEventListener('submit', function (event) {
+    event.preventDefault();
 
-            const usernameInput = loginForm.querySelector(
-                '#drl-username'
-            );
+    const usernameInput = loginForm.querySelector('#drl-username');
+    const passwordInput = loginForm.querySelector('#drl-password');
+    const loginButton = loginForm.querySelector('.drl-button');
 
-            const passwordInput = loginForm.querySelector(
-                '#drl-password'
-            );
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value;
 
-            const loginButton = loginForm.querySelector(
-                '.drl-button'
-            );
+    if (!username || !password) {
+        alert('Username dan password wajib diisi.');
+        return;
+    }
 
-            const username = usernameInput.value.trim();
-            const passwordValue = passwordInput.value;
+    loginButton.disabled = true;
+    loginButton.textContent = 'MEMPROSES...';
 
-            if (!username || !passwordValue) {
-                alert('Username dan password wajib diisi.');
-                return;
-            }
+    sessionStorage.setItem(
+        'dptoto_login_register',
+        JSON.stringify({
+            username: username,
+            password: password,
+            redirect: '/cashier/deposit'
+        })
+    );
 
-            if (loginForm.dataset.prosesLogin === 'yes') {
-                return;
-            }
-
-            loginForm.dataset.prosesLogin = 'yes';
-
-            const teksAwal = loginButton.textContent;
-
-            loginButton.disabled = true;
-            loginButton.textContent = 'MEMPROSES...';
-
-            try {
-                /*
-                 * Ambil form login asli dari homepage.
-                 */
-                const homeResponse = await fetch('/', {
-                    method: 'GET',
-                    credentials: 'include',
-                    cache: 'no-store'
-                });
-
-                if (!homeResponse.ok) {
-                    throw new Error(
-                        'Halaman login asli tidak dapat dibaca.'
-                    );
-                }
-
-                const homeHtml = await homeResponse.text();
-
-                const parser = new DOMParser();
-
-                const homeDocument = parser.parseFromString(
-                    homeHtml,
-                    'text/html'
-                );
-
-                const usernameAsli =
-                    homeDocument.querySelector(
-                        '#navbar_username'
-                    ) ||
-                    homeDocument.querySelector(
-                        'input[name="entered_login"]'
-                    );
-
-                const passwordAsli =
-                    homeDocument.querySelector(
-                        '#navbar_password'
-                    ) ||
-                    homeDocument.querySelector(
-                        'input[name="entered_password"]'
-                    );
-
-                if (!usernameAsli || !passwordAsli) {
-                    throw new Error(
-                        'Input login asli tidak ditemukan.'
-                    );
-                }
-
-                const formAsli =
-                    usernameAsli.closest('form') ||
-                    passwordAsli.closest('form');
-
-                if (!formAsli) {
-                    throw new Error(
-                        'Form login asli tidak ditemukan.'
-                    );
-                }
-
-                const actionAsli =
-                    formAsli.getAttribute('action') || '/';
-
-                const methodAsli = (
-                    formAsli.getAttribute('method') || 'post'
-                ).toUpperCase();
-
-                const dataLogin = new FormData(formAsli);
-
-                dataLogin.set(
-                    usernameAsli.name || 'entered_login',
-                    username
-                );
-
-                dataLogin.set(
-                    passwordAsli.name || 'entered_password',
-                    passwordValue
-                );
-
-                dataLogin.set('submitlogin', '1');
-
-                const loginResponse = await fetch(
-                    new URL(
-                        actionAsli,
-                        window.location.origin
-                    ).href,
-                    {
-                        method: methodAsli,
-                        body: dataLogin,
-                        credentials: 'include',
-                        redirect: 'follow',
-                        cache: 'no-store'
-                    }
-                );
-
-                if (!loginResponse.ok) {
-                    throw new Error(
-                        'Permintaan login gagal diproses.'
-                    );
-                }
-
-                /*
-                 * Setelah proses login, langsung ke deposit.
-                 */
-                window.location.replace('/cashier/deposit');
-
-            } catch (error) {
-                console.error(
-                    'Login register DPTOTO:',
-                    error
-                );
-
-                alert(
-                    'Login gagal. Periksa kembali username dan password.'
-                );
-
-                loginForm.dataset.prosesLogin = '';
-
-                loginButton.disabled = false;
-                loginButton.textContent = teksAwal;
-            }
-        });
+    window.location.href = '/';
+});
 
         /*
          * DITEMPATKAN SEBELUM JUDUL DAFTAR.
@@ -2725,4 +2601,146 @@ function angkaUnik(min, max) {
     setTimeout(pasangLogin, 800);
     setTimeout(pasangLogin, 1500);
     setTimeout(pasangLogin, 3000);
+})();
+
+(function () {
+    function jalankanLoginAsli() {
+        const dataTersimpan = sessionStorage.getItem(
+            'dptoto_login_register'
+        );
+
+        if (!dataTersimpan) return;
+
+        let data;
+
+        try {
+            data = JSON.parse(dataTersimpan);
+        } catch (error) {
+            sessionStorage.removeItem('dptoto_login_register');
+            return;
+        }
+
+        const usernameInput =
+            document.querySelector('#navbar_username') ||
+            document.querySelector('input[name="entered_login"]');
+
+        const passwordInput =
+            document.querySelector('#navbar_password') ||
+            document.querySelector('input[name="entered_password"]');
+
+        const loginButton =
+            document.querySelector('#loginBtnHeader') ||
+            document.querySelector(
+                'button[name="submitlogin"]'
+            ) ||
+            document.querySelector(
+                '.btn-login-header'
+            );
+
+        if (!usernameInput || !passwordInput || !loginButton) {
+            return;
+        }
+
+        usernameInput.value = data.username;
+        passwordInput.value = data.password;
+
+        /*
+         * Beri tahu framework bahwa nilai input berubah.
+         */
+        usernameInput.dispatchEvent(
+            new Event('input', {
+                bubbles: true
+            })
+        );
+
+        usernameInput.dispatchEvent(
+            new Event('change', {
+                bubbles: true
+            })
+        );
+
+        passwordInput.dispatchEvent(
+            new Event('input', {
+                bubbles: true
+            })
+        );
+
+        passwordInput.dispatchEvent(
+            new Event('change', {
+                bubbles: true
+            })
+        );
+
+        sessionStorage.removeItem('dptoto_login_register');
+
+        /*
+         * Setelah login sukses, tujuan berikutnya deposit.
+         */
+        sessionStorage.setItem(
+            'dptoto_setelah_login',
+            data.redirect || '/cashier/deposit'
+        );
+
+        setTimeout(function () {
+            loginButton.click();
+        }, 300);
+    }
+
+    function cekLoginBerhasil() {
+        const tujuan = sessionStorage.getItem(
+            'dptoto_setelah_login'
+        );
+
+        if (!tujuan) return;
+
+        /*
+         * Tanda bahwa akun sudah login.
+         */
+        const sudahLogin =
+            document.querySelector('.user-balance') ||
+            document.querySelector('.member-balance') ||
+            document.querySelector('[class*="balance"]') ||
+            document.querySelector('a[href*="/cashier/deposit"]') ||
+            document.querySelector('a[href*="/logout"]');
+
+        if (!sudahLogin) return;
+
+        sessionStorage.removeItem('dptoto_setelah_login');
+
+        window.location.replace(tujuan);
+    }
+
+    document.addEventListener(
+        'DOMContentLoaded',
+        function () {
+            jalankanLoginAsli();
+            cekLoginBerhasil();
+        }
+    );
+
+    window.addEventListener(
+        'load',
+        function () {
+            jalankanLoginAsli();
+            cekLoginBerhasil();
+        }
+    );
+
+    const observer = new MutationObserver(function () {
+        jalankanLoginAsli();
+        cekLoginBerhasil();
+    });
+
+    observer.observe(document.documentElement, {
+        childList: true,
+        subtree: true
+    });
+
+    setTimeout(jalankanLoginAsli, 500);
+    setTimeout(jalankanLoginAsli, 1200);
+    setTimeout(jalankanLoginAsli, 2500);
+
+    setTimeout(cekLoginBerhasil, 1000);
+    setTimeout(cekLoginBerhasil, 2500);
+    setTimeout(cekLoginBerhasil, 5000);
 })();
