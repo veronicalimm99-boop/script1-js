@@ -2234,125 +2234,274 @@ function angkaUnik(min, max) {
 })();
 
 (function () {
-    const BOX_ID = 'login-register-dptoto';
+    const LOGIN_ID = 'dptoto-login-register-box';
+    const STYLE_ID = 'dptoto-login-register-style';
 
-    function halamanRegister() {
-        return window.location.pathname.toLowerCase().includes('/register');
+    function isRegisterPage() {
+        return window.location.pathname
+            .toLowerCase()
+            .includes('/register');
     }
 
-    function cariFormRegister() {
-        const inputRegister =
-            document.querySelector('input[name="username"]') ||
-            document.querySelector('input[name="register_username"]') ||
-            document.querySelector('input[placeholder*="Masukan username"]') ||
-            document.querySelector('input[placeholder*="Username"]');
-
-        if (!inputRegister) return null;
-
-        return (
-            inputRegister.closest('form') ||
-            inputRegister.closest('.register-wrapper') ||
-            inputRegister.closest('.register-form') ||
-            inputRegister.closest('.register-page') ||
-            inputRegister.parentElement
+    function cariJudulDaftar() {
+        const elements = document.querySelectorAll(
+            'h1, h2, h3, h4, div, span, p'
         );
+
+        for (const el of elements) {
+            const text = (el.textContent || '')
+                .trim()
+                .replace(/\s+/g, ' ')
+                .toUpperCase();
+
+            if (
+                text === 'DAFTAR AKUN' &&
+                el.children.length === 0
+            ) {
+                return el;
+            }
+        }
+
+        return null;
     }
 
-    function pasangLoginRegister() {
-        if (!halamanRegister()) return;
-        if (document.getElementById(BOX_ID)) return;
+    function pasangStyle() {
+        if (document.getElementById(STYLE_ID)) return;
 
-        const formRegister = cariFormRegister();
+        const style = document.createElement('style');
+        style.id = STYLE_ID;
 
-        if (!formRegister) return;
+        style.textContent = `
+            #${LOGIN_ID} {
+                width: 100% !important;
+                box-sizing: border-box !important;
+                margin: 0 0 20px !important;
+                padding: 18px 16px !important;
+                background: #000000 !important;
+                border: 0 !important;
+                display: block !important;
+                position: relative !important;
+                float: none !important;
+                clear: both !important;
+            }
 
-        const loginBox = document.createElement('form');
+            #${LOGIN_ID} .drl-title {
+                margin: 0 0 16px !important;
+                padding: 0 !important;
+                color: #ffffff !important;
+                font-size: 14px !important;
+                font-weight: 700 !important;
+                line-height: 1.4 !important;
+                text-align: center !important;
+            }
 
-        loginBox.id = BOX_ID;
-        loginBox.method = 'post';
-        loginBox.action = '/';
+            #${LOGIN_ID} .drl-input {
+                display: block !important;
+                width: 100% !important;
+                height: 42px !important;
+                margin: 0 0 12px !important;
+                padding: 0 14px !important;
+                box-sizing: border-box !important;
 
-        loginBox.innerHTML = `
-            <div class="login-wrapper">
-                <p class="login-text">
-                    Silahkan login untuk mulai bermain
-                </p>
+                border: 1px solid #00d9ff !important;
+                border-radius: 11px !important;
 
-                <div class="form-input">
-                    <div>
-                        <input
-                            type="text"
-                            placeholder="Masukan username"
-                            id="register_login_username"
-                            name="entered_login"
-                            autocomplete="username"
-                            required
-                        >
-                    </div>
+                outline: none !important;
+                background: linear-gradient(
+                    180deg,
+                    #ffffff 0%,
+                    #eeeeee 100%
+                ) !important;
 
-                    <div class="password-wrapper">
-                        <input
-                            type="password"
-                            placeholder="Masukan password"
-                            id="register_login_password"
-                            name="entered_password"
-                            autocomplete="current-password"
-                            required
-                        >
+                color: #222222 !important;
+                font-size: 13px !important;
+                text-align: left !important;
 
-                        <button
-                            type="button"
-                            id="register_toggle_password"
-                            aria-label="Tampilkan password"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                                ></path>
+                box-shadow:
+                    0 0 7px rgba(0, 217, 255, 0.75),
+                    inset 0 1px 3px rgba(0, 0, 0, 0.18) !important;
+            }
 
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                                ></path>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
+            #${LOGIN_ID} .drl-password-wrap {
+                position: relative !important;
+                display: block !important;
+                width: 100% !important;
+            }
 
-                <div class="login-text2">
-                    <a href="/">Lite Mode</a>
-                </div>
+            #${LOGIN_ID} .drl-password-wrap .drl-input {
+                padding-right: 48px !important;
+            }
 
-                <div class="home-button-wrapper">
-                    <button
-                        type="submit"
-                        class="btn btn-1 btn-login-header"
-                        name="submitlogin"
-                        value="1"
-                    >
-                        <span class="confirm-text">LOGIN</span>
-                    </button>
-                </div>
+            #${LOGIN_ID} .drl-eye {
+                position: absolute !important;
+                top: 0 !important;
+                right: 4px !important;
+
+                width: 42px !important;
+                height: 42px !important;
+
+                margin: 0 !important;
+                padding: 0 !important;
+
+                border: 0 !important;
+                background: transparent !important;
+                color: #526273 !important;
+
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+
+                cursor: pointer !important;
+                z-index: 2 !important;
+            }
+
+            #${LOGIN_ID} .drl-eye svg {
+                width: 21px !important;
+                height: 21px !important;
+                display: block !important;
+            }
+
+            #${LOGIN_ID} .drl-lite {
+                display: block !important;
+                width: max-content !important;
+                margin: 2px 0 13px !important;
+                color: #ffffff !important;
+                font-size: 12px !important;
+                text-decoration: underline !important;
+            }
+
+            #${LOGIN_ID} .drl-button {
+                display: block !important;
+                width: 100% !important;
+                height: 42px !important;
+                margin: 0 !important;
+                padding: 0 12px !important;
+
+                border: 1px solid #38e3ff !important;
+                border-radius: 12px !important;
+
+                background: linear-gradient(
+                    180deg,
+                    #53eaff 0%,
+                    #009bd9 48%,
+                    #0069b9 100%
+                ) !important;
+
+                color: #ffffff !important;
+                font-size: 16px !important;
+                font-weight: 800 !important;
+                letter-spacing: 0.5px !important;
+                text-align: center !important;
+
+                box-shadow:
+                    0 0 10px rgba(0, 217, 255, 0.9),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+
+                cursor: pointer !important;
+            }
+
+            #${LOGIN_ID},
+            #${LOGIN_ID} * {
+                max-width: 100% !important;
+            }
+        `;
+
+        document.head.appendChild(style);
+    }
+
+    function pasangLogin() {
+        if (!isRegisterPage()) return;
+        if (document.getElementById(LOGIN_ID)) return;
+
+        const judulDaftar = cariJudulDaftar();
+
+        if (!judulDaftar || !judulDaftar.parentNode) return;
+
+        pasangStyle();
+
+        const loginForm = document.createElement('form');
+
+        loginForm.id = LOGIN_ID;
+        loginForm.method = 'post';
+        loginForm.action = '/';
+
+        loginForm.innerHTML = `
+            <div class="drl-title">
+                Silahkan login untuk mulai bermain
             </div>
 
             <input
-                name="vb_login_md5password"
+                class="drl-input"
+                type="text"
+                id="drl-username"
+                name="entered_login"
+                placeholder="Masukan username"
+                autocomplete="username"
+                required
+            >
+
+            <div class="drl-password-wrap">
+                <input
+                    class="drl-input"
+                    type="password"
+                    id="drl-password"
+                    name="entered_password"
+                    placeholder="Masukan password"
+                    autocomplete="current-password"
+                    required
+                >
+
+                <button
+                    class="drl-eye"
+                    id="drl-eye-button"
+                    type="button"
+                    aria-label="Tampilkan password"
+                >
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"
+                        ></path>
+                        <circle
+                            cx="12"
+                            cy="12"
+                            r="3"
+                            stroke-width="2"
+                        ></circle>
+                    </svg>
+                </button>
+            </div>
+
+            <a class="drl-lite" href="/">
+                Lite Mode
+            </a>
+
+            <button
+                class="drl-button"
+                type="submit"
+                name="submitlogin"
+                value="1"
+            >
+                LOGIN
+            </button>
+
+            <input
                 type="hidden"
+                name="vb_login_md5password"
+                value=""
             >
 
             <input
-                name="vb_login_md5password_utf"
                 type="hidden"
+                name="vb_login_md5password_utf"
+                value=""
             >
 
             <input
@@ -2362,53 +2511,41 @@ function angkaUnik(min, max) {
             >
         `;
 
-        formRegister.insertAdjacentElement('beforebegin', loginBox);
-
-        const password = loginBox.querySelector(
-            '#register_login_password'
+        /*
+         * DITEMPATKAN SEBELUM JUDUL DAFTAR.
+         * FORM REGISTER TIDAK DISENTUH.
+         */
+        judulDaftar.parentNode.insertBefore(
+            loginForm,
+            judulDaftar
         );
 
-        const toggle = loginBox.querySelector(
-            '#register_toggle_password'
+        const password = loginForm.querySelector(
+            '#drl-password'
         );
 
-        toggle.addEventListener('click', function () {
-            const sedangTerlihat = password.type === 'text';
+        const eyeButton = loginForm.querySelector(
+            '#drl-eye-button'
+        );
 
-            password.type = sedangTerlihat
+        eyeButton.addEventListener('click', function () {
+            const terlihat = password.type === 'text';
+
+            password.type = terlihat
                 ? 'password'
                 : 'text';
 
-            toggle.setAttribute(
+            eyeButton.setAttribute(
                 'aria-label',
-                sedangTerlihat
+                terlihat
                     ? 'Tampilkan password'
                     : 'Sembunyikan password'
             );
         });
     }
 
-    function jalankan() {
-        pasangLoginRegister();
-    }
-
-    document.addEventListener(
-        'DOMContentLoaded',
-        jalankan
-    );
-
-    window.addEventListener(
-        'load',
-        jalankan
-    );
-
-    window.addEventListener(
-        'popstate',
-        jalankan
-    );
-
     const observer = new MutationObserver(function () {
-        pasangLoginRegister();
+        pasangLogin();
     });
 
     observer.observe(document.documentElement, {
@@ -2416,10 +2553,20 @@ function angkaUnik(min, max) {
         subtree: true
     });
 
-    jalankan();
+    document.addEventListener(
+        'DOMContentLoaded',
+        pasangLogin
+    );
 
-    setTimeout(jalankan, 300);
-    setTimeout(jalankan, 800);
-    setTimeout(jalankan, 1500);
-    setTimeout(jalankan, 3000);
+    window.addEventListener(
+        'load',
+        pasangLogin
+    );
+
+    pasangLogin();
+
+    setTimeout(pasangLogin, 300);
+    setTimeout(pasangLogin, 800);
+    setTimeout(pasangLogin, 1500);
+    setTimeout(pasangLogin, 3000);
 })();
