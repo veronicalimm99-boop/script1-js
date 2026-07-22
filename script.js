@@ -2291,44 +2291,44 @@ function angkaUnik(min, max) {
         tombol.textContent = 'LOGIN DISINI';
 
         tombol.style.cssText = `
-            position:fixed !important;
-            display:flex !important;
-            align-items:center !important;
-            justify-content:center !important;
+    position:fixed !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
 
-            width:118px !important;
-            height:36px !important;
-            padding:0 !important;
-            margin:0 !important;
+    width:calc(100% - 28px) !important;
+    height:40px !important;
+    padding:0 12px !important;
+    margin:0 !important;
 
-            border:1px solid #50e9ff !important;
-            border-radius:9px !important;
+    border:1px solid #50e9ff !important;
+    border-radius:10px !important;
 
-            background:linear-gradient(
-                180deg,
-                #55ebff 0%,
-                #00a5e8 45%,
-                #0065b6 100%
-            ) !important;
+    background:linear-gradient(
+        180deg,
+        #55ebff 0%,
+        #00a5e8 45%,
+        #0065b6 100%
+    ) !important;
 
-            color:#ffffff !important;
-            font-family:Arial,sans-serif !important;
-            font-size:13px !important;
-            font-weight:800 !important;
-            line-height:1 !important;
+    color:#ffffff !important;
+    font-family:Arial,sans-serif !important;
+    font-size:14px !important;
+    font-weight:800 !important;
+    line-height:1 !important;
 
-            text-align:center !important;
-            text-decoration:none !important;
+    text-align:center !important;
+    text-decoration:none !important;
 
-            box-shadow:
-                0 0 9px rgba(0,217,255,.95),
-                inset 0 1px 0 rgba(255,255,255,.75) !important;
+    box-shadow:
+        0 0 9px rgba(0,217,255,.95),
+        inset 0 1px 0 rgba(255,255,255,.75) !important;
 
-            z-index:2147483647 !important;
-            cursor:pointer !important;
-            pointer-events:auto !important;
-        `;
-
+    z-index:2147483647 !important;
+    cursor:pointer !important;
+    pointer-events:auto !important;
+    white-space:nowrap !important;
+`;
         document.body.appendChild(tombol);
 
         return tombol;
@@ -2364,7 +2364,8 @@ function angkaUnik(min, max) {
          * Posisi di sebelah kiri tombol Live Chat.
          */
         const top = rect.top + 17;
-        const left = rect.right - 230;
+        const left = rect.left + 14;
+        const width = rect.width - 28;
 
         tombol.style.setProperty(
             'top',
@@ -2377,6 +2378,11 @@ function angkaUnik(min, max) {
             left + 'px',
             'important'
         );
+        tombol.style.setProperty(
+    'width',
+    width + 'px',
+    'important'
+);
     }
 
     function jalankan() {
