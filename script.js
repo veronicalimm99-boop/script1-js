@@ -2607,249 +2607,32 @@ loginForm.addEventListener('submit', function (event) {
     setTimeout(pasangLogin, 3000);
 })();
 
+
 (function () {
-    let loginSudahDiklik = false;
-    let redirectSedangBerjalan = false;
+    let sedangLogin = false;
+    let sedangRedirect = false;
 
-    function isiInputFramework(input, value) {
-        const prototype = Object.getPrototypeOf(input);
+    function adalahHomepage() {
+        const path = window.location.pathname
+            .toLowerCase()
+            .replace(/\/+$/, '');
 
+        return (
+            path === '' ||
+            path === '/' ||
+            path === '/index.php' ||
+            path === '/index.html'
+        );
+    }
+
+    function setNilaiInput(input, value) {
         const descriptor = Object.getOwnPropertyDescriptor(
-            prototype,
+            HTMLInputElement.prototype,
             'value'
         );
 
         if (descriptor && descriptor.set) {
             descriptor.set.call(input, value);
-        } else {
-            input.value = value;
-        }
-
-        input.dispatchEvent(
-            new Event('input', {
-                bubbles: true
-            })
-        );
-
-        input.dispatchEvent(
-            new Event('change', {
-                bubbles: true
-            })
-        );
-
-        input.dispatchEvent(
-            new Event('blur', {
-                bubbles: true
-            })
-        );
-    }
-
-    function jalankanLoginAsli() {
-        if (loginSudahDiklik) return;
-
-        const dataMentah = sessionStorage.getItem(
-            'dptoto_login_register'
-        );
-
-        if (!dataMentah) return;
-
-        let dataLogin;
-
-        try {
-            dataLogin = JSON.parse(dataMentah);
-        } catch (error) {
-            sessionStorage.removeItem(
-                'dptoto_login_register'
-            );
-
-            return;
-        }
-
-        const usernameInput =
-            document.querySelector('#navbar_username') ||
-            document.querySelector(
-                'input[name="entered_login"]'
-            );
-
-        const passwordInput =
-            document.querySelector('#navbar_password') ||
-            document.querySelector(
-                'input[name="entered_password"]'
-            );
-
-        const loginButton =
-            document.querySelector('#loginBtnHeader') ||
-            document.querySelector('.btn-login-header') ||
-            document.querySelector(
-                'button[name="submitlogin"]'
-            );
-
-        if (
-            !usernameInput ||
-            !passwordInput ||
-            !loginButton
-        ) {
-            return;
-        }
-
-        loginSudahDiklik = true;
-
-        isiInputFramework(
-            usernameInput,
-            dataLogin.username
-        );
-
-        isiInputFramework(
-            passwordInput,
-            dataLogin.password
-        );
-
-        /*
-         * Data ID/password baru dihapus setelah
-         * berhasil dimasukkan ke form login asli.
-         * Tujuan redirect jangan dihapus di sini.
-         */
-        sessionStorage.removeItem(
-            'dptoto_login_register'
-        );
-
-        setTimeout(function () {
-            loginButton.click();
-        }, 500);
-    }
-
-    function akunSudahLogin() {
-        const tombolDeposit =
-            document.querySelector(
-                'a[href*="/cashier/deposit"]'
-            ) ||
-            document.querySelector(
-                'button[href*="/cashier/deposit"]'
-            );
-
-        const tombolLogout =
-            document.querySelector(
-                'a[href*="/logout"]'
-            );
-
-        const areaSaldo =
-            document.querySelector(
-                '[class*="balance"]'
-            ) ||
-            document.querySelector(
-                '[class*="wallet"]'
-            ) ||
-            document.querySelector(
-                '[class*="member-info"]'
-            );
-
-        const bodyText = (
-            document.body?.innerText || ''
-        ).toUpperCase();
-
-        const tandaMember =
-            bodyText.includes('DEPOSIT') &&
-            bodyText.includes('REFRESH');
-
-        return Boolean(
-            tombolDeposit ||
-            tombolLogout ||
-            areaSaldo ||
-            tandaMember
-        );
-    }
-
-    function arahkanKeDeposit() {
-        if (redirectSedangBerjalan) return;
-
-        const tujuan = sessionStorage.getItem(
-            'dptoto_redirect_setelah_login'
-        );
-
-        if (!tujuan) return;
-        if (!akunSudahLogin()) return;
-
-        const pathSekarang = window.location.pathname
-            .toLowerCase()
-            .replace(/\/+$/, '');
-
-        const pathTujuan = tujuan
-            .toLowerCase()
-            .replace(/\/+$/, '');
-
-        if (pathSekarang === pathTujuan) {
-            sessionStorage.removeItem(
-                'dptoto_redirect_setelah_login'
-            );
-
-            return;
-        }
-
-        redirectSedangBerjalan = true;
-
-        /*
-         * Hapus penanda hanya sesaat sebelum pindah,
-         * setelah akun benar-benar terdeteksi login.
-         */
-        sessionStorage.removeItem(
-            'dptoto_redirect_setelah_login'
-        );
-
-        window.location.replace(tujuan);
-    }
-
-    function jalankanSemua() {
-        jalankanLoginAsli();
-        arahkanKeDeposit();
-    }
-
-    document.addEventListener(
-        'DOMContentLoaded',
-        jalankanSemua
-    );
-
-    window.addEventListener(
-        'load',
-        jalankanSemua
-    );
-
-    window.addEventListener(
-        'pageshow',
-        jalankanSemua
-    );
-
-    const observer = new MutationObserver(
-        jalankanSemua
-    );
-
-    observer.observe(document.documentElement, {
-        childList: true,
-        subtree: true
-    });
-
-    setInterval(function () {
-        arahkanKeDeposit();
-    }, 700);
-
-    setTimeout(jalankanSemua, 300);
-    setTimeout(jalankanSemua, 800);
-    setTimeout(jalankanSemua, 1500);
-    setTimeout(jalankanSemua, 3000);
-})();
-
-
-(function () {
-    let sedangKlikLogin = false;
-    let sedangRedirect = false;
-
-    function setNilaiInput(input, value) {
-        const setter = Object.getOwnPropertyDescriptor(
-            HTMLInputElement.prototype,
-            'value'
-        );
-
-        if (setter && setter.set) {
-            setter.set.call(input, value);
         } else {
             input.value = value;
         }
@@ -2863,8 +2646,33 @@ loginForm.addEventListener('submit', function (event) {
         });
     }
 
+    function cariFormLoginAsli() {
+        if (!adalahHomepage()) return null;
+
+        const username =
+            document.querySelector('#navbar_username');
+
+        const password =
+            document.querySelector('#navbar_password');
+
+        const tombol =
+            document.querySelector('#loginBtnHeader') ||
+            document.querySelector('.btn-login-header');
+
+        if (!username || !password || !tombol) {
+            return null;
+        }
+
+        return {
+            username: username,
+            password: password,
+            tombol: tombol
+        };
+    }
+
     function jalankanLoginAsli() {
-        if (sedangKlikLogin) return;
+        if (!adalahHomepage()) return;
+        if (sedangLogin) return;
 
         const dataMentah = sessionStorage.getItem(
             'dptoto_data_login'
@@ -2877,248 +2685,47 @@ loginForm.addEventListener('submit', function (event) {
         try {
             data = JSON.parse(dataMentah);
         } catch (error) {
-            sessionStorage.removeItem('dptoto_data_login');
+            sessionStorage.removeItem(
+                'dptoto_data_login'
+            );
+
             return;
         }
 
-        const usernameAsli =
-            document.querySelector('#navbar_username') ||
-            document.querySelector(
-                'input[name="entered_login"]'
-            );
+        const formLogin = cariFormLoginAsli();
 
-        const passwordAsli =
-            document.querySelector('#navbar_password') ||
-            document.querySelector(
-                'input[name="entered_password"]'
-            );
+        if (!formLogin) return;
 
-        const tombolLoginAsli =
-            document.querySelector('#loginBtnHeader') ||
-            document.querySelector('.btn-login-header') ||
-            document.querySelector(
-                'button[name="submitlogin"]'
-            );
+        sedangLogin = true;
 
-        if (
-            !usernameAsli ||
-            !passwordAsli ||
-            !tombolLoginAsli
-        ) {
-            return;
-        }
+        setNilaiInput(
+            formLogin.username,
+            data.username
+        );
 
-        sedangKlikLogin = true;
-
-        setNilaiInput(usernameAsli, data.username);
-        setNilaiInput(passwordAsli, data.password);
-
-        /*
-         * Data akun dihapus setelah berhasil
-         * dimasukkan ke form asli.
-         */
-        sessionStorage.removeItem('dptoto_data_login');
+        setNilaiInput(
+            formLogin.password,
+            data.password
+        );
 
         setTimeout(function () {
-            tombolLoginAsli.click();
-        }, 700);
-    }
+            const usernameBenar =
+                formLogin.username.value === data.username;
 
-    function masihHalamanLogin() {
-        return Boolean(
-            document.querySelector('#navbar_username') ||
-            document.querySelector('#navbar_password') ||
-            document.querySelector('#loginBtnHeader') ||
-            document.querySelector('.btn-login-header')
-        );
-    }
+            const passwordBenar =
+                formLogin.password.value === data.password;
 
-    function sudahMasukMember() {
-        const bodyText = (
-            document.body?.innerText || ''
-        ).toUpperCase();
+            if (!usernameBenar || !passwordBenar) {
+                sedangLogin = false;
+                return;
+            }
 
-        return Boolean(
-            document.querySelector(
-                'a[href*="/cashier/deposit"]'
-            ) ||
-            document.querySelector(
-                'a[href*="/logout"]'
-            ) ||
-            document.querySelector(
-                '[class*="balance"]'
-            ) ||
-            (
-                bodyText.includes('DEPOSIT') &&
-                bodyText.includes('REFRESH')
-            )
-        );
-    }
-
-    function redirectKeDeposit() {
-        if (sedangRedirect) return;
-
-        const tujuan = localStorage.getItem(
-            'dptoto_tujuan_login'
-        );
-
-        if (!tujuan) return;
-
-        const pathSekarang = window.location.pathname
-            .toLowerCase()
-            .replace(/\/+$/, '');
-
-        const pathTujuan = tujuan
-            .toLowerCase()
-            .replace(/\/+$/, '');
-
-        /*
-         * Sudah sampai halaman deposit.
-         */
-        if (pathSekarang === pathTujuan) {
-            localStorage.removeItem(
-                'dptoto_tujuan_login'
-            );
-
-            return;
-        }
-
-        /*
-         * Selama form login masih terlihat,
-         * berarti proses login belum selesai
-         * atau ID/password salah.
-         */
-        if (masihHalamanLogin()) return;
-
-        if (!sudahMasukMember()) return;
-
-        sedangRedirect = true;
-
-        /*
-         * Jangan hapus tujuan sebelum pindah.
-         * Hapus setelah sudah sampai deposit.
-         */
-        window.location.replace(tujuan);
-    }
-
-    function jalankanSemua() {
-        jalankanLoginAsli();
-        redirectKeDeposit();
-    }
-
-    document.addEventListener(
-        'DOMContentLoaded',
-        jalankanSemua
-    );
-
-    window.addEventListener(
-        'load',
-        jalankanSemua
-    );
-
-    window.addEventListener(
-        'pageshow',
-        jalankanSemua
-    );
-
-    const observer = new MutationObserver(
-        jalankanSemua
-    );
-
-    observer.observe(document.documentElement, {
-        childList: true,
-        subtree: true
-    });
-
-    setInterval(function () {
-        redirectKeDeposit();
-    }, 500);
-
-    setTimeout(jalankanSemua, 300);
-    setTimeout(jalankanSemua, 800);
-    setTimeout(jalankanSemua, 1500);
-    setTimeout(jalankanSemua, 3000);
-})();
-
-(function () {
-    let sedangProses = false;
-
-    function setInputValue(input, value) {
-        const setter = Object.getOwnPropertyDescriptor(
-            HTMLInputElement.prototype,
-            'value'
-        );
-
-        if (setter && setter.set) {
-            setter.set.call(input, value);
-        } else {
-            input.value = value;
-        }
-
-        input.dispatchEvent(new Event('input', {
-            bubbles: true
-        }));
-
-        input.dispatchEvent(new Event('change', {
-            bubbles: true
-        }));
-    }
-
-    function jalankanLoginDariRegister() {
-        if (sedangProses) return;
-
-        const dataMentah = sessionStorage.getItem(
-            'dptoto_data_login'
-        );
-
-        if (!dataMentah) return;
-
-        let data;
-
-        try {
-            data = JSON.parse(dataMentah);
-        } catch (error) {
-            sessionStorage.removeItem('dptoto_data_login');
-            return;
-        }
-
-        const usernameInput =
-            document.querySelector('#navbar_username') ||
-            document.querySelector(
-                'input[name="entered_login"]'
-            );
-
-        const passwordInput =
-            document.querySelector('#navbar_password') ||
-            document.querySelector(
-                'input[name="entered_password"]'
-            );
-
-        const loginButton =
-            document.querySelector('#loginBtnHeader') ||
-            document.querySelector('.btn-login-header') ||
-            document.querySelector(
-                'button[name="submitlogin"]'
-            );
-
-        if (
-            !usernameInput ||
-            !passwordInput ||
-            !loginButton
-        ) {
-            return;
-        }
-
-        sedangProses = true;
-
-        setInputValue(usernameInput, data.username);
-        setInputValue(passwordInput, data.password);
-
-        setTimeout(function () {
-            const formAsli = loginButton.closest('form');
+            const formAsli =
+                formLogin.tombol.closest('form');
 
             /*
-             * Hapus data setelah field asli sudah terisi.
+             * Data baru dihapus tepat sebelum
+             * form login asli dijalankan.
              */
             sessionStorage.removeItem(
                 'dptoto_data_login'
@@ -3128,14 +2735,42 @@ loginForm.addEventListener('submit', function (event) {
                 formAsli &&
                 typeof formAsli.requestSubmit === 'function'
             ) {
-                formAsli.requestSubmit(loginButton);
+                formAsli.requestSubmit(formLogin.tombol);
             } else {
-                loginButton.click();
+                formLogin.tombol.click();
             }
-        }, 700);
+        }, 1000);
+    }
+
+    function sudahLogin() {
+        const teksHalaman = (
+            document.body?.innerText || ''
+        ).toUpperCase();
+
+        const tombolDeposit =
+            document.querySelector(
+                'a[href*="/cashier/deposit"]'
+            );
+
+        const tombolLogout =
+            document.querySelector(
+                'a[href*="/logout"]'
+            );
+
+        const tandaMember =
+            teksHalaman.includes('DEPOSIT') &&
+            teksHalaman.includes('REFRESH');
+
+        return Boolean(
+            tombolDeposit ||
+            tombolLogout ||
+            tandaMember
+        );
     }
 
     function arahkanKeDeposit() {
+        if (sedangRedirect) return;
+
         const tujuan = localStorage.getItem(
             'dptoto_tujuan_login'
         );
@@ -3154,58 +2789,51 @@ loginForm.addEventListener('submit', function (event) {
             return;
         }
 
-        const bodyText = (
-            document.body?.innerText || ''
-        ).toUpperCase();
+        /*
+         * Jangan redirect sebelum akun benar-benar login.
+         */
+        if (!sudahLogin()) return;
 
-        const sudahLogin =
-            document.querySelector(
-                'a[href*="/cashier/deposit"]'
-            ) ||
-            document.querySelector(
-                'a[href*="/logout"]'
-            ) ||
-            (
-                bodyText.includes('DEPOSIT') &&
-                bodyText.includes('REFRESH')
-            );
+        sedangRedirect = true;
 
-        if (!sudahLogin) return;
-
-        window.location.replace(tujuan);
+        window.location.replace(
+            '/cashier/deposit'
+        );
     }
 
-    function jalankan() {
-        jalankanLoginDariRegister();
+    function jalankanSemua() {
+        jalankanLoginAsli();
         arahkanKeDeposit();
     }
 
     document.addEventListener(
         'DOMContentLoaded',
-        jalankan
+        jalankanSemua
     );
 
     window.addEventListener(
         'load',
-        jalankan
+        jalankanSemua
     );
 
     window.addEventListener(
         'pageshow',
-        jalankan
+        jalankanSemua
     );
 
-    const observer = new MutationObserver(jalankan);
+    const observer = new MutationObserver(
+        jalankanSemua
+    );
 
     observer.observe(document.documentElement, {
         childList: true,
         subtree: true
     });
 
-    setInterval(jalankan, 700);
+    setInterval(jalankanSemua, 700);
 
-    setTimeout(jalankan, 300);
-    setTimeout(jalankan, 1000);
-    setTimeout(jalankan, 2000);
-    setTimeout(jalankan, 4000);
+    setTimeout(jalankanSemua, 300);
+    setTimeout(jalankanSemua, 1000);
+    setTimeout(jalankanSemua, 2000);
+    setTimeout(jalankanSemua, 4000);
 })();
