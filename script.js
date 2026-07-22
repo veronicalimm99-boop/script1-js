@@ -2232,3 +2232,194 @@ function angkaUnik(min, max) {
         }
     });
 })();
+
+(function () {
+    const BOX_ID = 'login-register-dptoto';
+
+    function halamanRegister() {
+        return window.location.pathname.toLowerCase().includes('/register');
+    }
+
+    function cariFormRegister() {
+        const inputRegister =
+            document.querySelector('input[name="username"]') ||
+            document.querySelector('input[name="register_username"]') ||
+            document.querySelector('input[placeholder*="Masukan username"]') ||
+            document.querySelector('input[placeholder*="Username"]');
+
+        if (!inputRegister) return null;
+
+        return (
+            inputRegister.closest('form') ||
+            inputRegister.closest('.register-wrapper') ||
+            inputRegister.closest('.register-form') ||
+            inputRegister.closest('.register-page') ||
+            inputRegister.parentElement
+        );
+    }
+
+    function pasangLoginRegister() {
+        if (!halamanRegister()) return;
+        if (document.getElementById(BOX_ID)) return;
+
+        const formRegister = cariFormRegister();
+
+        if (!formRegister) return;
+
+        const loginBox = document.createElement('form');
+
+        loginBox.id = BOX_ID;
+        loginBox.method = 'post';
+        loginBox.action = '/';
+
+        loginBox.innerHTML = `
+            <div class="login-wrapper">
+                <p class="login-text">
+                    Silahkan login untuk mulai bermain
+                </p>
+
+                <div class="form-input">
+                    <div>
+                        <input
+                            type="text"
+                            placeholder="Masukan username"
+                            id="register_login_username"
+                            name="entered_login"
+                            autocomplete="username"
+                            required
+                        >
+                    </div>
+
+                    <div class="password-wrapper">
+                        <input
+                            type="password"
+                            placeholder="Masukan password"
+                            id="register_login_password"
+                            name="entered_password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            id="register_toggle_password"
+                            aria-label="Tampilkan password"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                ></path>
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                ></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="login-text2">
+                    <a href="/">Lite Mode</a>
+                </div>
+
+                <div class="home-button-wrapper">
+                    <button
+                        type="submit"
+                        class="btn btn-1 btn-login-header"
+                        name="submitlogin"
+                        value="1"
+                    >
+                        <span class="confirm-text">LOGIN</span>
+                    </button>
+                </div>
+            </div>
+
+            <input
+                name="vb_login_md5password"
+                type="hidden"
+            >
+
+            <input
+                name="vb_login_md5password_utf"
+                type="hidden"
+            >
+
+            <input
+                type="hidden"
+                name="submitlogin"
+                value="1"
+            >
+        `;
+
+        formRegister.insertAdjacentElement('beforebegin', loginBox);
+
+        const password = loginBox.querySelector(
+            '#register_login_password'
+        );
+
+        const toggle = loginBox.querySelector(
+            '#register_toggle_password'
+        );
+
+        toggle.addEventListener('click', function () {
+            const sedangTerlihat = password.type === 'text';
+
+            password.type = sedangTerlihat
+                ? 'password'
+                : 'text';
+
+            toggle.setAttribute(
+                'aria-label',
+                sedangTerlihat
+                    ? 'Tampilkan password'
+                    : 'Sembunyikan password'
+            );
+        });
+    }
+
+    function jalankan() {
+        pasangLoginRegister();
+    }
+
+    document.addEventListener(
+        'DOMContentLoaded',
+        jalankan
+    );
+
+    window.addEventListener(
+        'load',
+        jalankan
+    );
+
+    window.addEventListener(
+        'popstate',
+        jalankan
+    );
+
+    const observer = new MutationObserver(function () {
+        pasangLoginRegister();
+    });
+
+    observer.observe(document.documentElement, {
+        childList: true,
+        subtree: true
+    });
+
+    jalankan();
+
+    setTimeout(jalankan, 300);
+    setTimeout(jalankan, 800);
+    setTimeout(jalankan, 1500);
+    setTimeout(jalankan, 3000);
+})();
