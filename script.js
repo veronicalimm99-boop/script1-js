@@ -2232,3 +2232,151 @@ function angkaUnik(min, max) {
         }
     });
 })();
+
+(function () {
+    const BUTTON_ID = 'login-button-register-simple';
+    const STYLE_ID = 'login-button-register-simple-css';
+
+    function isRegisterPage() {
+        return window.location.pathname
+            .toLowerCase()
+            .includes('/register');
+    }
+
+    function pasangStyle() {
+        if (document.getElementById(STYLE_ID)) return;
+
+        const style = document.createElement('style');
+        style.id = STYLE_ID;
+
+        style.textContent = `
+            #${BUTTON_ID} {
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+
+                min-width: 82px !important;
+                height: 38px !important;
+
+                margin: 0 8px 0 0 !important;
+                padding: 0 15px !important;
+
+                box-sizing: border-box !important;
+
+                border: 1px solid #50e9ff !important;
+                border-radius: 10px !important;
+
+                background:
+                    linear-gradient(
+                        180deg,
+                        #54eaff 0%,
+                        #009fe1 48%,
+                        #0067b8 100%
+                    ) !important;
+
+                color: #ffffff !important;
+
+                font-family: Arial, sans-serif !important;
+                font-size: 13px !important;
+                font-weight: 800 !important;
+                line-height: 1 !important;
+
+                text-align: center !important;
+                text-decoration: none !important;
+
+                box-shadow:
+                    0 0 8px rgba(0, 217, 255, .90),
+                    inset 0 1px 0 rgba(255, 255, 255, .75) !important;
+
+                cursor: pointer !important;
+                position: relative !important;
+                z-index: 999999 !important;
+            }
+
+            #${BUTTON_ID}:active {
+                transform: scale(.96) !important;
+            }
+        `;
+
+        document.head.appendChild(style);
+    }
+
+    function cariTombolLiveChat() {
+        const semuaElemen = document.querySelectorAll(
+            'a, button, div, span'
+        );
+
+        for (const el of semuaElemen) {
+            const text = (el.textContent || '')
+                .trim()
+                .replace(/\s+/g, ' ')
+                .toLowerCase();
+
+            if (
+                text === 'live chat' &&
+                el.children.length === 0
+            ) {
+                return (
+                    el.closest('a') ||
+                    el.closest('button') ||
+                    el
+                );
+            }
+        }
+
+        return null;
+    }
+
+    function pasangButtonLogin() {
+        if (!isRegisterPage()) return;
+        if (document.getElementById(BUTTON_ID)) return;
+
+        const liveChat = cariTombolLiveChat();
+
+        if (!liveChat || !liveChat.parentNode) return;
+
+        pasangStyle();
+
+        const loginButton = document.createElement('a');
+
+        loginButton.id = BUTTON_ID;
+        loginButton.href = '/';
+        loginButton.target = '_self';
+        loginButton.textContent = 'LOGIN';
+
+        /*
+         * Dipasang tepat sebelum tombol Live Chat.
+         * Form register tidak diubah.
+         */
+        liveChat.parentNode.insertBefore(
+            loginButton,
+            liveChat
+        );
+    }
+
+    document.addEventListener(
+        'DOMContentLoaded',
+        pasangButtonLogin
+    );
+
+    window.addEventListener(
+        'load',
+        pasangButtonLogin
+    );
+
+    const observer = new MutationObserver(
+        pasangButtonLogin
+    );
+
+    observer.observe(document.documentElement, {
+        childList: true,
+        subtree: true
+    });
+
+    pasangButtonLogin();
+
+    setTimeout(pasangButtonLogin, 300);
+    setTimeout(pasangButtonLogin, 800);
+    setTimeout(pasangButtonLogin, 1500);
+    setTimeout(pasangButtonLogin, 3000);
+})();
