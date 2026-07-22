@@ -1065,9 +1065,7 @@
         style.textContent = `
             #extra-sidebar-livescore,
             #extra-sidebar-rtp,
-            #extra-sidebar-bukti,
-            #mobile-extra-livescore,
-            #mobile-extra-rtp,
+            #extra-sidebar-bukti,          
             #mobile-extra-bukti {
                 position: relative !important;
                 overflow: hidden !important;
@@ -1311,59 +1309,6 @@ closeBtn.addEventListener('click', function() {
     setTimeout(tambahFloatingMenuKiri, 1500);
     setTimeout(tambahFloatingMenuKiri, 3000);
 })();
-
-
-(function() {
-    function tambahSidebarMobileDptoto() {
-        if (document.getElementById('mobile-extra-livescore')) return;
-
-        const isMobile = window.innerWidth <= 768 ||
-            document.querySelector('.mobile-before-layout__container') ||
-            document.querySelector('.mobile-before-layout__content');
-
-        if (!isMobile) return;
-
-        const allMenu = document.querySelectorAll('a, button');
-        let promosiBtn = null;
-
-        allMenu.forEach(function(el) {
-            const text = (el.innerText || el.textContent || '').trim().toLowerCase();
-            if (text === 'promosi' || text.includes('promosi')) {
-                promosiBtn = el;
-            }
-        });
-
-        if (!promosiBtn) return;
-
-        const livescore = promosiBtn.cloneNode(true);
-        livescore.id = 'mobile-extra-livescore';
-        livescore.href = 'https://vuata.link/livescore';
-        livescore.setAttribute('target', '_blank');
-      livescore.innerHTML = `
-        <span style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;">LIVESCORE</span>
-        `;
-
-        const rtp = promosiBtn.cloneNode(true);
-        rtp.id = 'mobile-extra-rtp';
-        rtp.href = 'https://vuata.link/rtpslot-dptoto';
-        rtp.setAttribute('target', '_blank');
-        rtp.innerHTML = `
-        <span style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;">RTP SLOT HARI INI</span>
-        `;
-
-        promosiBtn.insertAdjacentElement('afterend', rtp);
-        promosiBtn.insertAdjacentElement('afterend', livescore);
-    }
-
-    const obs = new MutationObserver(tambahSidebarMobileDptoto);
-    obs.observe(document.documentElement, { childList: true, subtree: true });
-
-    tambahSidebarMobileDptoto();
-    setTimeout(tambahSidebarMobileDptoto, 500);
-    setTimeout(tambahSidebarMobileDptoto, 1500);
-    setTimeout(tambahSidebarMobileDptoto, 3000);
-})();
-
 
 (function() {
     const LINK_PROMOSI = 'https://vuata.link/promodptoto'; // GANTI LINK PROMO DI SINI
