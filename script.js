@@ -2301,15 +2301,16 @@ function angkaUnik(min, max) {
     padding:0 12px !important;
     margin:0 !important;
 
-    border:1px solid #50e9ff !important;
+    border:2px solid #fff2a8 !important;
     border-radius:10px !important;
 
-    background:linear-gradient(
-        180deg,
-        #55ebff 0%,
-        #00a5e8 45%,
-        #0065b6 100%
-    ) !important;
+background:linear-gradient(
+    180deg,
+    #fff3a0 0%,
+    #ffd84d 28%,
+    #f5a800 62%,
+    #b86b00 100%
+) !important;
 
     color:#ffffff !important;
     font-family:Arial,sans-serif !important;
@@ -2320,9 +2321,12 @@ function angkaUnik(min, max) {
     text-align:center !important;
     text-decoration:none !important;
 
-    box-shadow:
-        0 0 9px rgba(0,217,255,.95),
-        inset 0 1px 0 rgba(255,255,255,.75) !important;
+box-shadow:
+    0 0 8px rgba(255,215,60,.95),
+    0 0 18px rgba(255,170,0,.85),
+    0 0 30px rgba(255,130,0,.55),
+    inset 0 2px 0 rgba(255,255,255,.85),
+    inset 0 -3px 6px rgba(120,60,0,.45) !important;
 
     z-index:2147483647 !important;
     cursor:pointer !important;
