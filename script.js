@@ -2233,122 +2233,73 @@ function angkaUnik(min, max) {
     });
 })();
 
-
-/* ===== TOMBOL LOGIN PERMANEN DI HALAMAN REGISTER ===== */
+/* ===== LOGIN REGISTER FINAL - TANPA CARI LIVE CHAT ===== */
 (function () {
-    const LOGIN_ID = 'dptoto-register-login-final';
-    let observerAktif = false;
+    const BUTTON_ID = 'dptoto-login-register-final';
 
     function halamanRegister() {
-        const path = window.location.pathname
+        return window.location.pathname
             .toLowerCase()
-            .replace(/\/+$/, '');
-
-        return path === '/register';
+            .replace(/\/+$/, '') === '/register';
     }
 
-    function elemenTerlihat(element) {
-        if (!element) return false;
-
-        const style = window.getComputedStyle(element);
-        const rect = element.getBoundingClientRect();
-
-        return (
-            style.display !== 'none' &&
-            style.visibility !== 'hidden' &&
-            rect.width > 0 &&
-            rect.height > 0
-        );
-    }
-
-    function cariLiveChat() {
-        /*
-         * Coba selector tombol/link lebih dahulu.
-         */
-        const selectors = [
-            'a[href*="livechat" i]',
-            'a[href*="live-chat" i]',
-            'button[class*="livechat" i]',
-            'a[class*="livechat" i]',
-            '[id*="livechat" i]',
-            '[class*="live-chat" i]'
-        ];
-
-        for (const selector of selectors) {
-            const candidates = document.querySelectorAll(selector);
-
-            for (const candidate of candidates) {
-                if (elemenTerlihat(candidate)) {
-                    return (
-                        candidate.closest('a, button') ||
-                        candidate
-                    );
-                }
-            }
-        }
-
-        /*
-         * Fallback: cari berdasarkan tulisan Live Chat.
-         */
-        const candidates = document.querySelectorAll(
-            'a, button, div, span'
+    function cariJudulDaftar() {
+        const semua = document.querySelectorAll(
+            'h1, h2, h3, h4, div, span, p'
         );
 
-        for (const candidate of candidates) {
-            if (!elemenTerlihat(candidate)) continue;
-
-            const text = (
-                candidate.innerText ||
-                candidate.textContent ||
-                ''
-            )
+        for (const el of semua) {
+            const text = (el.textContent || '')
                 .trim()
                 .replace(/\s+/g, ' ')
-                .toLowerCase();
+                .toUpperCase();
 
-            if (
-                text === 'live chat' ||
-                text === 'livechat'
-            ) {
-                return (
-                    candidate.closest('a, button') ||
-                    candidate
-                );
+            if (text === 'DAFTAR AKUN') {
+                return el;
             }
         }
 
         return null;
     }
 
-    function buatTombolLogin(liveChat) {
-        const login = document.createElement('a');
+    function cariPanelRegister(judul) {
+        let el = judul;
 
-        login.id = LOGIN_ID;
-        login.href = '/';
-        login.target = '_self';
-        login.textContent = 'LOGIN';
-        login.setAttribute(
-            'aria-label',
-            'Kembali ke halaman login'
-        );
+        while (el && el !== document.body) {
+            const rect = el.getBoundingClientRect();
 
-        login.style.cssText = `
-            position:absolute !important;
-            top:50% !important;
-            right:calc(100% + 10px) !important;
-            transform:translateY(-50%) !important;
+            if (
+                rect.width >= 300 &&
+                rect.width <= 500 &&
+                rect.height >= 300
+            ) {
+                return el;
+            }
 
+            el = el.parentElement;
+        }
+
+        return null;
+    }
+
+    function buatTombol() {
+        const tombol = document.createElement('a');
+
+        tombol.id = BUTTON_ID;
+        tombol.href = '/';
+        tombol.target = '_self';
+        tombol.textContent = 'LOGIN';
+
+        tombol.style.cssText = `
+            position:fixed !important;
             display:flex !important;
             align-items:center !important;
             justify-content:center !important;
 
             width:72px !important;
             height:36px !important;
-            min-width:72px !important;
-
+            padding:0 !important;
             margin:0 !important;
-            padding:0 12px !important;
-            box-sizing:border-box !important;
 
             border:1px solid #50e9ff !important;
             border-radius:9px !important;
@@ -2373,151 +2324,109 @@ function angkaUnik(min, max) {
                 0 0 9px rgba(0,217,255,.95),
                 inset 0 1px 0 rgba(255,255,255,.75) !important;
 
+            z-index:2147483647 !important;
             cursor:pointer !important;
             pointer-events:auto !important;
-            z-index:2147483646 !important;
-            white-space:nowrap !important;
         `;
 
-        /*
-         * Tombol LOGIN ditempel langsung pada
-         * tombol Live Chat agar posisinya stabil.
-         */
-        liveChat.style.setProperty(
-            'position',
-            'relative',
-            'important'
-        );
+        document.body.appendChild(tombol);
 
-        liveChat.style.setProperty(
-            'overflow',
-            'visible',
-            'important'
-        );
-
-        liveChat.style.setProperty(
-            'z-index',
-            '2147483645',
-            'important'
-        );
-
-        liveChat.appendChild(login);
+        return tombol;
     }
 
-    function pasangLogin() {
-        /*
-         * Kalau bukan halaman register,
-         * hapus tombol bila masih tertinggal.
-         */
+    function pasangDanAturPosisi() {
         if (!halamanRegister()) {
-            const loginLama =
-                document.getElementById(LOGIN_ID);
+            const tombolLama =
+                document.getElementById(BUTTON_ID);
 
-            if (loginLama) loginLama.remove();
+            if (tombolLama) tombolLama.remove();
 
             return;
         }
 
-        const loginLama =
-            document.getElementById(LOGIN_ID);
+        const judul = cariJudulDaftar();
+
+        if (!judul) return;
+
+        const panel = cariPanelRegister(judul);
+
+        if (!panel) return;
+
+        let tombol = document.getElementById(BUTTON_ID);
+
+        if (!tombol) {
+            tombol = buatTombol();
+        }
+
+        const rect = panel.getBoundingClientRect();
 
         /*
-         * Kalau tombol masih ada dan terlihat,
-         * tidak perlu dibuat ulang.
+         * Posisi di sebelah kiri tombol Live Chat.
          */
-        if (
-            loginLama &&
-            document.documentElement.contains(loginLama)
-        ) {
-            return;
-        }
+        const top = rect.top + 17;
+        const left = rect.right - 184;
 
-        const liveChat = cariLiveChat();
+        tombol.style.setProperty(
+            'top',
+            top + 'px',
+            'important'
+        );
 
-        if (!liveChat) return;
-
-        buatTombolLogin(liveChat);
+        tombol.style.setProperty(
+            'left',
+            left + 'px',
+            'important'
+        );
     }
 
-    function jalankanBerulang() {
-        pasangLogin();
+    function jalankan() {
+        pasangDanAturPosisi();
 
-        setTimeout(pasangLogin, 100);
-        setTimeout(pasangLogin, 300);
-        setTimeout(pasangLogin, 700);
-        setTimeout(pasangLogin, 1200);
-        setTimeout(pasangLogin, 2000);
-        setTimeout(pasangLogin, 3500);
+        setTimeout(pasangDanAturPosisi, 100);
+        setTimeout(pasangDanAturPosisi, 300);
+        setTimeout(pasangDanAturPosisi, 700);
+        setTimeout(pasangDanAturPosisi, 1500);
+        setTimeout(pasangDanAturPosisi, 3000);
     }
 
     document.addEventListener(
         'DOMContentLoaded',
-        jalankanBerulang
+        jalankan
     );
 
     window.addEventListener(
         'load',
-        jalankanBerulang
+        jalankan
     );
 
     window.addEventListener(
         'pageshow',
-        jalankanBerulang
+        jalankan
     );
 
     window.addEventListener(
-        'popstate',
-        jalankanBerulang
+        'resize',
+        pasangDanAturPosisi
     );
 
-    /*
-     * Mendukung perpindahan halaman tanpa reload.
-     */
-    const pushStateAsli = history.pushState;
-    const replaceStateAsli = history.replaceState;
+    window.addEventListener(
+        'scroll',
+        pasangDanAturPosisi,
+        {
+            passive: true
+        }
+    );
 
-    history.pushState = function () {
-        const hasil = pushStateAsli.apply(
-            this,
-            arguments
-        );
+    const observer = new MutationObserver(
+        pasangDanAturPosisi
+    );
 
-        jalankanBerulang();
-        return hasil;
-    };
+    observer.observe(document.documentElement, {
+        childList: true,
+        subtree: true
+    });
 
-    history.replaceState = function () {
-        const hasil = replaceStateAsli.apply(
-            this,
-            arguments
-        );
+    setInterval(pasangDanAturPosisi, 750);
 
-        jalankanBerulang();
-        return hasil;
-    };
-
-    /*
-     * Kalau template membuat ulang header,
-     * tombol LOGIN dipasang kembali.
-     */
-    if (!observerAktif) {
-        observerAktif = true;
-
-        const observer = new MutationObserver(
-            pasangLogin
-        );
-
-        observer.observe(document.documentElement, {
-            childList: true,
-            subtree: true
-        });
-    }
-
-    /*
-     * Pemeriksaan cadangan agar tetap muncul
-     * setelah refresh maupun akses langsung.
-     */
-    setInterval(pasangLogin, 750);
-
-    jalankanBerulang();
+    jalankan();
 })();
