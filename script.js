@@ -2584,8 +2584,8 @@ box-shadow:
         /*
          * Posisi di header, sebelah kiri tombol Live Chat.
          */
-        const top = rect.top - 57;
-        const left = rect.right - 238;
+        const top = rect.top - 52;
+        const left = rect.right - 228;
 
         tombol.style.setProperty(
             'top',
