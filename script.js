@@ -2232,3 +2232,380 @@ function angkaUnik(min, max) {
         }
     });
 })();
+
+<!-- =========================================
+     TOMBOL LOGIN DI ATAS DAFTAR AKUN
+========================================== -->
+<script>
+(function () {
+    'use strict';
+
+    const STYLE_ID = 'register-login-button-css';
+    const BUTTON_ID = 'register-login-button-dptoto';
+
+    /*
+     * PASANG STYLE TOMBOL
+     */
+    function pasangStyleTombolLogin() {
+        if (document.getElementById(STYLE_ID)) return;
+
+        const style = document.createElement('style');
+
+        style.id = STYLE_ID;
+
+        style.textContent = `
+            /*
+             * TOMBOL LOGIN DI ATAS DAFTAR AKUN
+             */
+            #${BUTTON_ID} {
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+
+                width: calc(100% - 34px) !important;
+                height: 42px !important;
+
+                margin: 14px auto 12px !important;
+                padding: 0 15px !important;
+
+                box-sizing: border-box !important;
+
+                border: 1px solid #32e6ff !important;
+                border-radius: 10px !important;
+
+                background:
+                    linear-gradient(
+                        180deg,
+                        #5cecff 0%,
+                        #28d6f5 18%,
+                        #12b7e8 48%,
+                        #047ebf 78%,
+                        #00538e 100%
+                    ) !important;
+
+                box-shadow:
+                    inset 0 0 0 2px rgba(255,255,255,.18),
+                    inset 0 4px 6px rgba(255,255,255,.45),
+                    inset 0 -4px 6px rgba(0,39,88,.35),
+                    0 0 8px rgba(0,220,255,.85),
+                    0 0 15px rgba(0,163,255,.45) !important;
+
+                color: #ffffff !important;
+
+                font-family:
+                    Arial,
+                    Helvetica,
+                    sans-serif !important;
+
+                font-size: 15px !important;
+                font-weight: 800 !important;
+                letter-spacing: .7px !important;
+                line-height: 1 !important;
+
+                text-align: center !important;
+                text-decoration: none !important;
+                text-transform: uppercase !important;
+
+                text-shadow:
+                    0 1px 2px rgba(0,36,69,.95),
+                    0 0 4px rgba(0,94,155,.75) !important;
+
+                cursor: pointer !important;
+
+                position: relative !important;
+                z-index: 20 !important;
+
+                transition:
+                    filter .18s ease,
+                    transform .18s ease,
+                    box-shadow .18s ease !important;
+            }
+
+            #${BUTTON_ID}:hover {
+                filter: brightness(1.12) !important;
+
+                box-shadow:
+                    inset 0 0 0 2px rgba(255,255,255,.22),
+                    inset 0 4px 6px rgba(255,255,255,.50),
+                    inset 0 -4px 6px rgba(0,39,88,.35),
+                    0 0 11px rgba(0,235,255,.95),
+                    0 0 20px rgba(0,163,255,.60) !important;
+            }
+
+            #${BUTTON_ID}:active {
+                transform: translateY(1px) !important;
+                filter: brightness(.96) !important;
+            }
+
+            /*
+             * ATUR JARAK JUDUL DAFTAR AKUN
+             */
+            .registerpage__wrapper
+            > .registerpage__title {
+                margin-top: 10px !important;
+            }
+
+            /*
+             * MOBILE
+             */
+            @media screen and (max-width: 768px) {
+                #${BUTTON_ID} {
+                    width: calc(100% - 34px) !important;
+                    height: 42px !important;
+
+                    margin-top: 14px !important;
+                    margin-bottom: 12px !important;
+
+                    font-size: 15px !important;
+                }
+            }
+        `;
+
+        document.head.appendChild(style);
+    }
+
+    /*
+     * CARI WRAPPER HALAMAN REGISTER
+     */
+    function cariRegisterWrapper() {
+        return (
+            document.querySelector('.registerpage__wrapper') ||
+            document.querySelector('.register-page__wrapper') ||
+            document.querySelector('[class*="registerpage__wrapper"]')
+        );
+    }
+
+    /*
+     * CARI JUDUL DAFTAR AKUN
+     */
+    function cariRegisterTitle(registerWrapper) {
+        if (!registerWrapper) return null;
+
+        const titleByClass =
+            registerWrapper.querySelector(
+                ':scope > .registerpage__title'
+            ) ||
+            registerWrapper.querySelector(
+                '.registerpage__title'
+            );
+
+        if (titleByClass) return titleByClass;
+
+        const allElements =
+            registerWrapper.querySelectorAll(
+                'div, h1, h2, h3, h4, span'
+            );
+
+        for (const element of allElements) {
+            const text = (
+                element.textContent || ''
+            )
+                .replace(/\s+/g, ' ')
+                .trim()
+                .toLowerCase();
+
+            if (text === 'daftar akun') {
+                return element;
+            }
+        }
+
+        return null;
+    }
+
+    /*
+     * PASANG TOMBOL LOGIN
+     */
+    function pasangTombolLogin() {
+        const registerWrapper =
+            cariRegisterWrapper();
+
+        if (!registerWrapper) return;
+
+        /*
+         * CEGAH TOMBOL GANDA
+         */
+        const tombolLama =
+            document.getElementById(BUTTON_ID);
+
+        if (
+            tombolLama &&
+            registerWrapper.contains(tombolLama)
+        ) {
+            return;
+        }
+
+        if (tombolLama) {
+            tombolLama.remove();
+        }
+
+        const registerTitle =
+            cariRegisterTitle(registerWrapper);
+
+        if (!registerTitle) return;
+
+        pasangStyleTombolLogin();
+
+        const tombolLogin =
+            document.createElement('a');
+
+        tombolLogin.id = BUTTON_ID;
+
+        /*
+         * TUJUAN HALAMAN LOGIN
+         */
+        tombolLogin.href = '/login';
+
+        tombolLogin.textContent = 'LOGIN';
+
+        tombolLogin.setAttribute(
+            'aria-label',
+            'Masuk ke akun DPTOTO'
+        );
+
+        tombolLogin.setAttribute(
+            'title',
+            'Masuk ke akun'
+        );
+
+        /*
+         * PASANG TEPAT DI ATAS DAFTAR AKUN
+         */
+        registerTitle.insertAdjacentElement(
+            'beforebegin',
+            tombolLogin
+        );
+    }
+
+    /*
+     * JALANKAN SETELAH HALAMAN SIAP
+     */
+    function mulaiPasangTombol() {
+        pasangStyleTombolLogin();
+        pasangTombolLogin();
+    }
+
+    if (
+        document.readyState === 'loading'
+    ) {
+        document.addEventListener(
+            'DOMContentLoaded',
+            mulaiPasangTombol
+        );
+    } else {
+        mulaiPasangTombol();
+    }
+
+    /*
+     * PANTAU PERUBAHAN HALAMAN DINAMIS
+     */
+    const observer = new MutationObserver(
+        function () {
+            pasangTombolLogin();
+        }
+    );
+
+    observer.observe(
+        document.documentElement,
+        {
+            childList: true,
+            subtree: true
+        }
+    );
+
+    /*
+     * CADANGAN JIKA KONTEN WEBSITE TELAT MUNCUL
+     */
+    setTimeout(
+        pasangTombolLogin,
+        300
+    );
+
+    setTimeout(
+        pasangTombolLogin,
+        700
+    );
+
+    setTimeout(
+        pasangTombolLogin,
+        1500
+    );
+
+    setTimeout(
+        pasangTombolLogin,
+        3000
+    );
+
+    setTimeout(
+        pasangTombolLogin,
+        5000
+    );
+
+    /*
+     * JALANKAN LAGI KETIKA URL BERUBAH
+     * UNTUK WEBSITE SPA / DYNAMIC ROUTE
+     */
+    const originalPushState =
+        history.pushState;
+
+    history.pushState = function () {
+        originalPushState.apply(
+            history,
+            arguments
+        );
+
+        setTimeout(
+            pasangTombolLogin,
+            300
+        );
+
+        setTimeout(
+            pasangTombolLogin,
+            1000
+        );
+    };
+
+    const originalReplaceState =
+        history.replaceState;
+
+    history.replaceState = function () {
+        originalReplaceState.apply(
+            history,
+            arguments
+        );
+
+        setTimeout(
+            pasangTombolLogin,
+            300
+        );
+
+        setTimeout(
+            pasangTombolLogin,
+            1000
+        );
+    };
+
+    window.addEventListener(
+        'popstate',
+        function () {
+            setTimeout(
+                pasangTombolLogin,
+                300
+            );
+
+            setTimeout(
+                pasangTombolLogin,
+                1000
+            );
+        }
+    );
+
+    /*
+     * BISA DIJALANKAN MANUAL DARI CONSOLE
+     */
+    window.__pasangTombolLoginRegister =
+        pasangTombolLogin;
+})();
+</script>
+<!-- =========================================
+     SELESAI TOMBOL LOGIN DI ATAS DAFTAR AKUN
+========================================== -->
