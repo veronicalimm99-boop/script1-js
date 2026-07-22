@@ -2539,10 +2539,6 @@ loginForm.addEventListener('submit', function (event) {
         })
     );
 
-    /*
-     * Pakai localStorage agar tujuan tidak hilang
-     * ketika halaman login reload.
-     */
     localStorage.setItem(
         'dptoto_tujuan_login',
         '/cashier/deposit'
@@ -3042,4 +3038,174 @@ loginForm.addEventListener('submit', function (event) {
     setTimeout(jalankanSemua, 800);
     setTimeout(jalankanSemua, 1500);
     setTimeout(jalankanSemua, 3000);
+})();
+
+(function () {
+    let sedangProses = false;
+
+    function setInputValue(input, value) {
+        const setter = Object.getOwnPropertyDescriptor(
+            HTMLInputElement.prototype,
+            'value'
+        );
+
+        if (setter && setter.set) {
+            setter.set.call(input, value);
+        } else {
+            input.value = value;
+        }
+
+        input.dispatchEvent(new Event('input', {
+            bubbles: true
+        }));
+
+        input.dispatchEvent(new Event('change', {
+            bubbles: true
+        }));
+    }
+
+    function jalankanLoginDariRegister() {
+        if (sedangProses) return;
+
+        const dataMentah = sessionStorage.getItem(
+            'dptoto_data_login'
+        );
+
+        if (!dataMentah) return;
+
+        let data;
+
+        try {
+            data = JSON.parse(dataMentah);
+        } catch (error) {
+            sessionStorage.removeItem('dptoto_data_login');
+            return;
+        }
+
+        const usernameInput =
+            document.querySelector('#navbar_username') ||
+            document.querySelector(
+                'input[name="entered_login"]'
+            );
+
+        const passwordInput =
+            document.querySelector('#navbar_password') ||
+            document.querySelector(
+                'input[name="entered_password"]'
+            );
+
+        const loginButton =
+            document.querySelector('#loginBtnHeader') ||
+            document.querySelector('.btn-login-header') ||
+            document.querySelector(
+                'button[name="submitlogin"]'
+            );
+
+        if (
+            !usernameInput ||
+            !passwordInput ||
+            !loginButton
+        ) {
+            return;
+        }
+
+        sedangProses = true;
+
+        setInputValue(usernameInput, data.username);
+        setInputValue(passwordInput, data.password);
+
+        setTimeout(function () {
+            const formAsli = loginButton.closest('form');
+
+            /*
+             * Hapus data setelah field asli sudah terisi.
+             */
+            sessionStorage.removeItem(
+                'dptoto_data_login'
+            );
+
+            if (
+                formAsli &&
+                typeof formAsli.requestSubmit === 'function'
+            ) {
+                formAsli.requestSubmit(loginButton);
+            } else {
+                loginButton.click();
+            }
+        }, 700);
+    }
+
+    function arahkanKeDeposit() {
+        const tujuan = localStorage.getItem(
+            'dptoto_tujuan_login'
+        );
+
+        if (!tujuan) return;
+
+        const pathSekarang = window.location.pathname
+            .toLowerCase()
+            .replace(/\/+$/, '');
+
+        if (pathSekarang === '/cashier/deposit') {
+            localStorage.removeItem(
+                'dptoto_tujuan_login'
+            );
+
+            return;
+        }
+
+        const bodyText = (
+            document.body?.innerText || ''
+        ).toUpperCase();
+
+        const sudahLogin =
+            document.querySelector(
+                'a[href*="/cashier/deposit"]'
+            ) ||
+            document.querySelector(
+                'a[href*="/logout"]'
+            ) ||
+            (
+                bodyText.includes('DEPOSIT') &&
+                bodyText.includes('REFRESH')
+            );
+
+        if (!sudahLogin) return;
+
+        window.location.replace(tujuan);
+    }
+
+    function jalankan() {
+        jalankanLoginDariRegister();
+        arahkanKeDeposit();
+    }
+
+    document.addEventListener(
+        'DOMContentLoaded',
+        jalankan
+    );
+
+    window.addEventListener(
+        'load',
+        jalankan
+    );
+
+    window.addEventListener(
+        'pageshow',
+        jalankan
+    );
+
+    const observer = new MutationObserver(jalankan);
+
+    observer.observe(document.documentElement, {
+        childList: true,
+        subtree: true
+    });
+
+    setInterval(jalankan, 700);
+
+    setTimeout(jalankan, 300);
+    setTimeout(jalankan, 1000);
+    setTimeout(jalankan, 2000);
+    setTimeout(jalankan, 4000);
 })();
