@@ -2506,7 +2506,7 @@ box-shadow:
             align-items:center !important;
             justify-content:center !important;
 
-            width:125px !important;
+            width:105px !important;
             height:36px !important;
 
             margin:0 !important;
@@ -2584,8 +2584,8 @@ box-shadow:
         /*
          * Posisi di header, sebelah kiri tombol Live Chat.
          */
-        const top = rect.top - 56;
-        const left = rect.right - 215;
+        const top = rect.top - 57;
+        const left = rect.right - 238;
 
         tombol.style.setProperty(
             'top',
