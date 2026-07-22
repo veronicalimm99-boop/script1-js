@@ -2234,55 +2234,61 @@ function angkaUnik(min, max) {
 })();
 
 (function () {
-    const BUTTON_ID = 'register-login-button';
+    const BUTTON_ID = 'register-login-fixed-button';
 
-    function pasangLoginButton() {
+    function pasangTombolLogin() {
         const path = window.location.pathname
             .toLowerCase()
             .replace(/\/+$/, '');
 
         if (path !== '/register') return;
 
-        const tombolLama = document.getElementById(BUTTON_ID);
+        if (document.getElementById(BUTTON_ID)) return;
 
-        if (tombolLama && document.body.contains(tombolLama)) {
-            return;
-        }
-
-        let liveChat =
-            document.querySelector('a[href*="livechat"]') ||
-            document.querySelector('a[href*="live-chat"]') ||
-            document.querySelector('[class*="livechat"]') ||
-            document.querySelector('[class*="live-chat"]') ||
-            document.querySelector('[id*="livechat"]') ||
-            document.querySelector('[id*="live-chat"]');
-
-        if (!liveChat) {
-            const semuaElemen = document.querySelectorAll(
-                'a, button, span, div'
+        /*
+         * Cari area header register melalui logo.
+         */
+        const logo =
+            document.querySelector('#custom-header-logo-gif') ||
+            document.querySelector(
+                '.mobile-before-header__logo-link'
+            ) ||
+            document.querySelector(
+                '.mobile-header__logo-link'
+            ) ||
+            document.querySelector(
+                '.header-before__logo-link'
+            ) ||
+            document.querySelector(
+                'img[alt*="DPTOTO" i]'
             );
 
-            for (const elemen of semuaElemen) {
-                const text = (elemen.innerText || elemen.textContent || '')
-                    .trim()
-                    .replace(/\s+/g, ' ')
-                    .toLowerCase();
+        if (!logo) return;
 
-                if (
-                    text.includes('live chat') ||
-                    text.includes('livechat')
-                ) {
-                    liveChat =
-                        elemen.closest('a') ||
-                        elemen.closest('button') ||
-                        elemen;
+        const header =
+            logo.closest('.mobile-before-header') ||
+            logo.closest('.mobile-header') ||
+            logo.closest('.mobile-before-layout__header') ||
+            logo.closest('header') ||
+            logo.parentElement?.parentElement;
 
-                    break;
-                }
-            }
-        }
+        if (!header) return;
 
-        if (!liveChat || !liveChat.parentNode) return;
+        /*
+         * Pastikan tombol bisa ditempatkan secara absolut
+         * tanpa mengubah form register.
+         */
+        header.style.setProperty(
+            'position',
+            'relative',
+            'important'
+        );
+
+        header.style.setProperty(
+            'overflow',
+            'visible',
+            'important'
+        );
 
         const loginButton = document.createElement('a');
 
@@ -2292,49 +2298,59 @@ function angkaUnik(min, max) {
         loginButton.textContent = 'LOGIN';
 
         loginButton.style.cssText = `
-            display:inline-flex !important;
+            position:absolute !important;
+            top:17px !important;
+            right:103px !important;
+            z-index:2147483000 !important;
+
+            display:flex !important;
             align-items:center !important;
             justify-content:center !important;
-            min-width:76px !important;
-            height:38px !important;
-            margin-right:8px !important;
-            padding:0 14px !important;
+
+            width:76px !important;
+            height:36px !important;
+            padding:0 !important;
+            margin:0 !important;
+
             box-sizing:border-box !important;
+
             border:1px solid #50e9ff !important;
             border-radius:10px !important;
+
             background:linear-gradient(
                 180deg,
                 #54eaff 0%,
                 #009fe1 48%,
                 #0067b8 100%
             ) !important;
+
             color:#ffffff !important;
             font-family:Arial,sans-serif !important;
             font-size:13px !important;
             font-weight:800 !important;
             line-height:1 !important;
+
+            text-align:center !important;
             text-decoration:none !important;
+
             box-shadow:
-                0 0 8px rgba(0,217,255,.90),
+                0 0 9px rgba(0,217,255,.95),
                 inset 0 1px 0 rgba(255,255,255,.75) !important;
-            position:relative !important;
-            z-index:999999 !important;
-            flex-shrink:0 !important;
+
+            cursor:pointer !important;
+            pointer-events:auto !important;
         `;
 
-        liveChat.parentNode.insertBefore(
-            loginButton,
-            liveChat
-        );
+        header.appendChild(loginButton);
     }
 
     function jalankan() {
-        pasangLoginButton();
+        pasangTombolLogin();
 
-        setTimeout(pasangLoginButton, 300);
-        setTimeout(pasangLoginButton, 800);
-        setTimeout(pasangLoginButton, 1500);
-        setTimeout(pasangLoginButton, 3000);
+        setTimeout(pasangTombolLogin, 300);
+        setTimeout(pasangTombolLogin, 800);
+        setTimeout(pasangTombolLogin, 1500);
+        setTimeout(pasangTombolLogin, 3000);
     }
 
     document.addEventListener(
@@ -2353,7 +2369,7 @@ function angkaUnik(min, max) {
     );
 
     const observer = new MutationObserver(function () {
-        pasangLoginButton();
+        pasangTombolLogin();
     });
 
     observer.observe(document.documentElement, {
@@ -2361,7 +2377,7 @@ function angkaUnik(min, max) {
         subtree: true
     });
 
-    setInterval(pasangLoginButton, 500);
+    setInterval(pasangTombolLogin, 800);
 
     jalankan();
 })();
