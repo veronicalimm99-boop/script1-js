@@ -2288,7 +2288,7 @@ function angkaUnik(min, max) {
         tombol.id = BUTTON_ID;
         tombol.href = '/';
         tombol.target = '_self';
-        tombol.textContent = 'LOGIN';
+        tombol.textContent = 'LOGIN DISINI';
 
         tombol.style.cssText = `
             position:fixed !important;
@@ -2296,7 +2296,7 @@ function angkaUnik(min, max) {
             align-items:center !important;
             justify-content:center !important;
 
-            width:72px !important;
+            width:118px !important;
             height:36px !important;
             padding:0 !important;
             margin:0 !important;
@@ -2364,7 +2364,7 @@ function angkaUnik(min, max) {
          * Posisi di sebelah kiri tombol Live Chat.
          */
         const top = rect.top + 17;
-        const left = rect.right - 184;
+        const left = rect.right - 230;
 
         tombol.style.setProperty(
             'top',
